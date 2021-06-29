@@ -1,27 +1,24 @@
 {
-    "name": "topthink/think",
-    "description": "the new thinkphp framework",
+    "name": "stdp/stdp-tp6",
+    "description": "standard project by thinkphp6",
     "type": "project",
     "keywords": [
-        "framework",
+        "standard",
+        "project",
         "thinkphp",
         "ORM"
     ],
-    "homepage": "http://thinkphp.cn/",
+    "homepage": "https://github.com/lg970044/stdp-tp6",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
-        },
-        {
-            "name": "yunwuxin",
-            "email": "448901948@qq.com"
-        }        
+            "name": "liuxiong",
+            "email": "lx970044@foxmail.com"
+        }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "topthink/framework": "^6.0.0",
+        "php": ">=7.4.0",
+        "topthink/framework": "^6.0",
         "topthink/think-orm": "^2.0"
     },
     "require-dev": {
