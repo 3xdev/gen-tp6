@@ -7,6 +7,8 @@ use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
+use app\exception\RequestException;
+use app\exception\OperationException;
 use think\Response;
 use Throwable;
 
@@ -51,8 +53,24 @@ class ExceptionHandle extends Handle
     public function render($request, Throwable $e): Response
     {
         // 添加自定义异常处理机制
-
-        // 其他错误交给系统处理
+        // 验证器异常处理
+        if ($e instanceof ValidateException) {
+            return Response::create(['error'=>$e->getError()], 'json', 406);
+        }
+        // 请求异常处理
+        if ($e instanceof RequestException) {
+            return Response::create(['error'=>$e->getMessage()], 'json', 499);
+        }
+        // 操作异常处理
+        if ($e instanceof OperationException || $e instanceof ModelNotFoundException) {
+            return Response::create(['error'=>$e->getMessage()], 'json', 599);
+        }
+        // HTTP异常处理
+        if ($e instanceof HttpException) {
+            return Response::create(['error'=>$e->getMessage()], 'json', $e->getStatusCode());
+        }
+        
+        // 其他异常交给系统处理
         return parent::render($request, $e);
     }
 }
