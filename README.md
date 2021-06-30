@@ -26,3 +26,10 @@ vi .env
 ```bash
 php think run
 ```
+
+## apidoc生成接口文档
+
+```bash
+apidoc -i app/controller/open/ -o open-apis/
+apidoc -i app/controller/admin/ -o admin-apis/
+```

@@ -1,5 +1,7 @@
 /.idea
 /.vscode
 /vendor
+/open-apis
+/admin-apis
 *.log
 .env

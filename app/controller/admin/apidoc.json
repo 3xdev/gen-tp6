@@ -1,0 +1,12 @@
+{
+  "name": "stdp-admin",
+  "version": "1.0.0",
+  "description": "标准化项目 管理 接口 RESTful",
+  "title": "标准化项目管理接口",
+  "url": "http://stdp.51os.xyz/admin",
+  "sampleUrl": "http://stdp.51os.xyz/admin",
+  "header": {
+    "title": "接口规范",
+    "filename": "header.md"
+  }
+}
