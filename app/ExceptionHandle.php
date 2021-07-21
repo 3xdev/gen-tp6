@@ -55,22 +55,22 @@ class ExceptionHandle extends Handle
         // 添加自定义异常处理机制
         // 验证器异常处理
         if ($e instanceof ValidateException) {
-            return Response::create(['error'=>$e->getError()], 'json', 406);
+            return common_response($e->getError(), 406);
         }
         // 请求异常处理
         if ($e instanceof RequestException) {
-            return Response::create(['error'=>$e->getMessage()], 'json', 499);
+            return common_response($e->getMessage(), 499);
         }
         // 操作异常处理
         if ($e instanceof OperationException || $e instanceof ModelNotFoundException) {
-            return Response::create(['error'=>$e->getMessage()], 'json', 599);
+            return common_response($e->getMessage(), 599);
         }
         // HTTP异常处理
         if ($e instanceof HttpException) {
-            return Response::create(['error'=>$e->getMessage()], 'json', $e->getStatusCode());
+            return common_response($e->getMessage(), $e->getStatusCode());
         }
         
-        // 其他异常交给系统处理
-        return parent::render($request, $e);
+        // 其他异常处理
+        return common_response($this->convertExceptionToArray($e), 500);
     }
 }

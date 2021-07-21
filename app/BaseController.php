@@ -6,7 +6,6 @@ namespace app;
 use think\App;
 use think\exception\ValidateException;
 use think\Validate;
-use think\Response;
 
 /**
  * 控制器基础类
@@ -94,23 +93,23 @@ abstract class BaseController
     
     /**
      * 错误返回
-     * @param string|array $data 错误提示或数据
+     * @param mixed $data 错误提示或数据
      * @param int $code
      * @return \think\response\Json
      */
     protected function error($data = '', $code = 599)
     {
-        return Response::create(is_array($data) ? $data : ['error' => $data], 'json', $code);
+        return common_response($data, $code);
     }
-
+    
     /**
      * 成功返回
-     * @param array|string $data 成功提示或数据
+     * @param mixed $data 成功提示或数据
      * @return \think\response\Json
      */
     protected function success($data = [])
     {
-        return Response::create(is_array($data) ? $data : ['message' => $data], 'json');
+        return common_response($data, 200);
     }
-
+    
 }

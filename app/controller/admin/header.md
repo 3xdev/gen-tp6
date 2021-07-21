@@ -31,7 +31,7 @@ application/json
 ### 响应失败返回(json)
 示例：
 ```json
-{"error": "错误提示信息"}
+{"message": "错误提示信息"}
 ```
 
 ## HTTP响应成功状态码
@@ -41,4 +41,23 @@ application/json
 示例：
 ```json
 {"count": 3, "list": [{"name": "福州", "value": "fz"}, {"name": "厦门", "value": "xm"}]}
+```
+
+## 兼容使用响应体返回错误及数据
+
+### 请求头添加 X-Exception-Return
+```
+X-Exception-Return: body
+```
+
+### 成功响应失败返回(json)
+示例：
+```json
+{"code": 401, "message": "用户未登录", "data": {}}
+```
+
+### 响应成功返回(json)
+示例：
+```json
+{"code": 0, "message": "查询成功", "data": {"count": 3, "list": [{"name": "福州", "value": "fz"}, {"name": "厦门", "value": "xm"}]}}
 ```
