@@ -23,7 +23,8 @@
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
-        "topthink/think-trace":"^1.0"
+        "topthink/think-trace":"^1.0",
+        "squizlabs/php_codesniffer": "^3.6"
     },
     "autoload": {
         "psr-4": {
