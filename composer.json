@@ -43,6 +43,7 @@
         "lint": "phpcs --standard=PSR12,./ruleset.xml app route config",
         "lint-fix": "phpcbf --standard=PSR12 app route config",
         "post-autoload-dump": [
+            "vendor/bin/captainhook install -f -s",
             "@php think service:discover",
             "@php think vendor:publish"
         ]
