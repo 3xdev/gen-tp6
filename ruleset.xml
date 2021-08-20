@@ -8,4 +8,10 @@
             <property name="absoluteLineLimit" value="0" />
         </properties>
     </rule>
+    <!-- To specify the end of line character. -->
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\r\n"/>
+        </properties>
+    </rule>
 </ruleset>
