@@ -1,4 +1,5 @@
 <?php
+
 namespace app\exception;
 
 use Exception;
@@ -8,5 +9,6 @@ use Exception;
  */
 class OperationException extends Exception
 {
-    
+
+
 }

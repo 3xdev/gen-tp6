@@ -1,4 +1,5 @@
 <?php
+
 namespace app;
 
 use think\db\exception\DataNotFoundException;
@@ -28,8 +29,7 @@ class ExceptionHandle extends Handle
         DataNotFoundException::class,
         ValidateException::class,
     ];
-
-    /**
+/**
      * 记录异常信息（包括日志或者其它方式记录）
      *
      * @access public
@@ -69,7 +69,7 @@ class ExceptionHandle extends Handle
         if ($e instanceof HttpException) {
             return common_response($e->getMessage(), $e->getStatusCode());
         }
-        
+
         // 其他异常处理
         return common_response($this->convertExceptionToArray($e), 500);
     }

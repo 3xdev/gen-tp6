@@ -1,4 +1,5 @@
 <?php
+
 namespace app\model;
 
 use think\facade\Db;
@@ -8,11 +9,8 @@ class Base extends Model
 {
     // 软删除字段的默认值设为0
     protected $defaultSoftDelete = 0;
-    
     // 错误信息
     protected static $errorMsg;
-    const DEFAULT_ERROR_MSG = '操作失败！';
-    
     // 关键字搜索主键字段
     protected $keyword_fields = ['name'];
     // 关键字搜索主键字段
@@ -38,7 +36,7 @@ class Base extends Model
     {
         $query->order(pt_sorter2order($value) ?: [$this->pk => 'desc']);
     }
-    
+
     // 创建时间搜索器
     public function searchCreateTimeAttr($query, $value, $data)
     {
@@ -46,7 +44,7 @@ class Base extends Model
             $query->whereBetweenTime('create_time', $value[0], $value[1]);
         }
     }
-    
+
     /**
      * 获取模型(自动新增及更新)
      * @access  public
@@ -58,42 +56,41 @@ class Base extends Model
     {
         $model = self::where($map)->findOrEmpty();
         if ($model->isEmpty()) {
-            // 新增
+        // 新增
             $model = self::create(array_merge($data, $map));
         } else {
-            // 更新
+        // 更新
             empty($data) || $model->save($data);
         }
-        
+
         return $model;
     }
-    
+
     /**
      * 设置错误信息
      * @param string $errorMsg
      * @param boolean $rollback
      * @return bool
      */
-    protected static function setErrorMsg($errorMsg = self::DEFAULT_ERROR_MSG, $rollback = false)
+    protected static function setErrorMsg($errorMsg = '', $rollback = false)
     {
         if ($rollback) {
             self::rollbackTrans();
         }
-        
+
         self::$errorMsg = $errorMsg;
         return false;
     }
-    
+
     /**
      * 获取错误信息
-     * @param string $defaultMsg
      * @return string
      */
-    public static function getErrorMsg($defaultMsg = self::DEFAULT_ERROR_MSG)
+    public static function getErrorMsg()
     {
-        return !empty(self::$errorMsg) ? self::$errorMsg : $defaultMsg;
+        return self::$errorMsg ?: '操作失败！';
     }
-    
+
     /**
      * 开启事务
      */
@@ -101,7 +98,7 @@ class Base extends Model
     {
         Db::startTrans();
     }
-    
+
     /**
      * 提交事务
      */
@@ -109,7 +106,7 @@ class Base extends Model
     {
         Db::commit();
     }
-    
+
     /**
      * 关闭事务
      */
@@ -117,18 +114,17 @@ class Base extends Model
     {
         Db::rollback();
     }
-    
+
     /**
      * 根据结果提交滚回事务
      * @param $res
      */
     public static function checkTrans($res)
     {
-        if($res){
+        if ($res) {
             self::commitTrans();
-        }else{
+        } else {
             self::rollbackTrans();
         }
     }
-    
 }
