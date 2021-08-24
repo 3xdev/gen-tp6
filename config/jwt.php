@@ -1,20 +1,17 @@
 <?php
 
 return [
-    'secret'      => env('JWT_SECRET'),
-    //Asymmetric key
-    'public_key'  => env('JWT_PUBLIC_KEY'),
-    'private_key' => env('JWT_PRIVATE_KEY'),
-    'password'    => env('JWT_PASSWORD'),
-    //JWT time to live
-    'ttl'         => env('JWT_TTL', 60),
-    //Refresh time to live
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
-    //JWT hashing algorithm
+    // 加密算法
     'algo'        => env('JWT_ALGO', 'HS256'),
-    //token获取方式，数组靠前值优先
-    'token_mode'    => ['header', 'cookie', 'param'],
-    //黑名单后有效期
+    'secret'      => env('JWT_SECRET'),
+    // Time To Live(秒)
+    'ttl'         => env('JWT_TTL', 1800),
+    // Refresh Time To Live(分)
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+    // Token获取方式，靠前优先
+    'token_mode'    => ['header', 'param'],
+    // 黑名单宽限期(秒)
     'blacklist_grace_period' => env('BLACKLIST_GRACE_PERIOD', 10),
-    'blacklist_storage' => thans\jwt\provider\storage\Tp5::class,
+    // 黑名单存储
+    'blacklist_storage' => thans\jwt\provider\storage\Tp6::class,
 ];
