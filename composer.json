@@ -41,8 +41,8 @@
         "preferred-install": "dist"
     },
     "scripts": {
-        "lint": "phpcs --standard=PSR12,./ruleset.xml app route config",
-        "lint-fix": "phpcbf --standard=PSR12,./ruleset.xml app route config",
+        "lint": "phpcs --standard=PSR12,./ruleset.xml --exclude=Generic.Files.LineEndings app route config",
+        "lint-fix": "phpcbf --standard=PSR12,./ruleset.xml --exclude=Generic.Files.LineEndings app route config",
         "post-autoload-dump": [
             "vendor/bin/captainhook install -f -s",
             "@php think service:discover",
