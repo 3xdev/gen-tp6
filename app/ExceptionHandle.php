@@ -8,6 +8,7 @@ use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
+use thans\jwt\exception\JWTException;
 use app\exception\RequestException;
 use app\exception\OperationException;
 use think\Response;
@@ -29,7 +30,7 @@ class ExceptionHandle extends Handle
         DataNotFoundException::class,
         ValidateException::class,
     ];
-/**
+    /**
      * 记录异常信息（包括日志或者其它方式记录）
      *
      * @access public
@@ -53,6 +54,10 @@ class ExceptionHandle extends Handle
     public function render($request, Throwable $e): Response
     {
         // 添加自定义异常处理机制
+        // JWT异常处理
+        if ($e instanceof JWTException) {
+            return common_response($e->getMessage(), 401);
+        }
         // 验证器异常处理
         if ($e instanceof ValidateException) {
             return common_response($e->getError(), 406);

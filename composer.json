@@ -19,7 +19,8 @@
     "require": {
         "php": ">=7.4.0",
         "topthink/framework": "^6.0",
-        "topthink/think-orm": "^2.0"
+        "topthink/think-orm": "^2.0",
+        "thans/tp-jwt-auth": "^1.1"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
@@ -40,8 +41,8 @@
         "preferred-install": "dist"
     },
     "scripts": {
-        "lint": "phpcs --standard=PSR12,./ruleset.xml app route config",
-        "lint-fix": "phpcbf --standard=PSR12 app route config",
+        "lint": "phpcs --standard=PSR12,./ruleset.xml --exclude=Generic.Files.LineEndings app route config",
+        "lint-fix": "phpcbf --standard=PSR12,./ruleset.xml --exclude=Generic.Files.LineEndings app route config",
         "post-autoload-dump": [
             "vendor/bin/captainhook install -f -s",
             "@php think service:discover",
