@@ -31,7 +31,8 @@ vi .env
 ## 运行项目
 
 ```bash
-php think run
+# 指定800端口运行
+php think run -p 800
 ```
 
 ## 源码规范检查
