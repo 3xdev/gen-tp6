@@ -51,6 +51,20 @@ class Admin extends Base
     }
 
     /**
+     * @api {DELETE} /token 管理员退出(销毁token)
+     * @apiVersion 1.0.0
+     * @apiGroup IADMIN
+     * @apiHeader {string} Authorization Token
+     */
+    public function logout()
+    {
+        // 拉黑token
+        JWTAuth::invalidate(JWTAuth::token());
+
+        return $this->success();
+    }
+
+    /**
      * @api {GET} /profile 读取管理员个人信息
      * @apiVersion 1.0.1
      * @apiGroup IADMIN
@@ -59,13 +73,14 @@ class Admin extends Base
      * @apiSuccess {string} username 帐号
      * @apiSuccess {string} nickname 昵称
      * @apiSuccess {string} avatar 头像
+     * @apiSuccess {string} mobile 手机号
      * @apiSuccess {string} login_time 最近登录时间
      * @apiSuccess {string} create_time 创建时间
      */
     public function profile()
     {
         return $this->success(array_merge($this->request->admin->visible([
-            'id', 'username', 'nickname', 'avatar', 'login_time', 'create_time'
+            'id', 'username', 'nickname', 'avatar', 'mobile', 'login_time', 'create_time'
         ])->toArray(), ['access' => 'admin']));
     }
 
@@ -76,7 +91,8 @@ class Admin extends Base
      * @apiHeader {string} Authorization Token
      * @apiParam {string} nickname 昵称
      * @apiParam {string} avatar 头像
-     * @apiParam {string} email 邮箱
+     * @apiParam {string} mobile 手机号
+     * @apiParam {string} password 密码
      */
     public function updateProfile()
     {
