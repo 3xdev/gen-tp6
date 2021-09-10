@@ -12,12 +12,12 @@ Route::pattern([
     'ids'  => '[\d,]+'
 ]);
 // 不注册中间件的分组
-Route::group('admin', function () {
+Route::group('api/admin', function () {
     // 管理员登录(请求token)
     Route::post('token', 'admin.Admin/login');
 });
 // 注册管理员验证中间件的分组
-Route::group('admin', function () {
+Route::group('api/admin', function () {
     // 管理员退出(销毁token)
     Route::delete('token', 'admin.Admin/logout');
     // 读取管理员个人信息
