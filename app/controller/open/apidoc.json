@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "标准化项目 开放 接口 RESTful",
   "title": "标准化项目开放接口",
-  "url": "http://stdp.51os.xyz/open",
-  "sampleUrl": "http://stdp.51os.xyz/open",
+  "url": "https://stdp.51os.xyz/api/open",
+  "sampleUrl": "https://stdp.51os.xyz/api/open",
   "header": {
     "title": "接口规范",
     "filename": "header.md"
