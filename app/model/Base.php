@@ -9,8 +9,7 @@ class Base extends Model
 {
     // 软删除字段的默认值设为0
     protected $defaultSoftDelete = 0;
-    // 错误信息
-    protected static $errorMsg;
+
     // 关键字搜索主键字段
     protected $keyword_fields = ['name'];
     // 关键字搜索主键字段
@@ -45,26 +44,44 @@ class Base extends Model
         }
     }
 
+
+    // 获取附带操作事件
+    public const FETCH_WITH_EVENT_INSERT = 'insert';
+    public const FETCH_WITH_EVENT_UPDATE = 'update';
+
     /**
-     * 获取模型(自动新增及更新)
+     * 获取(含自动新增及更新)
      * @access  public
      * @param   array   $map        条件数据
-     * @param   array   $data       保存数据
-     * @return  Model
+     * @param   array   $update     更新数据
+     * @param   array   $create     新建数据
+     * @return  Base
      */
-    public static function fetchWithSave(array $map, array $data = [])
+    public static function fetchWithSave(array $map, array $update = [], array $create = [])
     {
         $model = self::where($map)->findOrEmpty();
         if ($model->isEmpty()) {
-        // 新增
-            $model = self::create(array_merge($data, $map));
+            // 新增
+            try {
+                $model = self::create(array_merge($update, $create, $map));
+                $model->fetch_with_event = self::FETCH_WITH_EVENT_INSERT;
+            } catch (\Exception $e) {
+                // 并发情况下重复数据新增时，重新查询(1062 Duplicate entry)
+                $model = self::where($map)->findOrEmpty();
+                 !$model->isEmpty() && !empty($update) && $model->save($update) && $model->fetch_with_event = self::FETCH_WITH_EVENT_UPDATE;
+            }
         } else {
-        // 更新
-            empty($data) || $model->save($data);
+            // 更新
+            !empty($update) && $model->save($update) && $model->fetch_with_event = self::FETCH_WITH_EVENT_UPDATE;
         }
 
         return $model;
     }
+
+
+    // 错误信息
+    protected static $errorMsg;
+    public const DEFAULT_ERROR_MSG = '操作失败！';
 
     /**
      * 设置错误信息
@@ -72,23 +89,23 @@ class Base extends Model
      * @param boolean $rollback
      * @return bool
      */
-    protected static function setErrorMsg($errorMsg = '', $rollback = false)
+    protected static function setErrorMsg($errorMsg = self::DEFAULT_ERROR_MSG, $rollback = false)
     {
         if ($rollback) {
             self::rollbackTrans();
         }
 
-        self::$errorMsg = $errorMsg;
-        return false;
+        return self::$errorMsg = $errorMsg;
     }
 
     /**
-     * 获取错误信息
+     * 读取错误信息
+     * @param string $defaultMsg
      * @return string
      */
-    public static function getErrorMsg()
+    public static function getErrorMsg($defaultMsg = self::DEFAULT_ERROR_MSG)
     {
-        return self::$errorMsg ?: '操作失败！';
+        return !empty(self::$errorMsg) ? self::$errorMsg : $defaultMsg;
     }
 
     /**
