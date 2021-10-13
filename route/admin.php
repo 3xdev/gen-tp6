@@ -8,8 +8,9 @@ use app\middleware\AdminAuth;
 
 // 设置全局变量规则
 Route::pattern([
-    'id'   => '\d+',
-    'ids'  => '[\d,]+'
+    'id'    => '\d+',
+    'ids'   => '[\d,]+',
+    'name'  => '\w+'
 ]);
 // 不注册中间件的分组
 Route::group('api/admin', function () {
@@ -18,6 +19,10 @@ Route::group('api/admin', function () {
 });
 // 注册管理员验证中间件的分组
 Route::group('api/admin', function () {
+    // 上传图片
+    Route::post('upload/image/:name', 'admin.Upload/image');
+    // 上传附件
+    Route::post('upload/attachment/:name', 'admin.Upload/attachment');
     // 管理员退出(销毁token)
     Route::delete('token', 'admin.Admin/logout');
     // 读取管理员个人信息
