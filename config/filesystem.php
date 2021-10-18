@@ -19,6 +19,14 @@ return [
             // 可见性
             'visibility' => 'public',
         ],
+        // 七牛云存储
+        'qiniu'  => [
+            'type'          => 'qiniu',
+            'access_key'    => env('filesystem.qiniu_access_key'),
+            'secret_key'    => env('filesystem.qiniu_secret_key'),
+            'bucket'        => env('filesystem.qiniu_bucket'),
+            'domain'       => env('filesystem.qiniu_domain'),
+        ],
         // 更多的磁盘配置信息
     ],
 ];

@@ -58,16 +58,18 @@ class Admin extends Base
     {
         $admin = self::where(['username' => $username])->find();
         if (!$admin) {
-        // 管理员不存在
-            return self::setErrorMsg('帐号或密码错误');
+            // 管理员不存在
+            self::setErrorMsg('帐号或密码错误');
+            return null;
         }
 
         // 密码比对
         if (!password_verify($password, $admin->password)) {
-            return self::setErrorMsg('帐号或密码错误');
+            self::setErrorMsg('帐号或密码错误');
+            return null;
         }
 
-        return $admin->doLogin($ip) ? $admin : null;
+        return $admin->doLogin($ip);
     }
 
     /**
@@ -78,41 +80,38 @@ class Admin extends Base
     {
         $admin = self::where(['mobile' => $mobile])->find();
         if (!$admin) {
-        // 管理员不存在
-            return self::setErrorMsg('手机号或验证码错误');
+            // 管理员不存在
+            self::setErrorMsg('手机号或验证码错误');
+            return null;
         }
 
         // todo:验证码比对
         if ($captcha == $captcha) {
-            return self::setErrorMsg('验证码错误');
+            self::setErrorMsg('验证码错误');
+            return null;
         }
 
-        return $admin->doLogin($ip) ? $admin : null;
+        return $admin->doLogin($ip);
     }
 
     /**
      * 执行登录
-     * @return boolean
+     * @return Admin
      */
     protected function doLogin($ip = '')
     {
         if ($this->getAttr('status') == 0) {
-// 管理员已禁用
-            return self::setErrorMsg('用户已被禁用');
+            // 管理员已禁用
+            self::setErrorMsg('用户已被禁用');
+            return null;
         }
 
         // 更新管理员信息
         $this->setAttr('login_ip', $ip);
         $this->setAttr('login_time', time());
         $this->save();
-// 触发管理员登录成功事件
+        // 触发管理员登录成功事件
         Event::trigger('AdminLogin', $this);
-        return true;
-    }
-
-    // 所属日志
-    public function adminLog()
-    {
-        return $this->hasMany(AdminOperationModel::class);
+        return $this;
     }
 }

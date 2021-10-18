@@ -68,7 +68,7 @@ class Base extends Model
             } catch (\Exception $e) {
                 // 并发情况下重复数据新增时，重新查询(1062 Duplicate entry)
                 $model = self::where($map)->findOrEmpty();
-                 !$model->isEmpty() && !empty($update) && $model->save($update) && $model->fetch_with_event = self::FETCH_WITH_EVENT_UPDATE;
+                !$model->isEmpty() && !empty($update) && $model->save($update) && $model->fetch_with_event = self::FETCH_WITH_EVENT_UPDATE;
             }
         } else {
             // 更新

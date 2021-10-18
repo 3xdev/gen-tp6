@@ -21,7 +21,7 @@
         "topthink/framework": "^6.0",
         "topthink/think-orm": "^2.0",
         "thans/tp-jwt-auth": "^1.1",
-        "overtrue/flysystem-qiniu": "1.0.5"
+        "jaguarjack/think-filesystem-cloud": "^1.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
