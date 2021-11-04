@@ -195,6 +195,7 @@ class Admin extends Base
      * @apiHeader {string} Authorization Token
      * @apiParam {string} username 帐号
      * @apiParam {string} mobile 手机号
+     * @apiParam {string} nickname 昵称
      * @apiParam {number} current 当前页
      * @apiParam {number} pageSize 页大小
      * @apiParam {string} filter ProTable的filter
@@ -212,7 +213,7 @@ class Admin extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['username', 'mobile', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['username', 'mobile', 'nickname', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
         $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();

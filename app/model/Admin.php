@@ -22,10 +22,14 @@ class Admin extends Base
     }
 
     // 关键字搜索主键字段
-    protected $keyword_fields = ['username','nickname','email'];
+    protected $keyword_fields = ['username','mobile','nickname','email'];
     public function searchUsernameAttr($query, $value, $data)
     {
         $value && $query->where('username', 'like', '%' . $value . '%');
+    }
+    public function searchMobileAttr($query, $value, $data)
+    {
+        $value && $query->where('mobile', 'like', '%' . $value . '%');
     }
     public function searchNicknameAttr($query, $value, $data)
     {
