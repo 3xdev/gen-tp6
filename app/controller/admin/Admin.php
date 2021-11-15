@@ -206,7 +206,7 @@ class Admin extends Base
      * @apiSuccess {string} data.username 帐号
      * @apiSuccess {string} data.mobile 手机号
      * @apiSuccess {string} data.avatar 头像
-     * @apiSuccess {string} data.logintime 最近登录时间
+     * @apiSuccess {string} data.login_time 最近登录时间
      * @apiSuccess {string} data.create_time 创建时间
      */
     public function index()
@@ -220,7 +220,7 @@ class Admin extends Base
 
         return $this->success([
             'total' => $total,
-            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'logintime', 'create_time'])->toArray()
+            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'login_time', 'create_time'])->toArray()
         ]);
     }
 

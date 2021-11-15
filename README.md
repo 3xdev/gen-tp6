@@ -56,6 +56,10 @@ composer lint-fix
 [约定式提交]: https://www.conventionalcommits.org/zh-hans/v1.0.0/
 [PSR-12]: https://www.php-fig.org/psr/psr-12/
 
+## CHINER设计数据模型
+
+* model.chnr.json
+
 ## apidoc生成接口文档
 
 ```bash
