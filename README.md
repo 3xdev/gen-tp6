@@ -63,6 +63,6 @@ composer lint-fix
 ## apidoc生成接口文档
 
 ```bash
-apidoc -i app/controller/open/ -o public/doc/open/
-apidoc -i app/controller/admin/ -o public/doc/admin/
+apidoc -c app/controller/open/apidoc.json  -i app/controller/open/  -o public/doc/open/
+apidoc -c app/controller/admin/apidoc.json -i app/controller/admin/ -o public/doc/admin/
 ```

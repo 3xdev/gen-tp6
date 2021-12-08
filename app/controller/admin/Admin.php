@@ -121,12 +121,8 @@ class Admin extends Base
     public function create()
     {
         $data = $this->request->post(['mobile', 'username', 'nickname', 'password', 'avatar']);
+        $data['delete_time'] = 0;
         $this->validate($data, 'Admin');
-
-        $admin_id = $this->request->admin->id;
-        if ($admin_id != 1) {
-            return $this->error('不是超级管理员不能添加其他用户');
-        }
 
         // 创建管理员
         SelfModel::create($data);
@@ -148,18 +144,23 @@ class Admin extends Base
     public function update($id)
     {
         $data = $this->request->post(['username', 'mobile', 'password', 'nickname', 'avatar', 'status']);
-        $this->validate($data, 'Admin.update');
+        $data['delete_time'] = 0;
 
-        $admin = SelfModel::find($id);
-        if (!$admin) {
+        $model = SelfModel::find($id);
+        if (!$model) {
             return $this->error();
+        }
+        if ($model->username == $data['username']) {
+            $this->validate($data, 'Admin.update');
+        } else {
+            $this->validate($data, 'Admin');
         }
 
         // 更新管理员
         if (empty($data['password'])) {
             unset($data['password']);
         }
-        $admin->save($data);
+        $model->save($data);
         return $this->success();
     }
 
@@ -174,10 +175,6 @@ class Admin extends Base
         $admins = SelfModel::where('id', 'in', explode(',', $ids))->select();
         if (!$admins) {
             return $this->error();
-        }
-        $admin_id = $this->request->admin->id;
-        if ($admin_id != 1) {
-            return $this->error('不是超级管理员不能删除用户');
         }
         foreach ($admins as $admin) {
             if ($admin->id == 1) {
