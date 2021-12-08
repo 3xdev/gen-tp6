@@ -1,0 +1,30 @@
+@baseUrl = http://127.0.0.1:800/api/admin
+@token = {{login.response.body.token}}
+
+# 管理员 - 管理员登陆
+# @name login
+POST {{baseUrl}}/token
+content-type: application/json
+
+{
+    "type": "password",
+    "username": "admin",
+    "password": "123456"
+}
+
+
+###
+#管理员 - 管理员列表
+GET {{baseUrl}}/admins
+Authorization: Bearer {{token}}
+
+
+###
+#字典 - 获取字典列表
+GET {{baseUrl}}/dicts
+Authorization: Bearer {{token}}
+
+
+###
+#字典 - 获取字典条目
+GET {{baseUrl}}/dicts/field_component
