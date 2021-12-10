@@ -121,12 +121,8 @@ class Admin extends Base
     public function create()
     {
         $data = $this->request->post(['mobile', 'username', 'nickname', 'password', 'avatar']);
+        $data['delete_time'] = 0;
         $this->validate($data, 'Admin');
-
-        $admin_id = $this->request->admin->id;
-        if ($admin_id != 1) {
-            return $this->error('不是超级管理员不能添加其他用户');
-        }
 
         // 创建管理员
         SelfModel::create($data);
@@ -148,18 +144,23 @@ class Admin extends Base
     public function update($id)
     {
         $data = $this->request->post(['username', 'mobile', 'password', 'nickname', 'avatar', 'status']);
-        $this->validate($data, 'Admin.update');
+        $data['delete_time'] = 0;
 
-        $admin = SelfModel::find($id);
-        if (!$admin) {
+        $model = SelfModel::find($id);
+        if (!$model) {
             return $this->error();
+        }
+        if ($model->username == $data['username']) {
+            $this->validate($data, 'Admin.update');
+        } else {
+            $this->validate($data, 'Admin');
         }
 
         // 更新管理员
         if (empty($data['password'])) {
             unset($data['password']);
         }
-        $admin->save($data);
+        $model->save($data);
         return $this->success();
     }
 
@@ -174,10 +175,6 @@ class Admin extends Base
         $admins = SelfModel::where('id', 'in', explode(',', $ids))->select();
         if (!$admins) {
             return $this->error();
-        }
-        $admin_id = $this->request->admin->id;
-        if ($admin_id != 1) {
-            return $this->error('不是超级管理员不能删除用户');
         }
         foreach ($admins as $admin) {
             if ($admin->id == 1) {
@@ -195,6 +192,7 @@ class Admin extends Base
      * @apiHeader {string} Authorization Token
      * @apiParam {string} username 帐号
      * @apiParam {string} mobile 手机号
+     * @apiParam {string} nickname 昵称
      * @apiParam {number} current 当前页
      * @apiParam {number} pageSize 页大小
      * @apiParam {string} filter ProTable的filter
@@ -205,21 +203,21 @@ class Admin extends Base
      * @apiSuccess {string} data.username 帐号
      * @apiSuccess {string} data.mobile 手机号
      * @apiSuccess {string} data.avatar 头像
-     * @apiSuccess {string} data.logintime 最近登录时间
+     * @apiSuccess {string} data.login_time 最近登录时间
      * @apiSuccess {string} data.create_time 创建时间
      */
     public function index()
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['username', 'mobile', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['username', 'mobile', 'nickname', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
         $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
 
         return $this->success([
             'total' => $total,
-            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'logintime', 'create_time'])->toArray()
+            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'login_time', 'create_time'])->toArray()
         ]);
     }
 

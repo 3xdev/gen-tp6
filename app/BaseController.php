@@ -18,22 +18,22 @@ abstract class BaseController
      * @var \think\Request
      */
     protected $request;
-/**
+    /**
      * 应用实例
      * @var \think\App
      */
     protected $app;
-/**
+    /**
      * 是否批量验证
      * @var bool
      */
     protected $batchValidate = false;
-/**
+    /**
      * 控制器中间件
      * @var array
      */
     protected $middleware = [];
-/**
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -42,7 +42,7 @@ abstract class BaseController
     {
         $this->app     = $app;
         $this->request = $this->app->request;
-// 控制器初始化
+        // 控制器初始化
         $this->initialize();
     }
 
@@ -68,7 +68,7 @@ abstract class BaseController
             $v->rule($validate);
         } else {
             if (strpos($validate, '.')) {
-        // 支持场景
+                // 支持场景
                 [$validate, $scene] = explode('.', $validate);
             }
             $class = false !== strpos($validate, '\\') ? $validate : $this->app->parseClass('validate', $validate);
@@ -79,7 +79,7 @@ abstract class BaseController
         }
 
         $v->message($message);
-// 是否批量验证
+        // 是否批量验证
         if ($batch || $this->batchValidate) {
             $v->batch(true);
         }

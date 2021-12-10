@@ -47,6 +47,18 @@ composer lint
 composer lint-fix
 ```
 
+## 开发常用方法
+
+```php
+// 获取系统配置
+system_config('site_name');
+\app\model\Config::fetchCache('site_name');
+
+// 获取系统字典
+system_dict('config_tab');
+\app\model\Dict::fetchCache('config_tab');
+```
+
 ## Git提交规范
 
 * commit-msg 必须遵循 约定式提交
@@ -56,9 +68,13 @@ composer lint-fix
 [约定式提交]: https://www.conventionalcommits.org/zh-hans/v1.0.0/
 [PSR-12]: https://www.php-fig.org/psr/psr-12/
 
+## CHINER设计数据模型
+
+* model.chnr.json
+
 ## apidoc生成接口文档
 
 ```bash
-apidoc -i app/controller/open/ -o open-apis/
-apidoc -i app/controller/admin/ -o admin-apis/
+apidoc -c app/controller/open/apidoc.json  -i app/controller/open/  -o public/doc/open/
+apidoc -c app/controller/admin/apidoc.json -i app/controller/admin/ -o public/doc/admin/
 ```

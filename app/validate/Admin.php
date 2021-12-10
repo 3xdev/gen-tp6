@@ -7,7 +7,7 @@ use think\Validate;
 class Admin extends Validate
 {
     protected $rule = [
-        'username|帐号' => 'require|alphaDash|max:32|unique:admin,delete_time&username',
+        'username|帐号' => 'require|alphaDash|max:32|unique:admin,username^delete_time',
         'password|密码' => 'graph|min:6|max:20',
         'mobile|手机号' => 'mobile',
         'status|状态'   => 'in:0,1'
@@ -24,7 +24,7 @@ class Admin extends Validate
     // 更新验证场景
     public function sceneUpdate()
     {
-        return $this->remove('username', 'require|unique');
+        return $this->remove('username', 'unique');
     }
 
     // 自定义验证规则
