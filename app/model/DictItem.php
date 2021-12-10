@@ -7,8 +7,7 @@ namespace app\model;
  */
 class DictItem extends Base
 {
-  // 设置完整数据表名及主键
-    protected $table = 'sys_dict_item';
+    // 设置主键
     protected $pk = ['dict_key', 'key_'];
 
     // 字典
