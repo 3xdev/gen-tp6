@@ -10,7 +10,8 @@ use app\middleware\AdminAuth;
 Route::pattern([
     'id'    => '\d+',
     'ids'   => '[\d,]+',
-    'name'  => '\w+'
+    'name'  => '\w+',
+    'names' => '[\w,]+'
 ]);
 // 不注册中间件的分组
 Route::group('api/admin', function () {
@@ -51,7 +52,7 @@ Route::group('api/admin', function () {
     // 创建字典
     Route::post('dicts', 'admin.Dict/create');
     // 删除字典
-    Route::delete('dicts/:name', 'admin.Dict/delete');
+    Route::delete('dicts/:names', 'admin.Dict/delete');
 
     // 保存系统配置
     Route::put('setting', 'admin.Config/setting');

@@ -24,11 +24,16 @@ class Dict extends Base
     public function create()
     {
         $data = $this->request->post(['key_', 'label', 'intro']);
+        $items = $this->request->post('items/a');
+        foreach ($items as $index => &$item) {
+            $item['sort_'] = $index;
+        }
         $this->validate($data, 'Dict');
 
         // 创建字典
         $model = SelfModel::create($data);
-        $model->items()->saveAll($this->request->post('items/a'));
+        $model->items()->saveAll($items);
+        SelfModel::refreshCache($model->key_);
 
         return $this->success();
     }
@@ -48,6 +53,10 @@ class Dict extends Base
     public function update($name)
     {
         $data = $this->request->post(['key_', 'label', 'intro']);
+        $items = $this->request->post('items/a');
+        foreach ($items as $index => &$item) {
+            $item['sort_'] = $index;
+        }
 
         $model = SelfModel::find($name);
         if (!$model) {
@@ -59,22 +68,28 @@ class Dict extends Base
             $this->validate($data, 'Dict');
         }
 
+        // 更新字典
         $model->save($data);
-        $model->items()->delete();
-        $model->items()->saveAll($this->request->post('items/a'));
+        $model->items()->where('dict_key', $model->key_)->delete();
+        $model->items()->saveAll($items);
+        SelfModel::refreshCache($model->key_);
+
         return $this->success();
     }
 
     /**
-     * @api {DELETE} /dicts/:name 删除字典
+     * @api {DELETE} /dicts/:names 删除字典
      * @apiVersion 1.0.0
      * @apiGroup IDICT
      * @apiHeader {string} Authorization Token
      */
-    public function delete($name)
+    public function delete($names)
     {
-        SelfModel::select(explode(',', $name))->each(function ($model) {
-            $model->items()->delete();
+        // 删除字典
+        $models = SelfModel::select(explode(',', $names));
+        $models->each(function ($model) {
+            SelfModel::removeCache($model->key_);
+            $model->items()->where('dict_key', $model->key_)->delete();
             $model->delete();
         });
 

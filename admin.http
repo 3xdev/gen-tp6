@@ -19,6 +19,12 @@ GET {{baseUrl}}/admins
 Authorization: Bearer {{token}}
 
 
+
+###
+#系统 - 获取Formily的schema描述
+GET {{baseUrl}}/schemas/setting
+Authorization: Bearer {{token}}
+
 ###
 #字典 - 获取字典列表
 GET {{baseUrl}}/dicts
