@@ -8,6 +8,8 @@
 * topthink/framework 6.0
 * topthink/think-orm 2.0
 * thans/tp-jwt-auth 1.1
+* godruoyi/php-snowflake 1.1
+* jaguarjack/think-filesystem-cloud 1.0
 
 ## 开发依赖包
 
@@ -26,6 +28,16 @@ composer install
 ```bash
 cp .example.env .env
 vi .env
+```
+
+## 从chiner模型导出DDL及数据字典SQL初始化数据库
+
+## 运行项目初始化指令
+
+* 初始化管理员，用户名admin，密码123456
+
+```bash
+php think init
 ```
 
 ## 运行项目

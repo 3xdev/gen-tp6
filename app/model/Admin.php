@@ -54,6 +54,15 @@ class Admin extends Base
         return $value ? password_hash($value, PASSWORD_DEFAULT) : '';
     }
 
+    // 模型事件
+    public static function onBeforeDelete($admin)
+    {
+        if ($admin->id == 1) {
+            return false;
+        }
+    }
+
+
     /**
      * 密码登录
      * @return Admin
