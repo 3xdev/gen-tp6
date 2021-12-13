@@ -6,5 +6,6 @@
 return [
     // 指令定义
     'commands' => [
+        'init' => 'app\command\Init',
     ],
 ];

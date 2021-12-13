@@ -9,8 +9,7 @@ use think\facade\Cache;
  */
 class Dict extends Base
 {
-    // 设置完整数据表名及主键
-    protected $table = 'sys_dict';
+    // 设置主键
     protected $pk = 'key_';
 
     public const CACHE_PREFIX = 'dict:';

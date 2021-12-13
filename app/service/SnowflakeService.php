@@ -5,6 +5,7 @@ namespace app\service;
 use think\facade\Cache;
 use Godruoyi\Snowflake\Snowflake;
 use Godruoyi\Snowflake\RedisSequenceResolver;
+use Godruoyi\Snowflake\RandomSequenceResolver;
 
 class SnowflakeService extends \think\Service
 {
@@ -28,6 +29,6 @@ class SnowflakeService extends \think\Service
     {
         $this->app->snowflake
             ->setStartTimeStamp(strtotime('2020-01-01') * 1000)
-            ->setSequenceResolver(new RedisSequenceResolver(Cache::store('redis')->handler()));
+            ->setSequenceResolver(config('cache.default') == 'redis' ? new RedisSequenceResolver(Cache::store('redis')->handler()) : new RandomSequenceResolver());
     }
 }

@@ -176,10 +176,8 @@ class Admin extends Base
         if (!$admins) {
             return $this->error();
         }
+
         foreach ($admins as $admin) {
-            if ($admin->id == 1) {
-                continue;
-            }
             $admin->delete();
         }
         return $this->success();
