@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "3.5.7",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2021-12-13 10:57:45",
+  "updatedTime": "2021-12-14 14:54:26",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -1351,15 +1351,15 @@
   "views": [],
   "dicts": [
     {
-      "defKey": "common_status",
-      "defName": "通用状态",
+      "defKey": "gender",
+      "defName": "性别",
       "sort": "",
       "intro": "",
-      "id": "00474E51-9CB6-4F0F-BAF2-6DBED9E1E4AD",
+      "id": "C410EF17-12FE-4EAC-AB81-1DDFD2E6AD59",
       "items": [
         {
-          "defKey": "0",
-          "defName": "禁用",
+          "defKey": "m",
+          "defName": "男",
           "sort": "0",
           "parentKey": "",
           "intro": "",
@@ -1367,11 +1367,11 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
-          "id": "DD2C4811-D104-4A12-8D64-BA6F854C9312"
+          "id": "CA463E68-C9B9-4DEB-BA0D-2297492834D9"
         },
         {
-          "defKey": "1",
-          "defName": "启用",
+          "defKey": "f",
+          "defName": "女",
           "sort": "1",
           "parentKey": "",
           "intro": "",
@@ -1379,7 +1379,52 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
-          "id": "48A9A2DF-5925-4AFC-8C6E-D6DE5B2F1E9B"
+          "id": "EBE1889C-BD83-4B19-B665-91EDB43E9BBE"
+        }
+      ]
+    },
+    {
+      "defKey": "config_tab",
+      "defName": "配置分组",
+      "sort": "",
+      "intro": "",
+      "id": "189F538A-6002-4084-A85D-B863BFB49462",
+      "items": [
+        {
+          "defKey": "system",
+          "defName": "系统配置",
+          "sort": "0",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "37D664A5-19C0-4DF3-B3CF-C5984FFBFF09"
+        },
+        {
+          "defKey": "user",
+          "defName": "用户配置",
+          "sort": "1",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "3982FB0F-3DD7-4DC7-B44D-F52807EF5366"
+        },
+        {
+          "defKey": "extend",
+          "defName": "扩展配置",
+          "sort": "2",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "745A9A21-B914-4034-80B6-7F4488F8CF2E"
         }
       ]
     },
@@ -1525,15 +1570,15 @@
       ]
     },
     {
-      "defKey": "config_tab",
-      "defName": "配置分组",
+      "defKey": "common_status",
+      "defName": "通用状态",
       "sort": "",
       "intro": "",
-      "id": "189F538A-6002-4084-A85D-B863BFB49462",
+      "id": "00474E51-9CB6-4F0F-BAF2-6DBED9E1E4AD",
       "items": [
         {
-          "defKey": "system",
-          "defName": "系统配置",
+          "defKey": "0",
+          "defName": "禁用",
           "sort": "0",
           "parentKey": "",
           "intro": "",
@@ -1541,11 +1586,11 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
-          "id": "37D664A5-19C0-4DF3-B3CF-C5984FFBFF09"
+          "id": "DD2C4811-D104-4A12-8D64-BA6F854C9312"
         },
         {
-          "defKey": "user",
-          "defName": "用户配置",
+          "defKey": "1",
+          "defName": "启用",
           "sort": "1",
           "parentKey": "",
           "intro": "",
@@ -1553,19 +1598,7 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
-          "id": "3982FB0F-3DD7-4DC7-B44D-F52807EF5366"
-        },
-        {
-          "defKey": "extend",
-          "defName": "扩展配置",
-          "sort": "2",
-          "parentKey": "",
-          "intro": "",
-          "enabled": true,
-          "attr1": "",
-          "attr2": "",
-          "attr3": "",
-          "id": "745A9A21-B914-4034-80B6-7F4488F8CF2E"
+          "id": "48A9A2DF-5925-4AFC-8C6E-D6DE5B2F1E9B"
         }
       ]
     }
@@ -1737,6 +1770,15 @@
       "id": "9CF759FC-2836-44D2-AA28-60C54B0B0DD5"
     },
     {
+      "defKey": "Percent",
+      "defName": "百分点",
+      "applyFor": "32F72467-F525-4F31-BCD7-9A7FD26F9D14",
+      "len": 16,
+      "scale": 4,
+      "uiHint": "",
+      "id": "61FA25E2-602E-4EDE-9D92-6E80FB53A00E"
+    },
+    {
       "defKey": "TimeStamp",
       "defName": "时间戳",
       "applyFor": "80E5AC58-D34B-412E-8DA1-F6D4BD70CC61",
@@ -1770,6 +1812,54 @@
       "defKey": "common",
       "defName": "通用",
       "fields": [
+        {
+          "defKey": "rel_id",
+          "defName": "关联ID",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "id": "F3B53BED-9A08-4861-B647-114393D8355A"
+        },
+        {
+          "defKey": "sn",
+          "defName": "序列号",
+          "comment": "雪花算法生成ID",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
+          "id": "34C8CAA0-A493-45E0-AFD1-3DC5178C1110"
+        },
+        {
+          "defKey": "gender",
+          "defName": "性别",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "C410EF17-12FE-4EAC-AB81-1DDFD2E6AD59",
+          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
+          "id": "189E9A8F-6BD6-4AD8-89F4-3D3147FB0BF5"
+        },
         {
           "defKey": "name",
           "defName": "名称",
@@ -1822,6 +1912,38 @@
           "uiHint": ""
         },
         {
+          "defKey": "avatar",
+          "defName": "头像",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "5D04AF36-B0BC-45CC-91B3-E0C31FB3FA72",
+          "id": "A560E4B6-D97D-437F-B964-698C6769BEAD"
+        },
+        {
+          "defKey": "covers",
+          "defName": "封面",
+          "comment": "半角逗号隔开",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "ADBB6C9A-79C2-427A-831B-58F716EF9A75",
+          "id": "AF67BDDF-776F-4EBD-BE88-75418A58530E"
+        },
+        {
           "defKey": "tip",
           "defName": "提示",
           "comment": "",
@@ -1851,12 +1973,147 @@
           "defaultValue": "''",
           "hideInGraph": false,
           "refDict": "",
-          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "domain": "ADBB6C9A-79C2-427A-831B-58F716EF9A75",
           "id": "FFA5A7F0-50B8-467A-9F58-9F0F148138CE",
           "uiHint": ""
+        },
+        {
+          "defKey": "description",
+          "defName": "描述",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "412C4B24-9FAA-4637-9A0A-33D4286F4714"
+        },
+        {
+          "defKey": "introduction",
+          "defName": "介绍",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "228B748E-F5B7-4015-A70A-4E72D5602896"
+        },
+        {
+          "defKey": "tags",
+          "defName": "标签串",
+          "comment": "半角逗号隔开",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "5D04AF36-B0BC-45CC-91B3-E0C31FB3FA72",
+          "id": "7CA24870-708E-4BFA-B05A-1DBF766D7518"
+        },
+        {
+          "defKey": "top_time",
+          "defName": "置顶时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "id": "C5B7987E-2848-4F51-8D17-92EF10C8F42F"
         }
       ],
       "id": "572D4AD4-C660-4A13-AACF-BDC4EFDD2F4B"
+    },
+    {
+      "defKey": "finance",
+      "defName": "财务",
+      "fields": [
+        {
+          "defKey": "balance",
+          "defName": "余额",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "9CF759FC-2836-44D2-AA28-60C54B0B0DD5",
+          "id": "8BBBF83E-00AC-485E-BC2B-D1350EA7E717"
+        },
+        {
+          "defKey": "amount",
+          "defName": "金额",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "9CF759FC-2836-44D2-AA28-60C54B0B0DD5",
+          "id": "EDFB2A53-2C8B-4A69-AF50-435716493933"
+        },
+        {
+          "defKey": "service_fee",
+          "defName": "服务费",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "9CF759FC-2836-44D2-AA28-60C54B0B0DD5",
+          "id": "40CD2CF1-4D5A-4421-90BF-857D54C27349"
+        },
+        {
+          "defKey": "month_rate",
+          "defName": "月利率",
+          "comment": "单位百分点",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "61FA25E2-602E-4EDE-9D92-6E80FB53A00E",
+          "id": "FB5F1527-0D70-4F47-B8F8-884B1E0F6212"
+        }
+      ],
+      "id": "2606AF23-244B-4769-8741-73B019387D97"
     }
   ]
 }
