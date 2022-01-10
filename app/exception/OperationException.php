@@ -9,6 +9,4 @@ use Exception;
  */
 class OperationException extends Exception
 {
-
-
 }
