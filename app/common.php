@@ -2,6 +2,55 @@
 
 // 应用公共文件
 
+if (!function_exists('string_remove_prefix')) {
+    /**
+     * 字符串移除前缀
+     * @param  string   $string     字符串
+     * @param  string   $prefix     前缀
+     * @return array
+     */
+    function string_remove_prefix($string, $prefix)
+    {
+        if (empty($prefix)) {
+            return $string;
+        }
+
+        return substr($string, stripos($string, $prefix) === 0 ? strlen($prefix) : 0);
+    }
+}
+
+if (!function_exists('array2map')) {
+    /**
+     * 数组转映射
+     * @param  array    $array      数组
+     * @param  string   $key        映射键
+     * @return array
+     */
+    function array2map($array, $key)
+    {
+        $map = [];
+        foreach ($array as $value) {
+            $map[$value[$key]] = $value;
+        }
+        return $map;
+    }
+}
+
+if (!function_exists('map_array_value')) {
+    /**
+     * 获取映射的数组对应值
+     * @param  array    $map        映射
+     * @param  array    $array      数组
+     * @param  string   $value      映射值
+     * @return mixed
+     */
+    function map_array_value($map, $array, $value)
+    {
+        $index = array_search($value, $map);
+        return $index === false ? null : $array[$index];
+    }
+}
+
 if (!function_exists('system_config')) {
     /**
      * 获取系统配置

@@ -5,14 +5,14 @@ namespace app\controller\admin;
 use app\model\Config as SelfModel;
 
 /**
- * @apiDefine ICONFIG 配置
+ * @apiDefine ISYS 系统
  */
 class Config extends Base
 {
     /**
      * @api {PUT} /setting 更新系统配置
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} :code 系统配置
      * @apiParamExample {json} Request-Example:
@@ -37,7 +37,7 @@ class Config extends Base
     /**
      * @api {POST} /configs 创建配置项
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} tab 分组
      * @apiParam {string} component 组件
@@ -63,7 +63,7 @@ class Config extends Base
     /**
      * @api {PUT} /configs/:id 更新配置项
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} tab 分组
      * @apiParam {string} component 组件
@@ -96,7 +96,7 @@ class Config extends Base
     /**
      * @api {DELETE} /configs/:ids 删除配置项
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      */
     public function delete($ids)
@@ -108,7 +108,7 @@ class Config extends Base
     /**
      * @api {GET} /configs 配置项列表
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} code 编码
      * @apiParam {string} title 标题
@@ -150,7 +150,7 @@ class Config extends Base
     /**
      * @api {GET} /configs/:id 配置项信息
      * @apiVersion 1.0.0
-     * @apiGroup ICONFIG
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiSuccess {number} id 配置项ID
      * @apiSuccess {string} tab 分组

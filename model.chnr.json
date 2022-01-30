@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "3.5.7",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2021-12-31 17:02:04",
+  "updatedTime": "2022-1-30 13:25:14",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -1503,39 +1503,6 @@
           "isStandard": true
         },
         {
-          "defKey": "component",
-          "defName": "组件",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "''",
-          "hideInGraph": false,
-          "refDict": "",
-          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
-          "id": "A33B5280-2EDA-41E9-ABA2-5DBD6900C86F"
-        },
-        {
-          "defKey": "table_code",
-          "defName": "关联表格代码",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "''",
-          "hideInGraph": false,
-          "refDict": "",
-          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
-          "id": "B0268D6F-643D-4651-880A-BE1C7730FC9C",
-          "isStandard": true
-        },
-        {
           "defKey": "icon",
           "defName": "图标",
           "comment": "",
@@ -1619,23 +1586,6 @@
           "refDict": "",
           "uiHint": "",
           "id": "4D320809-62DB-496F-89F7-C52739E9AD1A"
-        },
-        {
-          "defKey": "delete_time",
-          "defName": "软删除时间",
-          "comment": "",
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": true,
-          "refDict": "",
-          "uiHint": "",
-          "id": "5AC35E75-498A-4F64-A25F-81C6D4C78141"
         }
       ],
       "correlations": [],
@@ -1782,6 +1732,23 @@
           "isStandard": true
         },
         {
+          "defKey": "props",
+          "defName": "属性",
+          "comment": "json格式",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "'{}'",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "66370DB1-AB13-4E04-A9B6-BADD0AFA155E",
+          "isStandard": true
+        },
+        {
           "defKey": "status",
           "defName": "状态",
           "comment": "",
@@ -1830,23 +1797,6 @@
           "refDict": "",
           "uiHint": "",
           "id": "78EBC52B-345E-4DD1-BA99-B5892BD8AE2E"
-        },
-        {
-          "defKey": "delete_time",
-          "defName": "软删除时间",
-          "comment": "",
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": true,
-          "refDict": "",
-          "uiHint": "",
-          "id": "B317EDE7-E732-429B-9400-A8CC15301580"
         }
       ],
       "correlations": [],
@@ -1861,11 +1811,6 @@
               "fieldDefKey": "0193A3DE-EF75-48A7-B45A-92AF678C3E71",
               "ascOrDesc": "A",
               "id": "BC32868A-D295-47E6-A87D-0960ED82849D"
-            },
-            {
-              "fieldDefKey": "B317EDE7-E732-429B-9400-A8CC15301580",
-              "ascOrDesc": "A",
-              "id": "7B6F71BA-8373-497F-BE92-27DFF4696E72"
             }
           ],
           "id": "DC352DC0-DBC6-445C-A6DC-219FA107F833"
@@ -2125,6 +2070,23 @@
           "id": "1E7883B8-11F6-4B12-ABDF-87A6801C6A94"
         },
         {
+          "defKey": "sorter",
+          "defName": "是否使用表头排序",
+          "comment": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": false,
+          "refDict": "",
+          "uiHint": "",
+          "id": "D509C39A-3779-4CA9-B53F-49436C977BE8"
+        },
+        {
           "defKey": "hide_in_search",
           "defName": "在查询表单中不展示",
           "comment": "",
@@ -2219,23 +2181,6 @@
           "id": "49FAFE23-A2C4-4FA5-955F-2539767C75E4"
         },
         {
-          "defKey": "status",
-          "defName": "状态",
-          "comment": "",
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "1",
-          "hideInGraph": false,
-          "refDict": "00474E51-9CB6-4F0F-BAF2-6DBED9E1E4AD",
-          "uiHint": "",
-          "id": "D509C39A-3779-4CA9-B53F-49436C977BE8"
-        },
-        {
           "defKey": "create_time",
           "defName": "创建时间",
           "comment": "",
@@ -2268,23 +2213,6 @@
           "refDict": "",
           "uiHint": "",
           "id": "4F38E66E-C60A-4684-8DB0-0D5995E276A9"
-        },
-        {
-          "defKey": "delete_time",
-          "defName": "软删除时间",
-          "comment": "",
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": true,
-          "refDict": "",
-          "uiHint": "",
-          "id": "F3490B60-2264-4CCE-8632-FC0E2ECA3654"
         }
       ],
       "correlations": [],
@@ -2292,7 +2220,7 @@
         {
           "defKey": "idx_index",
           "defName": null,
-          "unique": false,
+          "unique": true,
           "comment": "",
           "fields": [
             {
@@ -3285,6 +3213,22 @@
           "uiHint": ""
         },
         {
+          "defKey": "tags",
+          "defName": "标签串",
+          "comment": "半角逗号隔开",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "5D04AF36-B0BC-45CC-91B3-E0C31FB3FA72",
+          "id": "7CA24870-708E-4BFA-B05A-1DBF766D7518"
+        },
+        {
           "defKey": "avatar",
           "defName": "头像",
           "comment": "",
@@ -3334,6 +3278,22 @@
           "uiHint": ""
         },
         {
+          "defKey": "props",
+          "defName": "属性",
+          "comment": "json格式",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "'{}'",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "283B242F-21CB-4E48-AB3E-40200D369C9F"
+        },
+        {
           "defKey": "description",
           "defName": "描述",
           "comment": "",
@@ -3364,22 +3324,6 @@
           "refDict": "",
           "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
           "id": "228B748E-F5B7-4015-A70A-4E72D5602896"
-        },
-        {
-          "defKey": "tags",
-          "defName": "标签串",
-          "comment": "半角逗号隔开",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "''",
-          "hideInGraph": false,
-          "refDict": "",
-          "domain": "5D04AF36-B0BC-45CC-91B3-E0C31FB3FA72",
-          "id": "7CA24870-708E-4BFA-B05A-1DBF766D7518"
         },
         {
           "defKey": "sort",

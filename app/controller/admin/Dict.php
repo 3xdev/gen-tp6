@@ -4,15 +4,12 @@ namespace app\controller\admin;
 
 use app\model\Dict as SelfModel;
 
-/**
- * @apiDefine IDICT 字典
- */
 class Dict extends Base
 {
     /**
      * @api {POST} /dicts 创建字典
      * @apiVersion 1.0.0
-     * @apiGroup IDICT
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} key_ 代码
      * @apiParam {string} label 名称
@@ -41,7 +38,7 @@ class Dict extends Base
     /**
      * @api {PUT} /dicts/:name 更新字典
      * @apiVersion 1.0.0
-     * @apiGroup IDICT
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} key_ 代码
      * @apiParam {string} label 名称
@@ -80,7 +77,7 @@ class Dict extends Base
     /**
      * @api {DELETE} /dicts/:names 删除字典
      * @apiVersion 1.0.0
-     * @apiGroup IDICT
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      */
     public function delete($names)
@@ -99,7 +96,7 @@ class Dict extends Base
     /**
      * @api {GET} /dicts 获取字典列表
      * @apiVersion 1.0.0
-     * @apiGroup IDICT
+     * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} key_ 代码
      * @apiParam {string} label 名称
@@ -136,7 +133,7 @@ class Dict extends Base
     /**
      * @api {GET} /dicts/:name 获取字典条目
      * @apiVersion 1.0.0
-     * @apiGroup IDICT
+     * @apiGroup ISYS
      * @apiSuccess {object[]} items 条目
      * @apiSuccess {string} items.value 条目代码
      * @apiSuccess {string} items.label 条目名称
@@ -151,7 +148,7 @@ class Dict extends Base
         return $this->success([
             'items' => $model->items->map(fn($item) => [
                         'label' => $item['label'],
-                        'value' => $item['key_'],
+                        'value' => is_numeric($item['key_']) ? $item['key_'] + 0 : $item['key_'],
                         ])
         ]);
     }
