@@ -26,13 +26,13 @@ class Dict extends Base
     {
         if (is_null($key_)) {
             self::select()->each(function ($model) {
-                Cache::set(self::CACHE_PREFIX . $model->key_, $model->items->visible(['key_', 'label'])->toArray());
+                Cache::set(self::CACHE_PREFIX . $model->key_, $model->items->column('label', 'key_'));
             });
             return true;
         }
 
         $model = self::find($key_);
-        $cache = $model ? $model->items->visible(['key_', 'label'])->toArray() : [];
+        $cache = $model ? $model->items->column('label', 'key_') : [];
         Cache::set(self::CACHE_PREFIX . $key_, $cache);
         return $cache;
     }
@@ -41,7 +41,6 @@ class Dict extends Base
     public static function removeCache($key_)
     {
         return Cache::delete(self::CACHE_PREFIX . $key_);
-        ;
     }
 
     // 条目

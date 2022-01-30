@@ -9,7 +9,6 @@ use Godruoyi\Snowflake\RandomSequenceResolver;
 
 class SnowflakeService extends \think\Service
 {
-
     /**
      * 注册服务
      *
