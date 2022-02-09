@@ -33,6 +33,38 @@ class Col extends Base
 
         return $schema;
     }
+    public function getFormilySchemaAttr($value, $data)
+    {
+        $mapType = [
+            'dateRange' => 'string[]',
+            'dateTimeRange' => 'string[]',
+            'timeRange' => 'string[]',
+        ];
+        $mapComponent = [
+            'select' => 'Select',
+            'textarea' => 'Input.TextArea',
+            'password' => 'Password',
+            'money' => 'NumberPicker',
+            'dateRange' => 'DatePicker.RangePicker',
+            'dateTimeRange' => 'DatePicker.RangePicker',
+            'timeRange' => 'TimePicker.RangePicker',
+        ];
+
+        $schema = [
+            'name' => $data['data_index'],
+            'type' => $mapType[$data['value_type']] ?? 'string',
+            'title' => $data['title'],
+            //'required' => true,
+            'x-decorator' => 'FormItem',
+            'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
+        ];
+        !empty($data['value_enum_dict_key']) && $schema['enum'] = array_map(
+            fn($key, $value) => ['value' => $key, 'label' => $value],
+            array_keys(system_dict($data['value_enum_dict_key'])),
+            array_values(system_dict($data['value_enum_dict_key']))
+        );
+        return $schema;
+    }
 
     public function btable()
     {

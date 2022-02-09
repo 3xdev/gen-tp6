@@ -40,6 +40,7 @@ class Table extends Base
     public function update($name)
     {
         $data = $this->request->post(['code', 'name', 'props', 'status']);
+        $options = $this->request->post('options/a');
         $cols = $this->request->post('cols/a');
         foreach ($cols as $index => &$col) {
             $col['sort'] = $index;
@@ -56,6 +57,7 @@ class Table extends Base
             $this->validate($data, 'Table');
         }
 
+        $data['options'] = $options;
         $model->save($data);
         $model->cols()->delete();
         $model->cols()->saveAll($cols);
@@ -139,7 +141,7 @@ class Table extends Base
         }
 
         return $this->success($table->visible([
-            'code', 'name', 'props', 'status', 'create_time',
+            'code', 'name', 'props', 'options', 'status', 'create_time',
             'cols' => ['data_index', 'value_type', 'value_enum_dict_key', 'title', 'tip',
                         'ellipsis', 'copyable', 'filters', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions']
@@ -176,12 +178,13 @@ class Table extends Base
     {
         $properties = [];
 
-        switch (strtolower($name)) {
+        switch ($name) {
             case 'setting':
                 $properties = $this->buildSetting();
                 break;
             default:
-                $properties = $this->buildCRUD();
+                $table = SelfModel::find($name);
+                $properties = $table ? $table->formily_schema : [];
                 break;
         }
 
@@ -223,11 +226,5 @@ class Table extends Base
                 'properties' => $json
             ]
         ];
-    }
-
-    // 构建CURD
-    private function buildCRUD()
-    {
-        return [];
     }
 }
