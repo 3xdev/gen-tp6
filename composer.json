@@ -23,7 +23,8 @@
         "thans/tp-jwt-auth": "^1.1",
         "jaguarjack/think-filesystem-cloud": "^1.0",
         "godruoyi/php-snowflake": "^1.1",
-        "bluem/tree": "^3.2"
+        "bluem/tree": "^3.2",
+        "topthink/think-view": "^1.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
