@@ -15,11 +15,11 @@ class Table extends Base
      * @apiHeader {string} Authorization Token
      * @apiParam {string} code 代码
      * @apiParam {string} name 名称
-     * @apiParam {string} props 属性
+     * @apiParam {string} props_string 属性字符串
      */
     public function create()
     {
-        $data = $this->request->post(['name', 'code', 'props']);
+        $data = $this->request->post(['name', 'code', 'props_string']);
         $this->validate($data, 'Table');
 
         SelfModel::create($data);
@@ -34,12 +34,12 @@ class Table extends Base
      * @apiHeader {string} Authorization Token
      * @apiParam {string} code 代码
      * @apiParam {string} name 名称
-     * @apiParam {string} props 属性
+     * @apiParam {string} props_string 属性字符串
      * @apiParam {number} status 状态(0=禁用,1=正常)
      */
     public function update($name)
     {
-        $data = $this->request->post(['code', 'name', 'props', 'status']);
+        $data = $this->request->post(['code', 'name', 'props_string', 'status']);
         $options = $this->request->post('options/a');
         $cols = $this->request->post('cols/a');
         foreach ($cols as $index => &$col) {
@@ -155,7 +155,7 @@ class Table extends Base
      * @apiHeader {string} Authorization Token
      * @apiSuccess {object} columns 列定义
      */
-    public function schema($name)
+    public function protable($name)
     {
         $table = SelfModel::find($name);
         if (!$table) {
@@ -167,7 +167,7 @@ class Table extends Base
 
 
     /**
-     * @api {GET} /schemas/:name 获取Formily的schema描述
+     * @api {GET} /schema/:name 获取Formily的schema描述
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token

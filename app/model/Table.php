@@ -8,7 +8,7 @@ class Table extends Base
     protected $pk = 'code';
 
     // 设置json类型字段
-    protected $json = ['options'];
+    protected $json = ['props', 'options'];
     // 设置json数据返回数组
     protected $jsonAssoc = true;
 
@@ -21,9 +21,14 @@ class Table extends Base
         $value && $query->where('code', 'like', '%' . $value . '%');
     }
 
+    public function setPropsStringAttr($value)
+    {
+        is_object(json_decode($value)) && $this->set('props', json_decode($value, true));
+    }
+
     public function getProSchemaAttr($value, $data)
     {
-        $schema = json_decode($data['props'], true);
+        $schema = $data['props'];
         $schema['options'] = $data['options'];
         $schema['columns'] = $this->cols->column('pro_schema');
 

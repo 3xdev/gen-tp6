@@ -24,7 +24,7 @@ Route::group('api/admin', function () {
 // 注册管理员验证中间件的分组
 Route::group('api/admin', function () {
     // 获取高级表格(ProTable)的schema描述
-    Route::get('schema/protable/:name', 'admin.Table/schema');
+    Route::get('schema/protable/:name', 'admin.Table/protable');
     // 获取表单(Formily)的schema描述
     Route::get('schema/formily/:name', 'admin.Table/formily');
 

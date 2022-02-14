@@ -14,10 +14,11 @@ class Md2c extends Command
     public const MODEL_PATH = './model.chnr.json';
     // 模型
     protected $models = [];
-    // 实体映射
-    protected $entity_map = [];
     // 字典映射
     protected $dict_map = [];
+
+    // 忽略实体
+    public const IGNORE_ENTITY = ['dict', 'dict_item', 'admin', 'config', 'menu', 'table', 'col'];
 
     protected function configure()
     {
@@ -32,10 +33,9 @@ class Md2c extends Command
             $output->writeln('<error>' . self::MODEL_PATH . ' is not exist</error>');
         } else {
             $this->models = json_decode(file_get_contents(self::MODEL_PATH), true);
-            $this->entity_map = array_column($this->models['entities'], 'id');
             $this->dict_map = array_column($this->models['dicts'], 'id');
 
-            $this->models && isset($this->models['entities']) && array_walk($this->models['entities'], [$this, 'entity2table']);
+            array_walk($this->models['entities'], [$this, 'entity2table']);
 
             $output->writeln('<info>Model design to coding Succeed</info>');
         }
@@ -44,33 +44,49 @@ class Md2c extends Command
     // 实体转表格
     protected function entity2table($entity)
     {
-        $table = Table::find(string_remove_prefix($entity['defKey'], env('database.prefix', '')));
-        if ($table) {
+        $code = strtolower($entity['defKey']);
+        $table = Table::find($code);
+        if ($table || in_array($code, self::IGNORE_ENTITY)) {
             return;
         }
 
         Table::create([
-            'code'  => string_remove_prefix($entity['defKey'], env('database.prefix', '')),
+            'code'  => $code,
             'name'  => $entity['defName'],
+            'props' => ['rowKey' => array_search(true, array_column($entity['fields'], 'primaryKey', 'defKey'))],
+            'options' => [
+                'columns' => [
+                    ['type' => 'view', 'key' => 'view', 'title' => '查看'],
+                    ['type' => 'edit', 'key' => 'edit', 'title' => '编辑'],
+                    ['type' => 'delete', 'key' => 'delete', 'title' => '删除', 'confirm' => true],
+                ],
+                'toolbar' => [
+                    ['type' => 'add', 'key' => 'add', 'title' => '新建'],
+                    ['type' => 'export', 'key' => 'export', 'title' => '导出'],
+                ],
+                'batch' => [
+                    ['type' => 'bdelete', 'key' => 'bdelete', 'title' => '批量删除'],
+                ]
+            ],
         ]);
-        isset($entity['fields']) && array_walk($entity['fields'], [$this, 'field2col'], $entity);
+        array_walk($entity['fields'], [$this, 'field2col'], $entity);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');
     }
 
     // 属性转列
-    protected function field2col($field, $key, $entity)
+    protected function field2col($field, $index, $entity)
     {
         if (in_array($field['defKey'], ['update_time', 'delete_time', 'revision'])) {
             return;
         }
 
         $data = [
-            'table_code'    => string_remove_prefix($entity['defKey'], env('database.prefix', '')),
-            'data_index'    => $field['defKey'],
+            'table_code'    => strtolower($entity['defKey']),
+            'data_index'    => strtolower($field['defKey']),
             'title'         => $field['defName'],
             'tip'           => $field['comment'],
-            'sort'          => $key
+            'sort'          => $index
         ];
         if (!empty($field['refDict'])) {
             $dict = map_array_value($this->dict_map, $this->models['dicts'], $field['refDict']);

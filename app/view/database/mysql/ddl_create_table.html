@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS {$prefix}{$entity.defKey|strtolower} (
+  {foreach $entity.fields as $key=>$field }
+    {$field.defKey|strtolower} {$field.type}{notempty name="field.len"}({$field.len}{notempty name="field.scale"},{$field.scale}{/notempty}){/notempty} {$field.notNull ? "NOT NULL" : ""} {$field.autoIncrement ? "AUTO_INCREMENT" : ""} {neq name="field.defaultValue" value=""}DEFAULT {$field.defaultValue}{/neq} COMMENT "{$field.defName} {$field.comment}" {$key < count($entity.fields)-1 ? "," : (empty($entity.pks) ? "" : ",")}
+  {/foreach}
+  {notempty name="entity.pks"}
+    PRIMARY KEY ({$entity.pks})
+  {/notempty}
+) COMMENT = '{$entity.defName} {$entity.comment}'
