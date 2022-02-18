@@ -17,7 +17,7 @@ class Col extends Base
     {
         $schema = [
             'title' => $data['title'],
-            'dataIndex' => $data['data_index'],
+            'dataIndex' => strpos($data['data_index'], '.') ? explode('.', $data['data_index']) : $data['data_index'],
         ];
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];
@@ -31,6 +31,38 @@ class Col extends Base
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
 
+        return $schema;
+    }
+    public function getFormilySchemaAttr($value, $data)
+    {
+        $mapType = [
+            'dateRange' => 'string[]',
+            'dateTimeRange' => 'string[]',
+            'timeRange' => 'string[]',
+        ];
+        $mapComponent = [
+            'select' => 'Select',
+            'textarea' => 'Input.TextArea',
+            'password' => 'Password',
+            'money' => 'NumberPicker',
+            'dateRange' => 'DatePicker.RangePicker',
+            'dateTimeRange' => 'DatePicker.RangePicker',
+            'timeRange' => 'TimePicker.RangePicker',
+        ];
+
+        $schema = [
+            'name' => $data['data_index'],
+            'type' => $mapType[$data['value_type']] ?? 'string',
+            'title' => $data['title'],
+            //'required' => true,
+            'x-decorator' => 'FormItem',
+            'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
+        ];
+        !empty($data['value_enum_dict_key']) && $schema['enum'] = array_map(
+            fn($key, $value) => ['value' => $key, 'label' => $value],
+            array_keys(system_dict($data['value_enum_dict_key'])),
+            array_values(system_dict($data['value_enum_dict_key']))
+        );
         return $schema;
     }
 

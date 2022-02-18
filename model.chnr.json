@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "3.5.7",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-1-30 13:25:14",
+  "updatedTime": "2022-2-11 18:35:03",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -228,7 +228,7 @@
         "type": "dbDDL",
         "applyFor": "dictSQLTemplate",
         "isDefault": true,
-        "content": "/* 插入字典总表[{{=it.dict.defKey}}-{{=it.dict.defName}}] */\nINSERT INTO STDP_DICT(KEY_,LABEL,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=it.dict.defName}}','{{=it.dict.intro}}',1);\n/* 插入字典明细表 */\n{{~it.dict.items:item:index}}\nINSERT INTO STDP_DICT_ITEM(DICT_KEY,KEY_,LABEL,SORT_,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=item.defKey}}','{{=item.defName}}','{{=item.sort}}','{{=item.intro}}',1);\n{{~}}"
+        "content": "/* 插入字典总表[{{=it.dict.defKey}}-{{=it.dict.defName}}] */\nINSERT INTO DICT(KEY_,LABEL,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=it.dict.defName}}','{{=it.dict.intro}}',1);\n/* 插入字典明细表 */\n{{~it.dict.items:item:index}}\nINSERT INTO DICT_ITEM(DICT_KEY,KEY_,LABEL,SORT_,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=item.defKey}}','{{=item.defName}}','{{=item.sort}}','{{=item.intro}}',1);\n{{~}}"
       },
       {
         "type": "dbDDL",
@@ -304,7 +304,7 @@
   "entities": [
     {
       "id": "085CDC87-6221-4BD7-9B90-9676CAB3FFA4",
-      "defKey": "stdp_dict",
+      "defKey": "dict",
       "defName": "字典",
       "comment": "",
       "properties": {},
@@ -461,7 +461,7 @@
     },
     {
       "id": "69C9CC26-3CCF-4464-A249-D3199F7557E0",
-      "defKey": "stdp_dict_item",
+      "defKey": "dict_item",
       "defName": "字典条目",
       "comment": "",
       "properties": {},
@@ -651,7 +651,7 @@
     },
     {
       "id": "3081562F-229A-4053-BC04-E25D1C7E89DE",
-      "defKey": "stdp_admin",
+      "defKey": "admin",
       "defName": "管理员",
       "comment": "",
       "properties": {},
@@ -1019,7 +1019,7 @@
     },
     {
       "id": "06D0D668-EF6B-49AF-9321-6BC1A0E160F1",
-      "defKey": "stdp_config",
+      "defKey": "config",
       "defName": "配置",
       "comment": "",
       "properties": {},
@@ -1349,7 +1349,7 @@
     },
     {
       "id": "AC20A311-1A9A-470B-85FE-003C10F6F2CD",
-      "defKey": "stdp_menu",
+      "defKey": "menu",
       "defName": "管理菜单",
       "comment": "",
       "properties": {},
@@ -1613,7 +1613,7 @@
     },
     {
       "id": "C9FE059B-A29A-4730-B216-50E6A5EC9976",
-      "defKey": "stdp_table",
+      "defKey": "table",
       "defName": "表格",
       "comment": "",
       "properties": {},
@@ -1749,6 +1749,22 @@
           "isStandard": true
         },
         {
+          "defKey": "options",
+          "defName": "操作",
+          "comment": "json格式",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "'{}'",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "72C2C549-3C59-4155-8486-C7200418972D"
+        },
+        {
           "defKey": "status",
           "defName": "状态",
           "comment": "",
@@ -1800,26 +1816,11 @@
         }
       ],
       "correlations": [],
-      "indexes": [
-        {
-          "defKey": "uni_code",
-          "defName": null,
-          "unique": true,
-          "comment": "",
-          "fields": [
-            {
-              "fieldDefKey": "0193A3DE-EF75-48A7-B45A-92AF678C3E71",
-              "ascOrDesc": "A",
-              "id": "BC32868A-D295-47E6-A87D-0960ED82849D"
-            }
-          ],
-          "id": "DC352DC0-DBC6-445C-A6DC-219FA107F833"
-        }
-      ]
+      "indexes": []
     },
     {
       "id": "A191487F-FAED-4572-AFCE-5AD76A8E6C40",
-      "defKey": "stdp_col",
+      "defKey": "col",
       "defName": "列",
       "comment": "",
       "properties": {},
@@ -2885,6 +2886,105 @@
           "id": "B809CEE5-4142-49D3-8B19-349FB57AA8F9"
         }
       ]
+    },
+    {
+      "defKey": "table_columns_option_type",
+      "defName": "表格列操作类型",
+      "sort": "",
+      "intro": "",
+      "id": "8938CD09-9EEB-48E7-A5EA-297BA5BB83E7",
+      "items": [
+        {
+          "defKey": "view",
+          "defName": "查看",
+          "sort": "0",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "C5270EE3-21FD-4C7A-BCEB-DC82CC893800"
+        },
+        {
+          "defKey": "edit",
+          "defName": "编辑",
+          "sort": "1",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "2E94269E-C34A-44F4-AA76-A4F1BD4AF38F"
+        },
+        {
+          "defKey": "delete",
+          "defName": "删除",
+          "sort": "2",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "7D6475BC-022D-4EC9-A11F-8B4E0287E0F4"
+        }
+      ]
+    },
+    {
+      "defKey": "table_toolbar_option_type",
+      "defName": "表格工具栏操作类型",
+      "sort": "",
+      "intro": "",
+      "id": "C0983AF2-23FA-4B87-A9C3-7678CEADBCA4",
+      "items": [
+        {
+          "defKey": "add",
+          "defName": "新建",
+          "sort": "0",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "D55F8B31-1B24-421D-A4BB-04A048CCE81C"
+        },
+        {
+          "defKey": "export",
+          "defName": "导出",
+          "sort": "1",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "FA68BC21-C87B-4D63-9096-6FA44377CEF7"
+        }
+      ]
+    },
+    {
+      "defKey": "table_batch_option_type",
+      "defName": "表格批量操作类型",
+      "sort": "",
+      "intro": "",
+      "id": "0FE8BFC2-B3EA-48CD-87B1-5E87202D26F1",
+      "items": [
+        {
+          "defKey": "bdelete",
+          "defName": "批量删除",
+          "sort": "0",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "334466C5-13EA-41E2-B295-32CCCA0F462B"
+        }
+      ]
     }
   ],
   "viewGroups": [],
@@ -3030,7 +3130,7 @@
       "defKey": "Int",
       "defName": "整数",
       "applyFor": "80E5AC58-D34B-412E-8DA1-F6D4BD70CC61",
-      "len": "",
+      "len": 11,
       "scale": "",
       "uiHint": "",
       "id": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47"

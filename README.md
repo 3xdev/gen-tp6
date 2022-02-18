@@ -30,11 +30,11 @@ cp .example.env .env
 vi .env
 ```
 
-## 从chiner模型导出DDL及数据字典SQL初始化数据库
-
 ## 运行项目初始化指令
 
+* 初始化MySQL数据库(从chiner模型)
 * 初始化管理员，用户名admin，密码123456
+* 初始化管理菜单
 
 ```bash
 php think init

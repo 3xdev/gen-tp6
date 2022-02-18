@@ -1,7 +1,7 @@
 @baseUrl = http://127.0.0.1:800/api/admin
 @token = {{login.response.body.token}}
 
-# 管理员 - 管理员登陆
+# 系统 - 管理员登陆
 # @name login
 POST {{baseUrl}}/token
 content-type: application/json
@@ -14,8 +14,13 @@ content-type: application/json
 
 
 ###
-#管理员 - 管理员列表
-GET {{baseUrl}}/admins
+#CRUD - CRUD获取列表
+GET {{baseUrl}}/crud/admin
+Authorization: Bearer {{token}}
+
+###
+#CRUD - CRUD获取列表
+GET {{baseUrl}}/crud/admin/1
 Authorization: Bearer {{token}}
 
 ###
@@ -29,11 +34,15 @@ GET {{baseUrl}}/schema/formily/setting
 Authorization: Bearer {{token}}
 
 ###
-#字典 - 获取字典列表
+#系统 - 获取管理员列表
+GET {{baseUrl}}/admin
+Authorization: Bearer {{token}}
+
+###
+#系统 - 获取字典列表
 GET {{baseUrl}}/dicts
 Authorization: Bearer {{token}}
 
-
 ###
-#字典 - 获取字典条目
+#系统 - 获取字典条目
 GET {{baseUrl}}/dicts/field_component

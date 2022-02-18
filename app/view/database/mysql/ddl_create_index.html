@@ -1,0 +1,1 @@
+CREATE {$index.unique ? "UNIQUE" : ""} INDEX {$index.defKey} ON {$prefix}{$entity.defKey}({$index.fks})
