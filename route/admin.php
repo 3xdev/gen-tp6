@@ -8,10 +8,10 @@ use app\middleware\AdminAuth;
 
 // 设置全局变量规则
 Route::pattern([
-    'id'    => '\d+',
-    'ids'   => '[\d,]+',
+    'id'    => '\w+',
+    'ids'   => '[\w,]+',
     'name'  => '\w+',
-    'names' => '[\w,]+'
+    'names' => '[\w,]+',
 ]);
 // 不注册中间件的分组
 Route::group('api/admin', function () {
@@ -27,6 +27,17 @@ Route::group('api/admin', function () {
     Route::get('schema/protable/:name', 'admin.Table/protable');
     // 获取表单(Formily)的schema描述
     Route::get('schema/formily/:name', 'admin.Table/formily');
+
+    // CRUD获取列表
+    Route::get('crud/:name', 'admin.:name/index');
+    // CRUD获取
+    Route::get('crud/:name/:id', 'admin.:name/read');
+    // CRUD更新
+    Route::put('crud/:name/:id', 'admin.:name/update');
+    // CRUD创建
+    Route::post('crud/:name', 'admin.:name/create');
+    // CRUD删除
+    Route::delete('crud/:name/:ids', 'admin.:name/delete');
 
     // 上传图片
     Route::post('upload/image/:name', 'admin.Upload/image');

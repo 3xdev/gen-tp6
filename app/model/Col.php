@@ -17,7 +17,7 @@ class Col extends Base
     {
         $schema = [
             'title' => $data['title'],
-            'dataIndex' => $data['data_index'],
+            'dataIndex' => strpos($data['data_index'], '.') ? explode('.', $data['data_index']) : $data['data_index'],
         ];
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];

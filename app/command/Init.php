@@ -142,7 +142,6 @@ class Init extends Command
             'intro' => $dict['intro'],
         ]);
         empty($dict['items']) || $model->items()->saveAll(array_map(fn($item) => [
-            'dict_key' => $dict['defKey'],
             'key_' => $item['defKey'],
             'label' => $item['defName'],
             'sort_' => $item['sort'],

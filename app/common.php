@@ -2,6 +2,31 @@
 
 // 应用公共文件
 
+if (!function_exists('name_class')) {
+    /**
+     * 类命名(大驼峰法)
+     * @param  string   $string     字符串
+     * @return string
+     */
+    function name_class($string)
+    {
+        return \think\helper\Str::studly(strtolower($string));
+    }
+}
+
+if (!function_exists('name_relation')) {
+    /**
+     * 关联命名(驼峰法)
+     * @param  string   $string     字符串
+     * @param  bool     $many       多关联
+     * @return string
+     */
+    function name_relation($string, $many = false)
+    {
+        return \think\helper\Str::camel(strtolower($string)) . ($many ? 's' : '');
+    }
+}
+
 if (!function_exists('string_remove_prefix')) {
     /**
      * 字符串移除前缀
