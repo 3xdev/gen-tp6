@@ -27,12 +27,35 @@ if (!function_exists('name_relation')) {
     }
 }
 
+if (!function_exists('string_dot_array')) {
+    /**
+     * 层级字符串转层级数组
+     * @param  string   $string     层级字符串
+     * @param  string   $dot        分层字符串
+     * @return array
+     */
+    function string_dot_array($string, $dot = '.')
+    {
+        $exploded = explode($dot, $string);
+        $count = count($exploded);
+        if ($count == 1) {
+            return [$string];
+        }
+
+        $result = [$exploded[$count - 1]];
+        for ($i = $count - 2; $i >= 0; $i--) {
+            $result = [$exploded[$i] => $result];
+        }
+        return $result;
+    }
+}
+
 if (!function_exists('string_remove_prefix')) {
     /**
      * 字符串移除前缀
      * @param  string   $string     字符串
      * @param  string   $prefix     前缀
-     * @return array
+     * @return string
      */
     function string_remove_prefix($string, $prefix)
     {

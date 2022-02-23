@@ -13,6 +13,11 @@ class Col extends Base
         $value && $query->where('data_index', 'like', '%' . $value . '%');
     }
 
+    // 关联模型定义名
+    public function getRelationNameAttr($value, $data)
+    {
+        return strrpos($data['data_index'], '.') ? substr($data['data_index'], 0, strrpos($data['data_index'], '.')) : '';
+    }
     public function getProSchemaAttr($value, $data)
     {
         $schema = [
