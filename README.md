@@ -32,7 +32,7 @@ vi .env
 
 ## 运行项目初始化指令
 
-* 初始化MySQL数据库(从chiner模型)
+* 初始化数据库(从chiner模型)
 * 初始化管理员，用户名admin，密码123456
 * 初始化管理菜单
 
@@ -46,6 +46,48 @@ php think init
 # 指定800端口运行
 php think run -p 800
 ```
+
+## 模型设计自动生成源码
+
+* 根椐模型数据表生成数据库表(从chiner模型)
+* 根据模型数据表产生系统表格及列配置数据
+* 根据模型数据表及关系图生成控制器、验证器、模型源码
+
+```bash
+php think md2c
+```
+
+
+## 约定路由
+
+* 规则
+
+| 规范 | 请求 | 路由 | 控制器/操作 |
+| ---- | ---- | ---- | ---- |
+| CRUD | GET  | /api/admin/crud/:controller | admin.:controller/index |
+| CRUD | POST | /api/admin/crud/:controller | admin.:controller/create |
+| CRUD | GET  | /api/admin/crud/:controller/:id | admin.:controller/read |
+| CRUD | PUT  | /api/admin/crud/:controller/:id | admin.:controller/update |
+| CRUD | DELETE | /api/admin/crud/:controller/:ids | admin.:controller/delete |
+| REST | GET  | /api/admin/rest/:controller/:action/:ids | admin.:controller/get:action |
+| REST | POST  | /api/admin/rest/:controller/:action/:ids | admin.:controller/post:action |
+| REST | PUT  | /api/admin/rest/:controller/:action/:ids | admin.:controller/put:action |
+| REST | DELETE | /api/admin/rest/:controller/:action/:ids | admin.:controller/delete:action |
+
+* 示例
+
+| 规范 | 请求 | 路由 | 控制器/操作 |
+| ---- | ---- | ---- | ---- |
+| CRUD | GET  | /api/admin/crud/admin_log | admin.AdminLog/index |
+| CRUD | POST | /api/admin/crud/admin_log | admin.AdminLog/create |
+| CRUD | GET  | /api/admin/crud/admin_log/1 | admin.AdminLog/read |
+| CRUD | PUT  | /api/admin/crud/admin_log/1 | admin.AdminLog/update |
+| CRUD | DELETE | /api/admin/crud/admin_log/1,2 | admin.AdminLog/delete |
+| REST | GET  | /api/admin/rest/admin_log/act/1 | admin.AdminLog/getAct |
+| REST | POST  | /api/admin/rest/admin_log/act/1 | admin.AdminLog/postAct |
+| REST | PUT  | /api/admin/rest/admin_log/act/1 | admin.AdminLog/putAct |
+| REST | PUT  | /api/admin/rest/admin_log/act/1,2 | admin.AdminLog/putAct |
+| REST | DELETE | /api/admin/rest/admin_log/act/1,2 | admin.AdminLog/deleteAct |
 
 ## 源码规范检查
 

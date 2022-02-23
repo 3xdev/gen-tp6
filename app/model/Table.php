@@ -26,6 +26,27 @@ class Table extends Base
         is_object(json_decode($value)) && $this->set('props', json_decode($value, true));
     }
 
+    // CRUD 列表展示字段
+    public function getCrudIndexColsAttr($value, $data)
+    {
+        $result = [];
+        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        foreach ($cols as $col) {
+            $result = array_merge_recursive($result, $col);
+        }
+        return $result;
+    }
+    // CRUD 读取展示字段
+    public function getCrudReadColsAttr($value, $data)
+    {
+        $result = [];
+        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_form) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        foreach ($cols as $col) {
+            $result = array_merge_recursive($result, $col);
+        }
+        return $result;
+    }
+
     public function getProSchemaAttr($value, $data)
     {
         $schema = $data['props'];

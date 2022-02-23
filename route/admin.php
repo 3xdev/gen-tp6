@@ -28,16 +28,25 @@ Route::group('api/admin', function () {
     // 获取表单(Formily)的schema描述
     Route::get('schema/formily/:name', 'admin.Table/formily');
 
-    // CRUD获取列表
-    Route::get('crud/:name', 'admin.:name/index');
-    // CRUD获取
-    Route::get('crud/:name/:id', 'admin.:name/read');
-    // CRUD更新
-    Route::put('crud/:name/:id', 'admin.:name/update');
-    // CRUD创建
-    Route::post('crud/:name', 'admin.:name/create');
-    // CRUD删除
-    Route::delete('crud/:name/:ids', 'admin.:name/delete');
+    // CRUD 获取列表
+    Route::get('crud/:controller', 'admin.:controller/index');
+    // CRUD 创建
+    Route::post('crud/:controller', 'admin.:controller/create');
+    // CRUD 获取
+    Route::get('crud/:controller/:id', 'admin.:controller/read');
+    // CRUD 更新
+    Route::put('crud/:controller/:id', 'admin.:controller/update');
+    // CRUD 删除
+    Route::delete('crud/:controller/:ids', 'admin.:controller/delete');
+
+    // REST GET操作
+    Route::get('rest/:controller/:action/:ids', 'admin.:controller/get:action');
+    // REST POST操作
+    Route::post('rest/:controller/:action/:ids', 'admin.:controller/post:action');
+    // REST PUT操作
+    Route::put('rest/:controller/:action/:ids', 'admin.:controller/put:action');
+    // REST DELETE操作
+    Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
 
     // 上传图片
     Route::post('upload/image/:name', 'admin.Upload/image');

@@ -14,13 +14,30 @@ content-type: application/json
 
 
 ###
-#CRUD - CRUD获取列表
-GET {{baseUrl}}/crud/admin
+#CRUD - CRUD列表
+GET {{baseUrl}}/crud/admin_log
 Authorization: Bearer {{token}}
 
 ###
-#CRUD - CRUD获取列表
-GET {{baseUrl}}/crud/admin/1
+#CRUD - CRUD读取
+GET {{baseUrl}}/crud/admin_log/1
+Authorization: Bearer {{token}}
+
+
+###
+#CRUD - CRUD更新
+PUT {{baseUrl}}/crud/admin_log/1
+Authorization: Bearer {{token}}
+
+
+###
+#REST - GET操作
+GET {{baseUrl}}/rest/admin_log/act/1
+Authorization: Bearer {{token}}
+
+###
+#REST - POST操作
+POST {{baseUrl}}/rest/admin_log/act/1
 Authorization: Bearer {{token}}
 
 ###
