@@ -21,6 +21,8 @@ class Md2c extends Command
     protected $entity_map = [];
     // 字典映射
     protected $dict_map = [];
+    // UI建议映射
+    protected $uihint_map = [];
 
     // 忽略实体
     public const IGNORE_ENTITY = ['dict', 'dict_item', 'admin', 'config', 'menu', 'table', 'col'];
@@ -40,6 +42,7 @@ class Md2c extends Command
             $this->models = json_decode(file_get_contents(self::MODEL_PATH), true);
             $this->entity_map = array_column($this->models['entities'], 'id');
             $this->dict_map = array_column($this->models['dicts'], 'id');
+            $this->uihint_map = array_column($this->models['profile']['uiHint'], 'id');
 
             array_walk($this->models['entities'], [$this, 'entity2class']);
             array_walk($this->models['entities'], [$this, 'entity2table']);
@@ -93,7 +96,7 @@ class Md2c extends Command
         }
         $path = $this->app->getBasePath() . 'model' . DIRECTORY_SEPARATOR . name_class($entity['defKey']) . '.php';
         if (file_exists($path)) {
-            $this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
+            //$this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
         } else {
             file_put_contents($path, (new PsrPrinter())->printFile($file));
             $this->output->writeln('<info>' . $path . ' Created!</info>');
@@ -109,7 +112,7 @@ class Md2c extends Command
         $class->addProperty('rule', [])->setProtected()->addComment('验证规则');
         $path = $this->app->getBasePath() . 'validate' . DIRECTORY_SEPARATOR . name_class($entity['defKey']) . '.php';
         if (file_exists($path)) {
-            $this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
+            //$this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
         } else {
             file_put_contents($path, (new PsrPrinter())->printFile($file));
             $this->output->writeln('<info>' . $path . ' Created!</info>');
@@ -124,7 +127,7 @@ class Md2c extends Command
         $class->addMethod('initialize')->setProtected()->setBody('$this->model = new \app\model\\' . name_class($entity['defKey']) . '();');
         $path = $this->app->getBasePath() . 'controller' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . name_class($entity['defKey']) . '.php';
         if (file_exists($path)) {
-            $this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
+            //$this->output->writeln('<warning>' . $path . ' Already Exists!</warning>');
         } else {
             file_put_contents($path, (new PsrPrinter())->printFile($file));
             $this->output->writeln('<info>' . $path . ' Created!</info>');
@@ -167,20 +170,33 @@ class Md2c extends Command
     // 属性转列
     protected function field2col($field, $index, $entity)
     {
-        if (in_array(strtolower($field['defKey']), ['update_time', 'delete_time', 'revision'])) {
+        if (in_array(strtolower($field['defKey']), ['delete_time', 'revision'])) {
             return;
         }
 
         $data = [
             'table_code'    => strtolower($entity['defKey']),
             'data_index'    => strtolower($field['defKey']),
+            'value_type'    => 'text',
             'title'         => $field['defName'],
             'tip'           => $field['comment'],
+            'hide_in_table' => $field['hideInGraph'] ? 1 : 0,
+            'hide_in_form'  => ($field['hideInGraph'] || $field['primaryKey']) ? 1 : 0,
             'sort'          => $index
         ];
         if (!empty($field['refDict'])) {
             $dict = map_array_value($this->dict_map, $this->models['dicts'], $field['refDict']);
-            $data['value_enum_dict_key'] = $dict ? $dict['defKey'] : '';
+            if ($dict) {
+                $data['value_enum_dict_key'] = $dict['defKey'];
+                $data['value_type'] = 'select';
+                $data['filters'] = 1;
+            }
+        }
+        if (!empty($field['uiHint'])) {
+            $uihint = map_array_value($this->uihint_map, $this->models['profile']['uiHint'], $field['uiHint']);
+            if ($uihint) {
+                $data['value_type'] = $uihint['defKey'];
+            }
         }
 
         Col::create($data);

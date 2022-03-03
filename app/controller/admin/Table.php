@@ -79,7 +79,8 @@ class Table extends Base
         }
 
         foreach ($models as $model) {
-            $model->together(['cols'])->delete();
+            $model->cols()->delete();
+            $model->delete();
         }
         return $this->success();
     }

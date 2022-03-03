@@ -65,7 +65,7 @@ class Init extends Command
             $admin->save();
             $output->writeln('<info>Admin(id=1) Created!</info>');
         } else {
-            $output->writeln('<warning>Admin(id=1) Already Exists!</warning>');
+            //$output->writeln('<warning>Admin(id=1) Already Exists!</warning>');
         }
 
         // 初始化管理菜单
@@ -82,7 +82,7 @@ class Init extends Command
             ]);
             $output->writeln('<info>System Menu Created!</info>');
         } else {
-            $output->writeln('<warning>System Menu Already Exists!</warning>');
+            //$output->writeln('<warning>System Menu Already Exists!</warning>');
         }
 
         $output->writeln('<info>Init System Succeed!</info>');
@@ -99,7 +99,7 @@ class Init extends Command
         try {
             Db::execute(View::fetch('database/' . config('database.default') . '/ddl_create_table'));
         } catch (\Exception $e) {
-            $this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
+            //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
         }
 
         foreach ($entity['indexes'] as $index) {
@@ -113,7 +113,7 @@ class Init extends Command
             try {
                 Db::execute(View::fetch('database/' . config('database.default') . '/ddl_create_index'));
             } catch (\Exception $e) {
-                $this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
+                //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
             }
         }
 
