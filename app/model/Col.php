@@ -88,6 +88,7 @@ class Col extends Base
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
         ];
         !empty($data['required']) && $schema['required'] = true;
+        $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
         !empty($data['value_enum_dict_key']) && $schema['enum'] = array_map(
             fn($key, $value) => ['value' => $key, 'label' => $value],
             array_keys(system_dict($data['value_enum_dict_key'])),

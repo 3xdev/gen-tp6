@@ -180,6 +180,7 @@ class Md2c extends Command
             'value_type'    => 'text',
             'title'         => $field['defName'],
             'tip'           => $field['comment'],
+            'default_value' => trim($field['defaultValue'], "'"),
             'hide_in_table' => $field['hideInGraph'] ? 1 : 0,
             'hide_in_form'  => ($field['hideInGraph'] || $field['primaryKey']) ? 1 : 0,
             'sort'          => $index
