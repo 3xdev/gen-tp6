@@ -15,29 +15,29 @@ content-type: application/json
 
 ###
 #CRUD - CRUD列表
-GET {{baseUrl}}/crud/admin_log
+GET {{baseUrl}}/crud/product_brand
 Authorization: Bearer {{token}}
 
 ###
 #CRUD - CRUD读取
-GET {{baseUrl}}/crud/admin_log/1
+GET {{baseUrl}}/crud/product_brand/1
 Authorization: Bearer {{token}}
 
 
 ###
 #CRUD - CRUD更新
-PUT {{baseUrl}}/crud/admin_log/1
+PUT {{baseUrl}}/crud/product_brand/1
 Authorization: Bearer {{token}}
 
 
 ###
 #REST - GET操作
-GET {{baseUrl}}/rest/admin_log/act/1
+GET {{baseUrl}}/rest/product_brand/act/1
 Authorization: Bearer {{token}}
 
 ###
 #REST - POST操作
-POST {{baseUrl}}/rest/admin_log/act/1
+POST {{baseUrl}}/rest/product_brand/act/1
 Authorization: Bearer {{token}}
 
 ###

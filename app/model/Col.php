@@ -94,6 +94,21 @@ class Col extends Base
             array_keys(system_dict($data['value_enum_dict_key'])),
             array_values(system_dict($data['value_enum_dict_key']))
         );
+        if ($data['value_type'] == 'avatar') {
+            $schema['x-component-props'] = [
+                'accept' => 'image/*',
+                'listType' => 'picture-card',
+                'multiple' => false,
+                'maxCount' => 1,
+            ];
+        }
+        if ($data['value_type'] == 'image') {
+            $schema['x-component-props'] = [
+                'accept' => 'image/*',
+                'listType' => 'picture-card',
+                'multiple' => true,
+            ];
+        }
         return $schema;
     }
 

@@ -34,15 +34,30 @@ class Crud extends Base
             $table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index'),
             ['filter', 'sorter']
         ), 'get');
+
         $total = $this->model->withSearch(array_keys($search), $search)->count();
-        $list = $this->model->withSearch(array_keys($search), $search)->with(
+        $objs = $this->model->withSearch(array_keys($search), $search)->with(
             $table->cols->filter(fn($col) => empty($col->hide_in_table) && !empty($col->relation_name))->column('relation_name') ?: []
         )->page($current, $pageSize)->select();
+        $data = [];
+        foreach ($objs as $obj) {
+            $data[] = array_merge_recursive($obj->visible(array_merge([$this->model->getPk()], $table->crud_index_cols))->toArray(), $this->mergeIndex($obj));
+        }
 
         return $this->success([
             'total' => $total,
-            'data'  => $list->visible(array_merge([$this->model->getPk()], $table->crud_index_cols))->toArray()
+            'data'  => $data
         ]);
+    }
+    /**
+     * 列表的合并数据(扩展列表返回)
+     * @access public
+     * @param  \think\Model  $obj  模型对象
+     * @return array
+     */
+    public function mergeIndex($obj)
+    {
+        return [];
     }
 
     /**
@@ -57,7 +72,6 @@ class Crud extends Base
         $table = TableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
         $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
 
-        // 创建
         $this->model->create($data);
 
         return $this->success();
@@ -78,7 +92,19 @@ class Crud extends Base
             throw new ModelNotFoundException('数据不存在');
         }
 
-        return $this->success($obj->visible(array_merge([$this->model->getPk()], $table->crud_read_cols))->toArray());
+        return $this->success(
+            array_merge_recursive($obj->visible(array_merge([$this->model->getPk()], $table->crud_read_cols))->toArray(), $this->mergeRead($obj))
+        );
+    }
+    /**
+     * 读取的合并数据(扩展读取返回)
+     * @access public
+     * @param  \think\Model  $obj  模型对象
+     * @return array
+     */
+    public function mergeRead($obj)
+    {
+        return [];
     }
 
     /**
@@ -116,8 +142,18 @@ class Crud extends Base
         }
 
         foreach ($objs as $obj) {
-            $obj->delete();
+            $this->eachDelete($obj);
         }
+
         return $this->success();
+    }
+    /**
+     * 删除的模型处理(扩展删除操作)
+     * @access public
+     * @param  \think\Model  $obj  模型对象
+     */
+    public function eachDelete($obj)
+    {
+        $obj->delete();
     }
 }
