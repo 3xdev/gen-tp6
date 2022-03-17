@@ -144,6 +144,7 @@ class Table extends Base
         return $this->success($table->visible([
             'code', 'name', 'props', 'options', 'status', 'create_time',
             'cols' => ['data_index', 'value_type', 'value_enum_dict_key', 'title', 'tip',
+                        'required', 'default_value', 'validator',
                         'ellipsis', 'copyable', 'filters', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions']
         ])->toArray());
