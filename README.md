@@ -1,7 +1,8 @@
-Gen接口端
-===============
+Gen(艮快低代码开发)
+==================
 
 > 运行环境要求PHP7.4+，兼容PHP8.0。
+> 快速低代码开发
 > 领域驱动设计
 > 模型设计自动转化源码
 
@@ -19,6 +20,11 @@ Gen接口端
 * captainhook/captainhook 5.10
 * ramsey/conventional-commits 1.1
 
+## Gen管理端
+
+* Ant Design Pro V5
+https://github.com/3xdev/gen-adp5
+
 ## 安装依赖
 
 ```bash
@@ -34,7 +40,7 @@ vi .env
 
 ## 运行项目初始化指令
 
-* 初始化数据库(从chiner模型)
+* 初始化数据库(从PDManer模型)
 * 初始化管理员，用户名admin，密码123456
 * 初始化管理菜单
 
@@ -51,7 +57,7 @@ php think run -p 800
 
 ## 模型设计自动生成源码
 
-* 根椐模型数据表生成数据库表(从chiner模型)
+* 根椐模型数据表生成数据库表(从PDManer模型)
 * 根据模型数据表产生系统表格及列配置数据
 * 根据模型数据表及关系图生成控制器、验证器、模型源码
 
@@ -124,9 +130,9 @@ system_dict('config_tab');
 [约定式提交]: https://www.conventionalcommits.org/zh-hans/v1.0.0/
 [PSR-12]: https://www.php-fig.org/psr/psr-12/
 
-## CHINER设计数据模型
+## PDManer设计数据模型
 
-* model.chnr.json
+* gen.pdma.json
 
 ## apidoc生成接口文档
 
