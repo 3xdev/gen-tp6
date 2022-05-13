@@ -63,3 +63,8 @@ Authorization: Bearer {{token}}
 ###
 #系统 - 获取字典条目
 GET {{baseUrl}}/dicts/field_component
+
+###
+#系统 - 创建七牛云直传token
+POST {{baseUrl}}/upload/token/logo
+Authorization: Bearer {{token}}

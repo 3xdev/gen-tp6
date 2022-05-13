@@ -62,8 +62,8 @@ class Col extends Base
             'rate' => 'Rate',
             'percent' => 'Slider',
             'progress' => 'Slider',
-            'avatar' => 'Upload',
-            'image' => 'Upload',
+            'avatar' => 'CustomImageUpload',
+            'image' => 'CustomImageUpload',
             //'color' => '',
             'date' => 'DatePicker',
             'dateTime' => 'DatePicker',
@@ -77,7 +77,8 @@ class Col extends Base
             'timeRange' => 'TimePicker.RangePicker',
             //'second' => '',
             //'fromNow' => '',
-            //'customRichText' => '',
+            'customImages' => 'CustomImageUpload',
+            'customRichText' => 'CustomRichText',
         ];
 
         $schema = [
@@ -94,19 +95,16 @@ class Col extends Base
             array_keys(system_dict($data['value_enum_dict_key'])),
             array_values(system_dict($data['value_enum_dict_key']))
         );
-        if ($data['value_type'] == 'avatar') {
+        if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
             $schema['x-component-props'] = [
-                'accept' => 'image/*',
-                'listType' => 'picture-card',
                 'multiple' => false,
                 'maxCount' => 1,
             ];
         }
-        if ($data['value_type'] == 'image') {
+        if ($data['value_type'] == 'customImages') {
             $schema['x-component-props'] = [
-                'accept' => 'image/*',
-                'listType' => 'picture-card',
                 'multiple' => true,
+                'maxCount' => 5,
             ];
         }
         return $schema;

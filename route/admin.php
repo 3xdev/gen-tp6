@@ -48,6 +48,8 @@ Route::group('api/admin', function () {
     // REST DELETE操作
     Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
 
+    // 创建七牛云直传token
+    Route::post('upload/token/:name', 'admin.Upload/token');
     // 上传图片
     Route::post('upload/image/:name', 'admin.Upload/image');
     // 上传附件
