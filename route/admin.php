@@ -28,6 +28,8 @@ Route::group('api/admin', function () {
     // 获取表单(Formily)的schema描述
     Route::get('schema/formily/:name', 'admin.Table/formily');
 
+    // suggest 数据源
+    Route::get('suggest/:controller', 'admin.:controller/suggest');
     // CRUD 获取列表
     Route::get('crud/:controller', 'admin.:controller/index');
     // CRUD 创建

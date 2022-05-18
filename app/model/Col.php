@@ -79,6 +79,7 @@ class Col extends Base
             //'fromNow' => '',
             'customImages' => 'CustomImageUpload',
             'customRichText' => 'CustomRichText',
+            'customRelation' => 'Select',
         ];
 
         $schema = [
@@ -105,6 +106,12 @@ class Col extends Base
             $schema['x-component-props'] = [
                 'multiple' => true,
                 'maxCount' => 5,
+            ];
+        }
+        if ($data['value_type'] == 'customRelation') {
+            $schema['x-component-props'] = [
+                'showSearch' => true,
+                'filterOption' => false,
             ];
         }
         return $schema;

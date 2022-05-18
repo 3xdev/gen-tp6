@@ -12,6 +12,34 @@ use think\db\exception\ModelNotFoundException;
 class Crud extends Base
 {
     /**
+     * @api {GET} /suggest/:table suggest数据源
+     * @apiVersion 1.0.0
+     * @apiGroup ICRUD
+     * @apiHeader {string} Authorization Token
+     * @apiParam {string} keyword 关键字
+     * @apiParam {number} pageSize 页大小
+     * @apiSuccess {Object[]} data 数据列表
+     */
+    public function suggest()
+    {
+        $pageSize = $this->request->get('pageSize/d', 100);
+        $search = $this->request->only(['keyword'], 'get');
+
+        $objs = $this->model->withSearch(array_keys($search), $search)->limit($pageSize)->select();
+        $data = [];
+        foreach ($objs as $obj) {
+            $data[] = [
+                'label' => $obj[$this->model->keyword_fields[0]],
+                'value' => $obj[$this->model->keyword_pk]
+            ];
+        }
+
+        return $this->success([
+            'data'  => $data
+        ]);
+    }
+
+    /**
      * @api {GET} /crud/:table 列表
      * @apiVersion 1.0.0
      * @apiGroup ICRUD

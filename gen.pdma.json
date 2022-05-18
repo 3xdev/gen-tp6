@@ -2,9 +2,9 @@
   "name": "gen",
   "describe": "艮快低代码开发",
   "avatar": "",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-5-12 18:01:55",
+  "updatedTime": "2022-5-18 16:34:59",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -483,6 +483,11 @@
         "defKey": "customRichText",
         "defName": "自定义富文本编辑器",
         "id": "B741B68E-789C-4A5A-A26A-1EFC680A6056"
+      },
+      {
+        "defKey": "customRelation",
+        "defName": "自定义模型关联",
+        "id": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
       }
     ],
     "menuWidth": "317px",
@@ -3220,7 +3225,8 @@
           "refDict": "",
           "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
           "id": "991F02AC-BBC7-47DD-826D-90194F8A4637",
-          "isStandard": true
+          "isStandard": true,
+          "uiHint": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
         },
         {
           "defKey": "product_category_id",
@@ -3237,7 +3243,8 @@
           "refDict": "",
           "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
           "id": "FFBBC55B-DC7B-4036-8572-73D4A1A0521B",
-          "isStandard": true
+          "isStandard": true,
+          "uiHint": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
         },
         {
           "defKey": "name",
@@ -5102,8 +5109,8 @@
           "id": "20FD05BB-9F8C-4530-9CF4-4C746FA1E3BA"
         },
         {
-          "defKey": "customRichText",
-          "defName": "自定义富文本编辑器",
+          "defKey": "customImages",
+          "defName": "自定义多图片",
           "sort": "31",
           "parentKey": "",
           "intro": "",
@@ -5111,7 +5118,31 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
+          "id": "2381B69B-F86F-41E3-A28E-A7A3D0F487AD"
+        },
+        {
+          "defKey": "customRichText",
+          "defName": "自定义富文本编辑器",
+          "sort": "32",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
           "id": "1699E6B8-5721-4372-9628-AB3B577A21BC"
+        },
+        {
+          "defKey": "customRelation",
+          "defName": "自定义模型关联",
+          "sort": "33",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "1DB98DD7-3AA1-4D7F-B4BB-FB5823182162"
         }
       ]
     },
