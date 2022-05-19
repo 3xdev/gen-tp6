@@ -75,6 +75,7 @@ class Md2c extends Command
             $namespace->addUse(\think\model\concern\SoftDelete::class);
             $class->addTrait(\think\model\concern\SoftDelete::class);
         }
+        // 模型关联
         foreach ($this->models['diagrams'] as $diagram) {
             $mapCells = array_column($diagram['canvasData']['cells'], 'id');
             foreach ($diagram['canvasData']['cells'] as $cell) {
@@ -188,7 +189,7 @@ class Md2c extends Command
         if (!empty($field['refDict'])) {
             $dict = map_array_value($this->dict_map, $this->models['dicts'], $field['refDict']);
             if ($dict) {
-                $data['value_enum_dict_key'] = $dict['defKey'];
+                $data['value_enum_rel'] = ['dict', $dict['defKey']];
                 $data['value_type'] = 'select';
                 $data['filters'] = 1;
             }

@@ -44,6 +44,21 @@ class Base extends Model
         }
     }
 
+    /**
+     * 获取记录键值对
+     * @access  public
+     * @return  array
+     */
+    public static function fetchKeyValue()
+    {
+        $objs = self::select();
+
+        $data = [];
+        foreach ($objs as $obj) {
+            $data[$obj[$obj->keyword_pk]] = $obj[$obj->keyword_fields[0]];
+        }
+        return $data;
+    }
 
     // 获取附带操作事件
     public const FETCH_WITH_EVENT_INSERT = 'insert';

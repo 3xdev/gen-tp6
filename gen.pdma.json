@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-5-18 16:34:59",
+  "updatedTime": "2022-5-19 09:51:13",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -485,9 +485,9 @@
         "id": "B741B68E-789C-4A5A-A26A-1EFC680A6056"
       },
       {
-        "defKey": "customRelation",
-        "defName": "自定义模型关联",
-        "id": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
+        "defKey": "customRelationPickup",
+        "defName": "自定义模型关联拾取",
+        "id": "074929D4-24F5-4587-9450-DDA745CCDCFA"
       }
     ],
     "menuWidth": "317px",
@@ -2259,8 +2259,8 @@
           "isStandard": true
         },
         {
-          "defKey": "value_enum_dict_key",
-          "defName": "值枚举关联字典代码",
+          "defKey": "value_enum_rel",
+          "defName": "值枚举关联",
           "comment": "",
           "type": "",
           "len": "",
@@ -3226,7 +3226,7 @@
           "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
           "id": "991F02AC-BBC7-47DD-826D-90194F8A4637",
           "isStandard": true,
-          "uiHint": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
+          "uiHint": "90857576-6241-468F-ADDC-57590348D8F1"
         },
         {
           "defKey": "product_category_id",
@@ -3244,7 +3244,7 @@
           "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
           "id": "FFBBC55B-DC7B-4036-8572-73D4A1A0521B",
           "isStandard": true,
-          "uiHint": "9D87B74F-CE1F-458F-893B-D33CEBE82EC7"
+          "uiHint": "89425466-F05C-49E4-9333-CDE2660D8807"
         },
         {
           "defKey": "name",
@@ -3605,7 +3605,7 @@
           "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
           "id": "3CA06727-7CB5-42D5-B943-306EC35D9DC1",
           "isStandard": true,
-          "uiHint": ""
+          "uiHint": "89425466-F05C-49E4-9333-CDE2660D8807"
         },
         {
           "defKey": "name",
@@ -5133,8 +5133,8 @@
           "id": "1699E6B8-5721-4372-9628-AB3B577A21BC"
         },
         {
-          "defKey": "customRelation",
-          "defName": "自定义模型关联",
+          "defKey": "customRelationPickup",
+          "defName": "自定义模型关联拾取",
           "sort": "33",
           "parentKey": "",
           "intro": "",
@@ -5142,7 +5142,7 @@
           "attr1": "",
           "attr2": "",
           "attr3": "",
-          "id": "1DB98DD7-3AA1-4D7F-B4BB-FB5823182162"
+          "id": "90E400BA-E60D-46F6-A2BF-1531B9D110D8"
         }
       ]
     },

@@ -15,14 +15,14 @@ class Config extends Base
     public const CACHE_PREFIX = 'config:';
 
     // 关键字搜索主键字段
-    protected $keyword_fields = ['code','title','value'];
-    public function searchCodeAttr($query, $value, $data)
-    {
-        $value && $query->where('code', 'like', '%' . $value . '%');
-    }
+    public $keyword_fields = ['title', 'code', 'value'];
     public function searchTitleAttr($query, $value, $data)
     {
         $value && $query->where('title', 'like', '%' . $value . '%');
+    }
+    public function searchCodeAttr($query, $value, $data)
+    {
+        $value && $query->where('code', 'like', '%' . $value . '%');
     }
     public function searchValueAttr($query, $value, $data)
     {
