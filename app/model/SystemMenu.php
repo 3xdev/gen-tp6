@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-class Menu extends Base
+class SystemMenu extends Base
 {
     public function searchNameAttr($query, $value, $data)
     {

@@ -2,9 +2,9 @@
 
 namespace app\controller\admin;
 
-use app\model\Dict as SelfModel;
+use app\model\SystemDict as SelfModel;
 
-class Dict extends Base
+class SystemDict extends Base
 {
     /**
      * @api {POST} /dicts 创建字典

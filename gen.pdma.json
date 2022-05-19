@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-5-19 09:51:13",
+  "updatedTime": "2022-5-19 17:17:57",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -263,7 +263,7 @@
         "type": "dbDDL",
         "applyFor": "dictSQLTemplate",
         "isDefault": true,
-        "content": "/* 插入字典总表[{{=it.dict.defKey}}-{{=it.dict.defName}}] */\nINSERT INTO DICT(KEY_,LABEL,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=it.dict.defName}}','{{=it.dict.intro}}',1);\n/* 插入字典明细表 */\n{{~it.dict.items:item:index}}\nINSERT INTO DICT_ITEM(DICT_KEY,KEY_,LABEL,SORT_,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=item.defKey}}','{{=item.defName}}','{{=item.sort}}','{{=item.intro}}',1);\n{{~}}"
+        "content": "/* 插入字典总表[{{=it.dict.defKey}}-{{=it.dict.defName}}] */\nINSERT INTO SYSTEM_DICT(KEY_,LABEL,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=it.dict.defName}}','{{=it.dict.intro}}',1);\n/* 插入字典明细表 */\n{{~it.dict.items:item:index}}\nINSERT INTO SYSTEM_DICT_ITEM(DICT_KEY,KEY_,LABEL,SORT_,INTRO,REVISION) VALUES('{{=it.dict.defKey}}','{{=item.defKey}}','{{=item.defName}}','{{=item.sort}}','{{=item.intro}}',1);\n{{~}}"
       },
       {
         "type": "dbDDL",
@@ -557,8 +557,8 @@
   "entities": [
     {
       "id": "085CDC87-6221-4BD7-9B90-9676CAB3FFA4",
-      "defKey": "dict",
-      "defName": "字典",
+      "defKey": "system_dict",
+      "defName": "系统字典",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -719,8 +719,8 @@
     },
     {
       "id": "69C9CC26-3CCF-4464-A249-D3199F7557E0",
-      "defKey": "dict_item",
-      "defName": "字典条目",
+      "defKey": "system_dict_item",
+      "defName": "系统字典条目",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -914,8 +914,8 @@
     },
     {
       "id": "3081562F-229A-4053-BC04-E25D1C7E89DE",
-      "defKey": "admin",
-      "defName": "管理员",
+      "defKey": "system_admin",
+      "defName": "系统管理员",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -1287,8 +1287,8 @@
     },
     {
       "id": "06D0D668-EF6B-49AF-9321-6BC1A0E160F1",
-      "defKey": "config",
-      "defName": "配置",
+      "defKey": "system_config",
+      "defName": "系统配置",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -1622,8 +1622,8 @@
     },
     {
       "id": "AC20A311-1A9A-470B-85FE-003C10F6F2CD",
-      "defKey": "menu",
-      "defName": "管理菜单",
+      "defKey": "system_menu",
+      "defName": "系统菜单",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -1891,8 +1891,8 @@
     },
     {
       "id": "C9FE059B-A29A-4730-B216-50E6A5EC9976",
-      "defKey": "table",
-      "defName": "表格",
+      "defKey": "system_table",
+      "defName": "系统表格",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",
@@ -2103,8 +2103,8 @@
     },
     {
       "id": "A191487F-FAED-4572-AFCE-5AD76A8E6C40",
-      "defKey": "col",
-      "defName": "列",
+      "defKey": "system_col",
+      "defName": "系统列",
       "comment": "",
       "properties": {},
       "nameTemplate": "{defKey}[{defName}]",

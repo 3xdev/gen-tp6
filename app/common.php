@@ -109,21 +109,21 @@ if (!function_exists('system_config')) {
      */
     function system_config($code)
     {
-        return \app\model\Config::fetchCache($code);
+        return \app\model\SystemConfig::fetchCache($code);
     }
 }
 
-if (!function_exists('system_dict')) {
+if (!function_exists('system_dict_kv')) {
     /**
      * 获取系统字典
-     * system_dict('gender') => ['m' => '男', 'f' => '女']
-     * system_dict('product_spu_status') => [-1 => '已下架', 0 => '未上架', 1 => '已上架']
+     * system_dict_kv('gender') => ['m' => '男', 'f' => '女']
+     * system_dict_kv('product_spu_status') => [-1 => '已下架', 0 => '未上架', 1 => '已上架']
      * @param  string   $key_   字典代码
      * @return array
      */
-    function system_dict($key_)
+    function system_dict_kv($key_)
     {
-        return \app\model\Dict::fetchCache($key_);
+        return \app\model\SystemDict::fetchCache($key_);
     }
 }
 
@@ -159,7 +159,7 @@ if (!function_exists('system_col_rel_kv')) {
         $kvs = [];
         switch ($rel[0]) {
             case 'dict':
-                $kvs = system_dict($rel[1]);
+                $kvs = system_dict_kv($rel[1]);
                 break;
             case 'table':
                 $kvs = system_table_kv($rel[1]);

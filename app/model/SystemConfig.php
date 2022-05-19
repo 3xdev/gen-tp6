@@ -8,7 +8,7 @@ use think\model\concern\SoftDelete;
 /**
  * 配置模型
  */
-class Config extends Base
+class SystemConfig extends Base
 {
     use SoftDelete;
 
@@ -99,6 +99,6 @@ class Config extends Base
     // 关联字典
     public function dict()
     {
-        return $this->belongsTo(Dict::class, 'dict_key');
+        return $this->belongsTo(SystemDict::class, 'dict_key');
     }
 }

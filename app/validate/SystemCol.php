@@ -4,7 +4,7 @@ namespace app\validate;
 
 use think\Validate;
 
-class Col extends Validate
+class SystemCol extends Validate
 {
     protected $rule = [
         'table_code|关联表格' => 'require|alphaDash|max:32',

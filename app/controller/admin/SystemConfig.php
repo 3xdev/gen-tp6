@@ -2,12 +2,12 @@
 
 namespace app\controller\admin;
 
-use app\model\Config as SelfModel;
+use app\model\SystemConfig as SelfModel;
 
 /**
  * @apiDefine ISYS 系统
  */
-class Config extends Base
+class SystemConfig extends Base
 {
     /**
      * @api {PUT} /setting 更新系统配置
@@ -52,7 +52,7 @@ class Config extends Base
     {
         $data = $this->request->post(['tab', 'component', 'code', 'title', 'description', 'dict_key', 'rule', 'extend']);
         $data['delete_time'] = 0;
-        $this->validate($data, 'Config');
+        $this->validate($data, 'SystemConfig');
 
         // 创建配置项
         SelfModel::create($data);
@@ -84,9 +84,9 @@ class Config extends Base
             return $this->error();
         }
         if ($model->code == $data['code']) {
-            $this->validate($data, 'Config.update');
+            $this->validate($data, 'SystemConfig.update');
         } else {
-            $this->validate($data, 'Config');
+            $this->validate($data, 'SystemConfig');
         }
 
         $model->save($data);

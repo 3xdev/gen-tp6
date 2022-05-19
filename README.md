@@ -114,11 +114,11 @@ composer lint-fix
 ```php
 // 获取系统配置
 system_config('site_name');
-\app\model\Config::fetchCache('site_name');
+\app\model\SystemConfig::fetchCache('site_name');
 
 // 获取系统字典
-system_dict('config_tab');
-\app\model\Dict::fetchCache('config_tab');
+system_dict_kv('config_tab');
+\app\model\SystemDict::fetchCache('config_tab');
 ```
 
 ## Git提交规范

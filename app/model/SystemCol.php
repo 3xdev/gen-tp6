@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-class Col extends Base
+class SystemCol extends Base
 {
     // 设置json类型字段
     protected $json = ['value_enum_rel'];
@@ -37,7 +37,7 @@ class Col extends Base
         $data['ellipsis'] && $schema['ellipsis'] = true;
         $data['copyable'] && $schema['copyable'] = true;
         $data['hide_in_form'] && $schema['hideInForm'] = true;
-        $data['hide_in_table'] && $schema['hideInTable'] = true;
+        $data['hide_in_table'] && $schema['hideInSystemTable'] = true;
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
 
@@ -134,6 +134,6 @@ class Col extends Base
 
     public function btable()
     {
-        return $this->belongsTo(Table::class, 'table_code');
+        return $this->belongsTo(SystemTable::class, 'table_code');
     }
 }

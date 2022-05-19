@@ -4,7 +4,7 @@ namespace app\validate;
 
 use think\Validate;
 
-class Menu extends Validate
+class SystemMenu extends Validate
 {
     protected $rule = [
         'name|名称' => 'require|max:100',

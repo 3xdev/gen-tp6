@@ -2,7 +2,7 @@
 
 namespace app\model;
 
-class Table extends Base
+class SystemTable extends Base
 {
     // 设置主键
     protected $pk = 'code';
@@ -63,6 +63,6 @@ class Table extends Base
 
     public function cols()
     {
-        return $this->hasMany(Col::class, 'table_code')->order('sort');
+        return $this->hasMany(SystemCol::class, 'table_code')->order('sort');
     }
 }

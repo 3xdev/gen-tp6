@@ -7,7 +7,7 @@ use think\facade\Cache;
 /**
  * 字典模型
  */
-class Dict extends Base
+class SystemDict extends Base
 {
     // 设置主键
     protected $pk = 'key_';
@@ -46,6 +46,6 @@ class Dict extends Base
     // 条目
     public function items()
     {
-        return $this->hasMany(DictItem::class, 'dict_key')->order('sort_');
+        return $this->hasMany(SystemDictItem::class, 'dict_key')->order('sort_');
     }
 }

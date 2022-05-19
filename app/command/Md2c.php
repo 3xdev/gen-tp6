@@ -6,15 +6,15 @@ use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\helper\Str;
-use app\model\Table;
-use app\model\Col;
+use app\model\SystemTable;
+use app\model\SystemCol;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PsrPrinter;
 
 class Md2c extends Command
 {
     // 模型文件路径
-    public const MODEL_PATH = './model.chnr.json';
+    public const MODEL_PATH = './gen.pdma.json';
     // 模型
     protected $models = [];
     // 实体映射
@@ -139,12 +139,12 @@ class Md2c extends Command
     // 实体转表格
     protected function entity2table($entity)
     {
-        $table = Table::find(strtolower($entity['defKey']));
+        $table = SystemTable::find(strtolower($entity['defKey']));
         if ($table || in_array(strtolower($entity['defKey']), self::IGNORE_ENTITY)) {
             return;
         }
 
-        Table::create([
+        SystemTable::create([
             'code'  => strtolower($entity['defKey']),
             'name'  => $entity['defName'],
             'props' => ['rowKey' => array_search(true, array_column($entity['fields'], 'primaryKey', 'defKey'))],
@@ -201,6 +201,6 @@ class Md2c extends Command
             }
         }
 
-        Col::create($data);
+        SystemCol::create($data);
     }
 }

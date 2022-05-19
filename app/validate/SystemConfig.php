@@ -4,7 +4,7 @@ namespace app\validate;
 
 use think\Validate;
 
-class Config extends Validate
+class SystemConfig extends Validate
 {
     protected $rule = [
         'tab|分组' => 'require',
