@@ -9,7 +9,7 @@ class SystemConfig extends Validate
     protected $rule = [
         'tab|分组' => 'require',
         'component|组件' => 'require',
-        'code|编码' => 'require|alphaDash|max:32|unique:config,code^delete_time',
+        'code|编码' => 'require|alphaDash|max:32|unique:\\app\\model\\SystemConfig,code^delete_time',
         'title|标题' => 'require',
     ];
 

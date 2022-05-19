@@ -14,6 +14,16 @@ class SystemDict extends Base
 
     public const CACHE_PREFIX = 'dict:';
 
+
+    public function searchKeyAttr($query, $value, $data)
+    {
+        $value && $query->where('key_', 'like', '%' . $value . '%');
+    }
+    public function searchLabelAttr($query, $value, $data)
+    {
+        $value && $query->where('label', 'like', '%' . $value . '%');
+    }
+
     // 获取缓存
     public static function fetchCache($key_)
     {

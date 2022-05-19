@@ -7,7 +7,7 @@ use think\Validate;
 class SystemAdmin extends Validate
 {
     protected $rule = [
-        'username|帐号' => 'require|alphaDash|max:32|unique:admin,username^delete_time',
+        'username|帐号' => 'require|alphaDash|max:32|unique:\\app\\model\\SystemAdmin,username^delete_time',
         'password|密码' => 'graph|min:6|max:20',
         'mobile|手机号' => 'mobile',
         'status|状态'   => 'in:0,1'

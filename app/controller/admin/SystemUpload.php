@@ -5,7 +5,7 @@ namespace app\controller\admin;
 /**
  * @apiDefine IUPLOAD 上传
  */
-class Upload extends Base
+class SystemUpload extends Base
 {
     // 文件命名规则
     public const FILESYSTEM_HASH_NAME_RULE = 'sha1';

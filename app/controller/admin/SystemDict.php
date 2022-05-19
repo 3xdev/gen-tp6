@@ -25,7 +25,7 @@ class SystemDict extends Base
         foreach ($items as $index => &$item) {
             $item['sort_'] = $index;
         }
-        $this->validate($data, 'Dict');
+        $this->validate($data, 'SystemDict');
 
         // 创建字典
         $model = SelfModel::create($data);
@@ -60,9 +60,9 @@ class SystemDict extends Base
             return $this->error();
         }
         if ($model->key_ == $data['key_']) {
-            $this->validate($data, 'Dict.update');
+            $this->validate($data, 'SystemDict.update');
         } else {
-            $this->validate($data, 'Dict');
+            $this->validate($data, 'SystemDict');
         }
 
         // 更新字典

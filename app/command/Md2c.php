@@ -24,8 +24,8 @@ class Md2c extends Command
     // UI建议映射
     protected $uihint_map = [];
 
-    // 忽略实体
-    public const IGNORE_ENTITY = ['dict', 'dict_item', 'admin', 'config', 'menu', 'table', 'col'];
+    // 忽略前缀
+    public const IGNORE_PREFIX = 'system';
 
     protected function configure()
     {
@@ -54,7 +54,7 @@ class Md2c extends Command
     // 实体生成类
     protected function entity2class($entity)
     {
-        if (in_array(strtolower($entity['defKey']), self::IGNORE_ENTITY)) {
+        if (stripos(strtolower($entity['defKey']), self::IGNORE_PREFIX) === 0) {
             return;
         }
 
@@ -140,7 +140,7 @@ class Md2c extends Command
     protected function entity2table($entity)
     {
         $table = SystemTable::find(strtolower($entity['defKey']));
-        if ($table || in_array(strtolower($entity['defKey']), self::IGNORE_ENTITY)) {
+        if ($table || stripos(strtolower($entity['defKey']), self::IGNORE_PREFIX) === 0) {
             return;
         }
 
