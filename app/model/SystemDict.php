@@ -7,12 +7,22 @@ use think\facade\Cache;
 /**
  * 字典模型
  */
-class Dict extends Base
+class SystemDict extends Base
 {
     // 设置主键
     protected $pk = 'key_';
 
     public const CACHE_PREFIX = 'dict:';
+
+
+    public function searchKeyAttr($query, $value, $data)
+    {
+        $value && $query->where('key_', 'like', '%' . $value . '%');
+    }
+    public function searchLabelAttr($query, $value, $data)
+    {
+        $value && $query->where('label', 'like', '%' . $value . '%');
+    }
 
     // 获取缓存
     public static function fetchCache($key_)
@@ -46,6 +56,6 @@ class Dict extends Base
     // 条目
     public function items()
     {
-        return $this->hasMany(DictItem::class, 'dict_key')->order('sort_');
+        return $this->hasMany(SystemDictItem::class, 'dict_key')->order('sort_');
     }
 }

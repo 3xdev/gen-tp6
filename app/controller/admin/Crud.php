@@ -2,7 +2,7 @@
 
 namespace app\controller\admin;
 
-use app\model\Table as TableModel;
+use app\model\SystemTable as SystemTableModel;
 use think\db\exception\ModelNotFoundException;
 
 /**
@@ -11,6 +11,34 @@ use think\db\exception\ModelNotFoundException;
  */
 class Crud extends Base
 {
+    /**
+     * @api {GET} /suggest/:table suggest数据源
+     * @apiVersion 1.0.0
+     * @apiGroup ICRUD
+     * @apiHeader {string} Authorization Token
+     * @apiParam {string} keyword 关键字
+     * @apiParam {number} pageSize 页大小
+     * @apiSuccess {Object[]} data 数据列表
+     */
+    public function suggest()
+    {
+        $pageSize = $this->request->get('pageSize/d', 100);
+        $search = $this->request->only(['keyword'], 'get');
+
+        $objs = $this->model->withSearch(array_keys($search), $search)->limit($pageSize)->select();
+        $data = [];
+        foreach ($objs as $obj) {
+            $data[] = [
+                'label' => $obj[$this->model->keyword_fields[0]],
+                'value' => $obj[$this->model->keyword_pk]
+            ];
+        }
+
+        return $this->success([
+            'data'  => $data
+        ]);
+    }
+
     /**
      * @api {GET} /crud/:table 列表
      * @apiVersion 1.0.0
@@ -27,7 +55,7 @@ class Crud extends Base
      */
     public function index()
     {
-        $table = TableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
+        $table = SystemTableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
         $search = $this->request->only(array_merge(
@@ -69,7 +97,7 @@ class Crud extends Base
      */
     public function create()
     {
-        $table = TableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
+        $table = SystemTableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
         $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
 
         $this->model->create($data);
@@ -86,7 +114,7 @@ class Crud extends Base
      */
     public function read($id)
     {
-        $table = TableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
+        $table = SystemTableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
         $obj = $this->model->find($id);
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
@@ -116,7 +144,7 @@ class Crud extends Base
      */
     public function update($id)
     {
-        $table = TableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
+        $table = SystemTableModel::find(parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0));
         $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
 
         $obj = $this->model->find($id);

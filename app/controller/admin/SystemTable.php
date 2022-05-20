@@ -2,11 +2,11 @@
 
 namespace app\controller\admin;
 
-use app\model\Config as ConfigModel;
-use app\model\Dict as DictModel;
-use app\model\Table as SelfModel;
+use app\model\SystemConfig as SystemConfigModel;
+use app\model\SystemDict as SystemDictModel;
+use app\model\SystemTable as SelfModel;
 
-class Table extends Base
+class SystemTable extends Base
 {
     /**
      * @api {POST} /table 创建表格
@@ -20,7 +20,7 @@ class Table extends Base
     public function create()
     {
         $data = $this->request->post(['name', 'code', 'props_string']);
-        $this->validate($data, 'Table');
+        $this->validate($data, 'SystemTable');
 
         SelfModel::create($data);
 
@@ -52,9 +52,9 @@ class Table extends Base
         }
 
         if ($model->code == $data['code']) {
-            $this->validate($data, 'Table.update');
+            $this->validate($data, 'SystemTable.update');
         } else {
-            $this->validate($data, 'Table');
+            $this->validate($data, 'SystemTable');
         }
 
         $data['options'] = $options;
@@ -143,7 +143,7 @@ class Table extends Base
 
         return $this->success($table->visible([
             'code', 'name', 'props', 'options', 'status', 'create_time',
-            'cols' => ['data_index', 'value_type', 'value_enum_dict_key', 'title', 'tip',
+            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip',
                         'required', 'default_value', 'validator',
                         'ellipsis', 'copyable', 'filters', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions']
@@ -200,7 +200,7 @@ class Table extends Base
     private function buildSetting()
     {
         $json = [];
-        $dict = DictModel::find('config_tab');
+        $dict = SystemDictModel::find('config_tab');
         $map = $dict ? $dict->items->column('label', 'key_') : [];
         empty($map) && $map = ['default' => '系统配置'];
         foreach ($map as $key => $value) {
@@ -213,7 +213,7 @@ class Table extends Base
                 'properties' => []
             ];
         }
-        $configs = ConfigModel::select();
+        $configs = SystemConfigModel::select();
         foreach ($configs as $config) {
             $json[$config->tab ?: 'default']['properties'][$config->code] = $config->schema;
         }

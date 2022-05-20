@@ -2,8 +2,13 @@
 
 namespace app\model;
 
-class Col extends Base
+class SystemCol extends Base
 {
+    // 设置json类型字段
+    protected $json = ['value_enum_rel'];
+    // 设置json数据返回数组
+    protected $jsonAssoc = true;
+
     public function searchTitleAttr($query, $value, $data)
     {
         $value && $query->where('title', 'like', '%' . $value . '%');
@@ -26,13 +31,13 @@ class Col extends Base
         ];
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];
-        !empty($data['value_enum_dict_key']) && $schema['valueEnum'] = system_dict($data['value_enum_dict_key']);
+        !empty($data['value_enum_rel']) && $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
         $data['col_size'] > 1 && $schema['colSize'] = $data['col_size'];
         $data['filters'] && $schema['filters'] = true;
         $data['ellipsis'] && $schema['ellipsis'] = true;
         $data['copyable'] && $schema['copyable'] = true;
         $data['hide_in_form'] && $schema['hideInForm'] = true;
-        $data['hide_in_table'] && $schema['hideInTable'] = true;
+        $data['hide_in_table'] && $schema['hideInSystemTable'] = true;
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
 
@@ -52,7 +57,7 @@ class Col extends Base
             'digit' => 'NumberPicker',
             'money' => 'NumberPicker',
             'password' => 'Password',
-            'treeSelect' => 'TreeSelect',
+            'treeSelect' => 'Select',
             'cascader' => 'Cascader',
             'textarea' => 'Input.TextArea',
             'code' => 'Input.TextArea',
@@ -62,8 +67,8 @@ class Col extends Base
             'rate' => 'Rate',
             'percent' => 'Slider',
             'progress' => 'Slider',
-            'avatar' => 'Upload',
-            'image' => 'Upload',
+            'avatar' => 'CustomImageUpload',
+            'image' => 'CustomImageUpload',
             //'color' => '',
             'date' => 'DatePicker',
             'dateTime' => 'DatePicker',
@@ -77,7 +82,9 @@ class Col extends Base
             'timeRange' => 'TimePicker.RangePicker',
             //'second' => '',
             //'fromNow' => '',
-            //'customRichText' => '',
+            'customImages' => 'CustomImageUpload',
+            'customRichText' => 'CustomRichText',
+            //'customRelationPickup' => '',
         ];
 
         $schema = [
@@ -87,33 +94,46 @@ class Col extends Base
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
         ];
-        !empty($data['required']) && $schema['required'] = true;
+        // 必填
+        $data['required'] && $schema['required'] = true;
+        // 默认值
         $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
-        !empty($data['value_enum_dict_key']) && $schema['enum'] = array_map(
-            fn($key, $value) => ['value' => $key, 'label' => $value],
-            array_keys(system_dict($data['value_enum_dict_key'])),
-            array_values(system_dict($data['value_enum_dict_key']))
-        );
-        if ($data['value_type'] == 'avatar') {
+        // 关联字典
+        if (!empty($data['value_enum_rel'])) {
+            $schema['enum'] = [];
+            $kvs = system_col_rel_kv($data['value_enum_rel']);
+            foreach ($kvs as $key => $value) {
+                $schema['enum'][] = ['value' => $key, 'label' => $value];
+            }
+        }
+        if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
             $schema['x-component-props'] = [
-                'accept' => 'image/*',
-                'listType' => 'picture-card',
                 'multiple' => false,
                 'maxCount' => 1,
             ];
         }
-        if ($data['value_type'] == 'image') {
+        if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
             $schema['x-component-props'] = [
-                'accept' => 'image/*',
-                'listType' => 'picture-card',
-                'multiple' => true,
+                'multiple' => false,
+                'maxCount' => 1,
             ];
         }
+        if ($data['value_type'] == 'customImages') {
+            $schema['x-component-props'] = [
+                'multiple' => true,
+                'maxCount' => 5,
+            ];
+        }
+        // x-component处理
+        if ($schema['x-component'] == 'Select') {
+            $schema['x-component-props']['allowClear'] = $data['required'] ? false : true;
+        }
+
         return $schema;
     }
 
     public function btable()
     {
-        return $this->belongsTo(Table::class, 'table_code');
+        return $this->belongsTo(SystemTable::class, 'table_code');
     }
 }

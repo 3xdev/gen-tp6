@@ -4,12 +4,12 @@ namespace app\model;
 
 use think\model\concern\SoftDelete;
 use think\facade\Event;
-use app\model\AdminOperation as AdminOperationModel;
+use app\model\SystemAdminOperation as SystemAdminOperationModel;
 
 /**
  * 管理员模型
  */
-class Admin extends Base
+class SystemAdmin extends Base
 {
     use SoftDelete;
 
@@ -22,7 +22,7 @@ class Admin extends Base
     }
 
     // 关键字搜索主键字段
-    protected $keyword_fields = ['username','mobile','nickname','email'];
+    public $keyword_fields = ['username','mobile','nickname','email'];
     public function searchUsernameAttr($query, $value, $data)
     {
         $value && $query->where('username', 'like', '%' . $value . '%');
@@ -65,7 +65,7 @@ class Admin extends Base
 
     /**
      * 密码登录
-     * @return Admin
+     * @return SystemAdmin
      */
     public static function loginByPassword($username, $password, $ip = '')
     {
@@ -87,7 +87,7 @@ class Admin extends Base
 
     /**
      * 验证码登录
-     * @return Admin
+     * @return SystemAdmin
      */
     public static function loginByCaptcha($mobile, $captcha, $ip = '')
     {
@@ -109,7 +109,7 @@ class Admin extends Base
 
     /**
      * 执行登录
-     * @return Admin
+     * @return SystemAdmin
      */
     protected function doLogin($ip = '')
     {
@@ -124,7 +124,7 @@ class Admin extends Base
         $this->setAttr('login_time', time());
         $this->save();
         // 触发管理员登录成功事件
-        Event::trigger('AdminLogin', $this);
+        Event::trigger('SystemAdminLogin', $this);
         return $this;
     }
 }

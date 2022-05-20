@@ -2,13 +2,13 @@
 
 namespace app\controller\admin;
 
-use app\model\Admin as SelfModel;
+use app\model\SystemAdmin as SelfModel;
 use thans\jwt\facade\JWTAuth;
 
 /**
  * @apiDefine IADMIN 管理员
  */
-class Admin extends Base
+class SystemAdmin extends Base
 {
     /**
      * @api {POST} /token 管理员登录(新建token)
@@ -24,7 +24,7 @@ class Admin extends Base
     public function login()
     {
         $data = $this->request->post();
-        $this->validate($data, 'Admin.login');
+        $this->validate($data, 'SystemAdmin.login');
 
         switch ($data['type']) {
             case SelfModel::LOGIN_TYPE_PASSWORD:
@@ -97,7 +97,7 @@ class Admin extends Base
     public function updateProfile()
     {
         $data = $this->request->post(['nickname', 'avatar', 'mobile', 'password']);
-        $this->validate($data, 'Admin.update');
+        $this->validate($data, 'SystemAdmin.update');
 
         // 更新管理员
         if (empty($data['password'])) {
@@ -122,7 +122,7 @@ class Admin extends Base
     {
         $data = $this->request->post(['mobile', 'username', 'nickname', 'password', 'avatar']);
         $data['delete_time'] = 0;
-        $this->validate($data, 'Admin');
+        $this->validate($data, 'SystemAdmin');
 
         // 创建管理员
         SelfModel::create($data);
@@ -151,9 +151,9 @@ class Admin extends Base
             return $this->error();
         }
         if ($model->username == $data['username']) {
-            $this->validate($data, 'Admin.update');
+            $this->validate($data, 'SystemAdmin.update');
         } else {
-            $this->validate($data, 'Admin');
+            $this->validate($data, 'SystemAdmin');
         }
 
         // 更新管理员

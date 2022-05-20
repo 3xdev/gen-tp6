@@ -5,10 +5,30 @@ namespace app\controller\admin;
 /**
  * @apiDefine IUPLOAD 上传
  */
-class Upload extends Base
+class SystemUpload extends Base
 {
     // 文件命名规则
     public const FILESYSTEM_HASH_NAME_RULE = 'sha1';
+
+    /**
+     * @api {POST} /upload/token/:name 创建七牛云直传token
+     * @apiVersion 1.0.0
+     * @apiGroup IUPLOAD
+     * @apiHeader {string} Authorization Token
+     * @apiParam {string} [mime] 限定文件类型
+     * @apiSuccess {string} action 上传地址
+     * @apiSuccess {string} token 上传凭证
+     */
+    public function token($name)
+    {
+        $policy = [];
+        $this->request->has('mime', 'post') && $policy['mimeLimit'] = $this->request->post('mime');
+
+        return $this->success([
+            'action'    => 'http://upload.qiniup.com/',
+            'token'     => $this->app->filesystem->getAdapter()->getUploadToken(null, 3600, $policy)
+        ]);
+    }
 
     /**
      * @api {POST} /upload/image/:name 上传图片

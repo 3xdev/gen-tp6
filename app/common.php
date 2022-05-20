@@ -102,24 +102,73 @@ if (!function_exists('map_array_value')) {
 if (!function_exists('system_config')) {
     /**
      * 获取系统配置
+     * system_config('logo') => 'http://'
+     * system_config('login_retry') => '5'
      * @param  string   $code   配置编码
      * @return mixed
      */
     function system_config($code)
     {
-        return \app\model\Config::fetchCache($code);
+        return \app\model\SystemConfig::fetchCache($code);
     }
 }
 
-if (!function_exists('system_dict')) {
+if (!function_exists('system_dict_kv')) {
     /**
      * 获取系统字典
+     * system_dict_kv('gender') => ['m' => '男', 'f' => '女']
+     * system_dict_kv('product_spu_status') => [-1 => '已下架', 0 => '未上架', 1 => '已上架']
      * @param  string   $key_   字典代码
      * @return array
      */
-    function system_dict($key_)
+    function system_dict_kv($key_)
     {
-        return \app\model\Dict::fetchCache($key_);
+        return \app\model\SystemDict::fetchCache($key_);
+    }
+}
+
+if (!function_exists('system_table_kv')) {
+    /**
+     * 获取系统表格的KeyValue
+     * system_table_kv('product_brand') => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
+     * @param  string   $table   表格代码
+     * @return array
+     */
+    function system_table_kv($table)
+    {
+        $class = app()->parseClass('model', $table);
+
+        return class_exists($class) ? app()->make($class)->fetchKeyValue() : [];
+    }
+}
+
+if (!function_exists('system_col_rel_kv')) {
+    /**
+     * 获取系统表格列关联的KeyValue
+     * system_col_rel_kv('dict:gender') => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
+     * system_col_rel_kv('table:product_brand') => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
+     * @param  string   $rel   关联代码
+     * @return array
+     */
+    function system_col_rel_kv($rel)
+    {
+        if (empty($rel)) {
+            return [];
+        }
+
+        $kvs = [];
+        switch ($rel[0]) {
+            case 'dict':
+                $kvs = system_dict_kv($rel[1]);
+                break;
+            case 'table':
+                $kvs = system_table_kv($rel[1]);
+                break;
+            default:
+                break;
+        }
+
+        return $kvs;
     }
 }
 

@@ -4,10 +4,10 @@ namespace app\validate;
 
 use think\Validate;
 
-class Admin extends Validate
+class SystemAdmin extends Validate
 {
     protected $rule = [
-        'username|帐号' => 'require|alphaDash|max:32|unique:admin,username^delete_time',
+        'username|帐号' => 'require|alphaDash|max:32|unique:\\app\\model\\SystemAdmin,username^delete_time',
         'password|密码' => 'graph|min:6|max:20',
         'mobile|手机号' => 'mobile',
         'status|状态'   => 'in:0,1'
@@ -31,7 +31,7 @@ class Admin extends Validate
     // 验证登录类型值
     protected function checkLoginType($value, $rule)
     {
-        $types = \app\model\Admin::getLoginTypeList();
+        $types = \app\model\SystemAdmin::getLoginTypeList();
         return isset($types[strtolower($value)]);
     }
 }

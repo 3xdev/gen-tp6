@@ -8,7 +8,7 @@ use thans\jwt\exception\TokenBlacklistGracePeriodException;
 /**
  * 管理员授权验证
  */
-class AdminAuth extends \thans\jwt\middleware\BaseMiddleware
+class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
 {
     public function handle($request, \Closure $next)
     {
@@ -25,7 +25,7 @@ class AdminAuth extends \thans\jwt\middleware\BaseMiddleware
             try {
                 $token = $this->auth->refresh();
                 $payload = $this->auth->auth(false);
-                $this->setAdmin($payload['id']->getValue(), $request);
+                $this->setSystemAdmin($payload['id']->getValue(), $request);
                 return $this->setAuthentication($next($request), $token);
             } catch (TokenBlacklistGracePeriodException $e) {
                 // 捕获黑名单宽限期
@@ -36,14 +36,14 @@ class AdminAuth extends \thans\jwt\middleware\BaseMiddleware
             $payload = $this->auth->auth(false);
         }
 
-        $this->setAdmin($payload['id']->getValue(), $request);
+        $this->setSystemAdmin($payload['id']->getValue(), $request);
         return $next($request);
     }
 
     // 设置管理员
-    protected function setAdmin($id, $request)
+    protected function setSystemAdmin($id, $request)
     {
-        $admin = \app\model\Admin::find($id);
+        $admin = \app\model\SystemAdmin::find($id);
         if (!$admin) {
         // 管理员不存在
             abort(401, '管理员不存在或己删除');

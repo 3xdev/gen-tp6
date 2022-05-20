@@ -7,14 +7,14 @@ use think\console\Input;
 use think\console\Output;
 use think\facade\Db;
 use think\facade\View;
-use app\model\Dict;
-use app\model\Admin;
-use app\model\Menu;
+use app\model\SystemDict;
+use app\model\SystemAdmin;
+use app\model\SystemMenu;
 
 class Init extends Command
 {
     // 模型文件路径
-    public const MODEL_PATH = './model.chnr.json';
+    public const MODEL_PATH = './gen.pdma.json';
     // 模型
     protected $models = [];
     // 实体映射
@@ -56,20 +56,20 @@ class Init extends Command
         }
 
         // 初始化管理员
-        $admin = Admin::findOrEmpty(1);
+        $admin = SystemAdmin::findOrEmpty(1);
         if ($admin->isEmpty()) {
             $admin->id = 1;
             $admin->nickname = 'admin';
             $admin->username = 'admin';
             $admin->password = '123456';
             $admin->save();
-            $output->writeln('<info>Admin(id=1) Created!</info>');
+            $output->writeln('<info>SystemAdmin(id=1) Created!</info>');
         } else {
-            //$output->writeln('<warning>Admin(id=1) Already Exists!</warning>');
+            //$output->writeln('<warning>SystemAdmin(id=1) Already Exists!</warning>');
         }
 
         // 初始化管理菜单
-        $menu = Menu::where('path', '/system/menu')->findOrEmpty();
+        $menu = SystemMenu::where('path', '/system/menu')->findOrEmpty();
         if ($menu->isEmpty()) {
             $menu->saveAll([
                 ['parent_id' => '0', 'name' => '系统管理', 'path' => '', 'icon' => 'setting'],
@@ -80,9 +80,9 @@ class Init extends Command
                 ['parent_id' => '1', 'name' => '菜单管理', 'path' => '/system/menu'],
                 ['parent_id' => '1', 'name' => '表格管理', 'path' => '/system/table'],
             ]);
-            $output->writeln('<info>System Menu Created!</info>');
+            $output->writeln('<info>SystemMenu Created!</info>');
         } else {
-            //$output->writeln('<warning>System Menu Already Exists!</warning>');
+            //$output->writeln('<warning>SystemMenu Already Exists!</warning>');
         }
 
         $output->writeln('<info>Init System Succeed!</info>');
@@ -131,12 +131,12 @@ class Init extends Command
     // 插入字典
     protected function insertDict($dict)
     {
-        $model = Dict::find($dict['defKey']);
+        $model = SystemDict::find($dict['defKey']);
         if ($model) {
             return;
         }
 
-        $model = Dict::create([
+        $model = SystemDict::create([
             'key_' => $dict['defKey'],
             'label' => $dict['defName'],
             'intro' => $dict['intro'],

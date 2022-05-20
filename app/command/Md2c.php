@@ -6,15 +6,15 @@ use think\console\Command;
 use think\console\Input;
 use think\console\Output;
 use think\helper\Str;
-use app\model\Table;
-use app\model\Col;
+use app\model\SystemTable;
+use app\model\SystemCol;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PsrPrinter;
 
 class Md2c extends Command
 {
     // 模型文件路径
-    public const MODEL_PATH = './model.chnr.json';
+    public const MODEL_PATH = './gen.pdma.json';
     // 模型
     protected $models = [];
     // 实体映射
@@ -24,8 +24,8 @@ class Md2c extends Command
     // UI建议映射
     protected $uihint_map = [];
 
-    // 忽略实体
-    public const IGNORE_ENTITY = ['dict', 'dict_item', 'admin', 'config', 'menu', 'table', 'col'];
+    // 忽略前缀
+    public const IGNORE_PREFIX = 'system';
 
     protected function configure()
     {
@@ -54,7 +54,7 @@ class Md2c extends Command
     // 实体生成类
     protected function entity2class($entity)
     {
-        if (in_array(strtolower($entity['defKey']), self::IGNORE_ENTITY)) {
+        if (stripos(strtolower($entity['defKey']), self::IGNORE_PREFIX) === 0) {
             return;
         }
 
@@ -75,6 +75,7 @@ class Md2c extends Command
             $namespace->addUse(\think\model\concern\SoftDelete::class);
             $class->addTrait(\think\model\concern\SoftDelete::class);
         }
+        // 模型关联
         foreach ($this->models['diagrams'] as $diagram) {
             $mapCells = array_column($diagram['canvasData']['cells'], 'id');
             foreach ($diagram['canvasData']['cells'] as $cell) {
@@ -138,12 +139,12 @@ class Md2c extends Command
     // 实体转表格
     protected function entity2table($entity)
     {
-        $table = Table::find(strtolower($entity['defKey']));
-        if ($table || in_array(strtolower($entity['defKey']), self::IGNORE_ENTITY)) {
+        $table = SystemTable::find(strtolower($entity['defKey']));
+        if ($table || stripos(strtolower($entity['defKey']), self::IGNORE_PREFIX) === 0) {
             return;
         }
 
-        Table::create([
+        SystemTable::create([
             'code'  => strtolower($entity['defKey']),
             'name'  => $entity['defName'],
             'props' => ['rowKey' => array_search(true, array_column($entity['fields'], 'primaryKey', 'defKey'))],
@@ -188,7 +189,7 @@ class Md2c extends Command
         if (!empty($field['refDict'])) {
             $dict = map_array_value($this->dict_map, $this->models['dicts'], $field['refDict']);
             if ($dict) {
-                $data['value_enum_dict_key'] = $dict['defKey'];
+                $data['value_enum_rel'] = ['dict', $dict['defKey']];
                 $data['value_type'] = 'select';
                 $data['filters'] = 1;
             }
@@ -200,6 +201,6 @@ class Md2c extends Command
             }
         }
 
-        Col::create($data);
+        SystemCol::create($data);
     }
 }

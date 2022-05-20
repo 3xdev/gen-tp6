@@ -2,9 +2,9 @@
 
 namespace app\controller\admin;
 
-use app\model\Menu as SelfModel;
+use app\model\SystemMenu as SelfModel;
 
-class Menu extends Base
+class SystemMenu extends Base
 {
     /**
      * @api {POST} /menu 创建菜单
@@ -20,7 +20,7 @@ class Menu extends Base
     public function create()
     {
         $data = $this->request->post(['parent_id', 'name', 'path', 'icon', 'sort']);
-        $this->validate($data, 'Menu');
+        $this->validate($data, 'SystemMenu');
 
         SelfModel::create($data);
 
@@ -47,7 +47,7 @@ class Menu extends Base
             return $this->error('不存在', 404);
         }
 
-        $this->validate($data, 'Menu.update');
+        $this->validate($data, 'SystemMenu.update');
         $model->save($data);
 
         return $this->success();

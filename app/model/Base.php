@@ -11,14 +11,14 @@ class Base extends Model
     protected $defaultSoftDelete = 0;
 
     // 关键字搜索主键字段
-    protected $keyword_fields = ['name'];
+    public $keyword_fields = ['name'];
     // 关键字搜索主键字段
-    protected $keyword_pk = 'id';
+    public $keyword_pk = 'id';
     // 关键字搜索器
     public function searchKeywordAttr($query, $value, $data)
     {
         if (!empty($value)) {
-            if (is_int($value)) {
+            if (is_numeric($value)) {
                 $query->whereOr(implode('|', $this->keyword_fields), 'like', '%' . $value . '%')->whereOr($this->keyword_pk, $value);
             } else {
                 $query->where(implode('|', $this->keyword_fields), 'like', '%' . $value . '%');
@@ -44,6 +44,21 @@ class Base extends Model
         }
     }
 
+    /**
+     * 获取记录键值对
+     * @access  public
+     * @return  array
+     */
+    public static function fetchKeyValue()
+    {
+        $objs = self::select();
+
+        $data = [];
+        foreach ($objs as $obj) {
+            $data[$obj[$obj->keyword_pk]] = $obj[$obj->keyword_fields[0]];
+        }
+        return $data;
+    }
 
     // 获取附带操作事件
     public const FETCH_WITH_EVENT_INSERT = 'insert';
