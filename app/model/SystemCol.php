@@ -37,7 +37,7 @@ class SystemCol extends Base
         $data['ellipsis'] && $schema['ellipsis'] = true;
         $data['copyable'] && $schema['copyable'] = true;
         $data['hide_in_form'] && $schema['hideInForm'] = true;
-        $data['hide_in_table'] && $schema['hideInSystemTable'] = true;
+        $data['hide_in_table'] && $schema['hideInTable'] = true;
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
 
