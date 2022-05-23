@@ -117,7 +117,7 @@ system_config('site_name');
 \app\model\SystemConfig::fetchCache('site_name');
 
 // 获取系统字典
-system_dict_kv('config_tab');
+system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
