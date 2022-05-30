@@ -14,7 +14,7 @@ use Nette\PhpGenerator\PsrPrinter;
 class Md2c extends Command
 {
     // 模型文件路径
-    public const MODEL_PATH = './gen.pdma.json';
+    public const MODEL_PATH = './model.pdma.json';
     // 模型
     protected $models = [];
     // 实体映射
