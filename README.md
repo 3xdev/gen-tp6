@@ -111,6 +111,7 @@ composer lint-fix
 
 ## 开发常用方法
 
+### 公共函数及方法
 ```php
 // 获取系统配置
 system_config('site_name');
@@ -120,6 +121,44 @@ system_config('site_name');
 system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
+
+### 模型搜索器-区间搜索
+示例1：
+1、表格设计新增列名 create_time[]
+2、Base模型已有searchCreateTimeAttr
+
+示例2：
+1、表格设计新增列名 price[]
+2、模型添加搜索器搜索价格区间
+```php
+// 价格区间搜索器
+public function searchPriceAttr($query, $value, $data)
+{
+    empty($value) || $query->whereBetween('price', $value[0], $value[1]);
+}
+```
+
+### 模型搜索器-关联搜索
+示例：
+1、表格设计新增列名 user.nickname , user.mobile
+2、模型添加搜索器搜索关联用户信息
+```php
+// 关联用户搜索器
+public function searchUserAttr($query, $value, $data)
+{
+    $map = array_filter(json_decode($value , true));
+    empty($map) || $query->whereIn('user_id', function ($sq) use ($map) {
+        $sq = (new User())->db();
+        $sq->field($sq->getPk());
+        foreach ($map as $k => $v) {
+            $sq->whereLike($k, "%{$v}%");
+        }
+    });
+}
+```
+
+
+
 
 ## Git提交规范
 

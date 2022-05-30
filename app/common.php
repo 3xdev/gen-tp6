@@ -172,6 +172,18 @@ if (!function_exists('system_col_rel_kv')) {
     }
 }
 
+if (!function_exists('pt_search4col')) {
+    /**
+     * ProTable中search参数处理(取自列名数组)
+     * @param  array   $cols     列名数组
+     * @return array
+     */
+    function pt_search4col($cols)
+    {
+        return array_unique(array_map(fn($col) => preg_replace('/^(\w+)[\.\[].*$/', '${1}', $col), $cols));
+    }
+}
+
 if (!function_exists('pt_filter2where')) {
     /**
      * ProTable中filter转化为查询数组
