@@ -171,7 +171,7 @@ public function searchUserAttr($query, $value, $data)
 
 ## PDManer设计数据模型
 
-* gen.pdma.json
+* model.pdma.json
 
 ## apidoc生成接口文档
 

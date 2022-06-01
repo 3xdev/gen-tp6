@@ -1,10 +1,10 @@
 {
-  "name": "stdp-open",
+  "name": "gen-open",
   "version": "1.0.0",
-  "description": "标准化项目 开放 接口 RESTful",
-  "title": "标准化项目开放接口",
-  "url": "https://stdp.51os.xyz/api/open",
-  "sampleUrl": "https://stdp.51os.xyz/api/open",
+  "description": "艮快 开放 接口 RESTful",
+  "title": "艮快开放接口",
+  "url": "https://gen.51os.xyz/api/open",
+  "sampleUrl": "https://gen.51os.xyz/api/open",
   "header": {
     "title": "接口规范",
     "filename": "header.md"

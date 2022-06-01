@@ -1,10 +1,10 @@
 {
-  "name": "stdp-admin",
+  "name": "gen-admin",
   "version": "1.0.0",
-  "description": "标准化项目 管理 接口 RESTful",
-  "title": "标准化项目管理接口",
-  "url": "https://stdp.51os.xyz/api/admin",
-  "sampleUrl": "https://stdp.51os.xyz/api/admin",
+  "description": "艮快 管理 接口 RESTful",
+  "title": "艮快管理接口",
+  "url": "https://gen.51os.xyz/api/admin",
+  "sampleUrl": "https://gen.51os.xyz/api/admin",
   "header": {
     "title": "接口规范",
     "filename": "header.md"
