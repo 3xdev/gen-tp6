@@ -1,14 +1,14 @@
 {
     "name": "3xdev/gen-tp6",
-    "description": "standard project by thinkphp6",
+    "description": "Gen Low-Code Development Platform By ThinkPHP6",
     "type": "project",
     "keywords": [
-        "standard",
-        "project",
-        "thinkphp",
+        "Gen",
+        "LCDP",
+        "ThinkPHP6",
         "ORM"
     ],
-    "homepage": "https://github.com/lg970044/stdp-tp6",
+    "homepage": "https://github.com/3xdev/gen-tp6",
     "license": "Apache-2.0",
     "authors": [
         {
