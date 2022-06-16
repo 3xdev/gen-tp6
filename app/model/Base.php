@@ -36,6 +36,20 @@ class Base extends Model
         $query->order(pt_sorter2order($value) ?: [$this->pk => 'desc']);
     }
 
+    // 名称搜索器
+    public function searchNameAttr($query, $value, $data)
+    {
+        if (!empty($value)) {
+            $query->whereLike('name', '%' . $value . '%');
+        }
+    }
+    // 标题搜索器
+    public function searchTitleAttr($query, $value, $data)
+    {
+        if (!empty($value)) {
+            $query->whereLike('title', '%' . $value . '%');
+        }
+    }
     // 创建时间搜索器
     public function searchCreateTimeAttr($query, $value, $data)
     {

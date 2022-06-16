@@ -9,6 +9,7 @@ use think\facade\Db;
 use think\facade\View;
 use app\model\SystemDict;
 use app\model\SystemAdmin;
+use app\model\SystemRole;
 use app\model\SystemMenu;
 
 class Init extends Command
@@ -55,7 +56,7 @@ class Init extends Command
             $output->writeln('<info>Database Init Succeed</info>');
         }
 
-        // 初始化管理员
+        // 初始化超级管理员
         $admin = SystemAdmin::findOrEmpty(1);
         if ($admin->isEmpty()) {
             $admin->id = 1;
@@ -66,6 +67,17 @@ class Init extends Command
             $output->writeln('<info>SystemAdmin(id=1) Created!</info>');
         } else {
             //$output->writeln('<warning>SystemAdmin(id=1) Already Exists!</warning>');
+        }
+
+        // 初始化超级管理员角色
+        $role = SystemRole::findOrEmpty(1);
+        if ($role->isEmpty()) {
+            $role->id = 1;
+            $role->name = '超级管理员';
+            $role->save();
+            $output->writeln('<info>SystemRole(id=1) Created!</info>');
+        } else {
+            //$output->writeln('<warning>SystemRole(id=1) Already Exists!</warning>');
         }
 
         // 初始化管理菜单

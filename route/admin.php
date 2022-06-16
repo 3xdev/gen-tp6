@@ -5,6 +5,7 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 use app\middleware\SystemAdminAuth;
+use app\middleware\SystemAdminAuthz;
 
 // 设置全局变量规则
 Route::pattern([
@@ -20,14 +21,36 @@ Route::group('api/admin', function () {
 
     // 管理员登录(请求token)
     Route::post('token', 'admin.SystemAdmin/login');
+    // 管理员退出(销毁token)
+    Route::delete('token', 'admin.SystemAdmin/logout');
 });
-// 注册管理员验证中间件的分组
+
+// 只注册管理员认证中间件的分组
 Route::group('api/admin', function () {
+    // 获取字典列表
+    Route::get('dict', 'admin.SystemDict/index');
     // 获取高级表格(ProTable)的schema描述
     Route::get('schema/protable/:name', 'admin.SystemTable/protable');
     // 获取表单(Formily)的schema描述
     Route::get('schema/formily/:name', 'admin.SystemTable/formily');
 
+    // 创建七牛云直传token
+    Route::post('upload/token/:name', 'admin.SystemUpload/token');
+    // 上传图片
+    Route::post('upload/image/:name', 'admin.SystemUpload/image');
+    // 上传附件
+    Route::post('upload/attachment/:name', 'admin.SystemUpload/attachment');
+
+    // 获取管理员菜单列表
+    Route::get('menus', 'admin.SystemAdmin/menus');
+    // 读取管理员个人信息
+    Route::get('profile', 'admin.SystemAdmin/profile');
+    // 修改管理员个人信息
+    Route::put('profile', 'admin.SystemAdmin/updateProfile');
+})->middleware(SystemAdminAuth::class);
+
+// 注册管理员认证和授权中间件的分组
+Route::group('api/admin', function () {
     // suggest 数据源
     Route::get('suggest/:controller', 'admin.:controller/suggest');
     // CRUD 获取列表
@@ -50,13 +73,6 @@ Route::group('api/admin', function () {
     // REST DELETE操作
     Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
 
-    // 创建七牛云直传token
-    Route::post('upload/token/:name', 'admin.SystemUpload/token');
-    // 上传图片
-    Route::post('upload/image/:name', 'admin.SystemUpload/image');
-    // 上传附件
-    Route::post('upload/attachment/:name', 'admin.SystemUpload/attachment');
-
     // 获取配置项列表
     Route::get('config', 'admin.SystemConfig/index');
     // 获取配置项信息
@@ -67,9 +83,9 @@ Route::group('api/admin', function () {
     Route::post('config', 'admin.SystemConfig/create');
     // 删除配置项
     Route::delete('config/:ids', 'admin.SystemConfig/delete');
+    // 保存系统配置
+    Route::put('setting', 'admin.SystemConfig/setting');
 
-    // 获取字典列表
-    Route::get('dict', 'admin.SystemDict/index');
     // 更新字典
     Route::put('dict/:name', 'admin.SystemDict/update');
     // 创建字典
@@ -77,15 +93,6 @@ Route::group('api/admin', function () {
     // 删除字典
     Route::delete('dict/:names', 'admin.SystemDict/delete');
 
-    // 保存系统配置
-    Route::put('setting', 'admin.SystemConfig/setting');
-
-    // 管理员退出(销毁token)
-    Route::delete('token', 'admin.SystemAdmin/logout');
-    // 读取管理员个人信息
-    Route::get('profile', 'admin.SystemAdmin/profile');
-    // 修改管理员个人信息
-    Route::put('profile', 'admin.SystemAdmin/updateProfile');
     // 获取管理员列表
     Route::get('admin', 'admin.SystemAdmin/index');
     // 更新管理员
@@ -94,6 +101,17 @@ Route::group('api/admin', function () {
     Route::post('admin', 'admin.SystemAdmin/create');
     // 删除管理员
     Route::delete('admin/:ids', 'admin.SystemAdmin/delete');
+
+    // 获取系统角色列表
+    Route::get('system_role', 'admin.SystemRole/index');
+    // 获取系统角色
+    Route::get('system_role/:id', 'admin.SystemRole/read');
+    // 更新系统角色
+    Route::put('system_role/:id', 'admin.SystemRole/update');
+    // 创建系统角色
+    Route::post('system_role', 'admin.SystemRole/create');
+    // 删除系统角色
+    Route::delete('system_role/:ids', 'admin.SystemRole/delete');
 
     // 获取菜单列表
     Route::get('menu', 'admin.SystemMenu/index');
@@ -116,4 +134,4 @@ Route::group('api/admin', function () {
     Route::post('table', 'admin.SystemTable/create');
     // 删除表格
     Route::delete('table/:names', 'admin.SystemTable/delete');
-})->middleware(SystemAdminAuth::class);
+})->middleware(SystemAdminAuth::class)->middleware(SystemAdminAuthz::class);

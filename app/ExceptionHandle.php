@@ -9,6 +9,7 @@ use think\exception\HttpException;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
 use thans\jwt\exception\JWTException;
+use tauthz\exception\Unauthorized;
 use app\exception\RequestException;
 use app\exception\OperationException;
 use think\Response;
@@ -57,6 +58,10 @@ class ExceptionHandle extends Handle
         // JWT异常处理
         if ($e instanceof JWTException) {
             return common_response($e->getMessage(), 401);
+        }
+        // Casbin未授权处理
+        if ($e instanceof Unauthorized) {
+            return common_response($e->getMessage(), 403);
         }
         // 验证器异常处理
         if ($e instanceof ValidateException) {

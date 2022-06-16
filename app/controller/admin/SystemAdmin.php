@@ -4,6 +4,7 @@ namespace app\controller\admin;
 
 use app\model\SystemAdmin as SelfModel;
 use thans\jwt\facade\JWTAuth;
+use tauthz\facade\Enforcer;
 
 /**
  * @apiDefine IADMIN 管理员
@@ -109,6 +110,34 @@ class SystemAdmin extends Base
     }
 
     /**
+     * @api {GET} /menus 获取管理员菜单
+     * @apiVersion 1.0.0
+     * @apiGroup IADMIN
+     * @apiHeader {string} Authorization Token
+     * @apiSuccess {Object[]} data 菜单列表
+     * @apiSuccess {number} data.id 菜单ID
+     * @apiSuccess {string} data.name 名称
+     * @apiSuccess {number} data.parent_id 父ID
+     * @apiSuccess {string} data.path 访问路由
+     * @apiSuccess {string} data.icon 图标
+     * @apiSuccess {number} data.sort 排序
+     */
+    public function menus()
+    {
+        $list = \app\model\SystemMenu::where('status', 1)->order('sort')->select();
+
+        $roles = Enforcer::getRolesForUser('admin_' . $this->request->admin->id);
+        $menus = $list->filter(fn($menu) => empty($menu->table_code) || in_array('role_1', $roles) || Enforcer::enforce('admin_' . $this->request->admin->id, $menu->table_code, 'r'));
+
+        return $this->success([
+            'data' => new \BlueM\Tree(
+                $menus->visible(['id', 'name', 'parent_id', 'path', 'icon', 'sort'])->toArray(),
+                ['parent' => 'parent_id', 'jsonSerializer' => new \BlueM\Tree\Serializer\HierarchicalTreeJsonSerializer()]
+            ),
+        ]);
+    }
+
+    /**
      * @api {POST} /admins 创建管理员
      * @apiVersion 1.0.0
      * @apiGroup IADMIN
@@ -120,12 +149,17 @@ class SystemAdmin extends Base
      */
     public function create()
     {
-        $data = $this->request->post(['mobile', 'username', 'nickname', 'password', 'avatar']);
+        $data = $this->request->post(['username', 'roles', 'mobile', 'password', 'nickname']);
         $data['delete_time'] = 0;
         $this->validate($data, 'SystemAdmin');
 
         // 创建管理员
-        SelfModel::create($data);
+        $model = SelfModel::create($data);
+
+        // 新增管理员角色
+        foreach ($data['roles'] as $role) {
+            Enforcer::addRoleForUser('admin_' . $model->id, 'role_' . $role);
+        }
 
         return $this->success();
     }
@@ -143,7 +177,7 @@ class SystemAdmin extends Base
      */
     public function update($id)
     {
-        $data = $this->request->post(['username', 'mobile', 'password', 'nickname', 'avatar', 'status']);
+        $data = $this->request->post(['username', 'roles', 'mobile', 'password', 'nickname', 'avatar', 'status']);
         $data['delete_time'] = 0;
 
         $model = SelfModel::find($id);
@@ -161,6 +195,13 @@ class SystemAdmin extends Base
             unset($data['password']);
         }
         $model->save($data);
+
+        // 更新管理员角色
+        Enforcer::deleteRolesForUser('admin_' . $model->id);
+        foreach ($data['roles'] as $role) {
+            Enforcer::addRoleForUser('admin_' . $model->id, 'role_' . $role);
+        }
+
         return $this->success();
     }
 
@@ -215,7 +256,7 @@ class SystemAdmin extends Base
 
         return $this->success([
             'total' => $total,
-            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'login_time', 'create_time'])->toArray()
+            'data' => $list->visible(['id', 'username', 'nickname', 'status', 'mobile', 'avatar', 'login_time', 'create_time'])->append(['roles'])->toArray()
         ]);
     }
 

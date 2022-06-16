@@ -11,6 +11,7 @@ Gen(艮快低代码开发)
 * topthink/framework 6.0
 * topthink/think-orm 2.0
 * thans/tp-jwt-auth 1.1
+* casbin/think-authz 1.5
 * godruoyi/php-snowflake 1.1
 * jaguarjack/think-filesystem-cloud 1.0
 

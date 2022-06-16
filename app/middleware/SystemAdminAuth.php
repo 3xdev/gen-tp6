@@ -6,7 +6,7 @@ use thans\jwt\exception\TokenExpiredException;
 use thans\jwt\exception\TokenBlacklistGracePeriodException;
 
 /**
- * 管理员授权验证
+ * 管理员认证
  */
 class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
 {

@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemMenu as SelfModel;
+use tauthz\facade\Enforcer;
 
 class SystemMenu extends Base
 {
@@ -19,7 +20,7 @@ class SystemMenu extends Base
      */
     public function create()
     {
-        $data = $this->request->post(['parent_id', 'name', 'path', 'icon', 'sort']);
+        $data = $this->request->post(['parent_id', 'name', 'path', 'table_code', 'icon', 'sort']);
         $this->validate($data, 'SystemMenu');
 
         SelfModel::create($data);
@@ -40,7 +41,7 @@ class SystemMenu extends Base
      */
     public function update($id)
     {
-        $data = $this->request->post(['name', 'path', 'icon', 'sort', 'status']);
+        $data = $this->request->post(['name', 'path', 'table_code', 'icon', 'sort', 'status']);
 
         $model = SelfModel::find($id);
         if (!$model) {
@@ -86,6 +87,7 @@ class SystemMenu extends Base
      * @apiSuccess {string} data.name 名称
      * @apiSuccess {number} data.parent_id 父ID
      * @apiSuccess {string} data.path 访问路由
+     * @apiSuccess {string} data.table_code 关联表格
      * @apiSuccess {string} data.icon 图标
      * @apiSuccess {number} data.sort 排序
      * @apiSuccess {number} data.status 状态(0=禁用,1=正常)
@@ -93,15 +95,15 @@ class SystemMenu extends Base
      */
     public function index()
     {
-        $search = $this->request->only(['name', 'path', 'parent_id', 'status'], 'get');
+        $search = $this->request->only(['name', 'path', 'parent_id'], 'get');
 
         $list = SelfModel::withSearch(array_keys($search), $search)->order('sort')->select();
+
         return $this->success([
             'data' => new \BlueM\Tree(
-                $list->visible(['id', 'name', 'parent_id', 'path', 'icon', 'sort', 'status', 'create_time'])->toArray(),
+                $list->visible(['id', 'name', 'parent_id', 'path', 'table_code', 'icon', 'sort', 'status', 'create_time'])->toArray(),
                 ['parent' => 'parent_id', 'jsonSerializer' => new \BlueM\Tree\Serializer\HierarchicalTreeJsonSerializer()]
             ),
-
         ]);
     }
 
