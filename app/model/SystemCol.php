@@ -34,6 +34,7 @@ class SystemCol extends Base
         !empty($data['value_enum_rel']) && $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
         $data['col_size'] > 1 && $schema['colSize'] = $data['col_size'];
         $data['filters'] && $schema['filters'] = true;
+        $data['sorter'] && $schema['sorter'] = true;
         $data['ellipsis'] && $schema['ellipsis'] = true;
         $data['copyable'] && $schema['copyable'] = true;
         $data['hide_in_form'] && $schema['hideInForm'] = true;

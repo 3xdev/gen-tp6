@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-6-16 10:17:54",
+  "updatedTime": "2022-6-20 16:41:22",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -3091,6 +3091,210 @@
       ]
     },
     {
+      "id": "35917EC4-9355-4E0D-920E-D3BD8FE02BAE",
+      "env": {
+        "base": {
+          "nameSpace": "",
+          "codeRoot": ""
+        }
+      },
+      "defKey": "system_form",
+      "defName": "系统表单",
+      "comment": "",
+      "properties": {},
+      "nameTemplate": "{defKey}[{defName}]",
+      "headers": [
+        {
+          "refKey": "hideInGraph",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "defKey",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "defName",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "primaryKey",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "notNull",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "autoIncrement",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "domain",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "type",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "len",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "scale",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "comment",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "refDict",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "defaultValue",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "isStandard",
+          "hideInGraph": false
+        },
+        {
+          "refKey": "uiHint",
+          "hideInGraph": true
+        },
+        {
+          "refKey": "extProps",
+          "hideInGraph": true
+        }
+      ],
+      "fields": [
+        {
+          "defKey": "code",
+          "defName": "代码",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
+          "refDict": "",
+          "extProps": {},
+          "id": "627BADE6-8DBB-4552-88BD-4948E5E5D67B"
+        },
+        {
+          "defKey": "name",
+          "defName": "名称",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "''",
+          "hideInGraph": false,
+          "refDict": "",
+          "domain": "87968BA6-FD09-4BBA-9E26-A07EFEB9E8A6",
+          "id": "719281D4-DC05-4DC1-BEA0-AF9667676982",
+          "uiHint": "",
+          "isStandard": true
+        },
+        {
+          "defKey": "schema",
+          "defName": "Schema",
+          "comment": "",
+          "domain": "22191561-8BBC-4BBB-A4B1-6A9CF0E2229C",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "refDict": "",
+          "uiHint": "",
+          "id": "91A44F44-8F8F-43DA-9892-874888DA3C11"
+        },
+        {
+          "defKey": "status",
+          "defName": "状态",
+          "comment": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "1",
+          "hideInGraph": false,
+          "refDict": "00474E51-9CB6-4F0F-BAF2-6DBED9E1E4AD",
+          "uiHint": "",
+          "id": "F96C09CB-2CD0-4294-98BE-77F987410DC6"
+        },
+        {
+          "defKey": "create_time",
+          "defName": "创建时间",
+          "comment": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "CB30B73B-0A6C-4612-80CA-271AD90E0AC9"
+        },
+        {
+          "defKey": "update_time",
+          "defName": "更新时间",
+          "comment": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "BA6B4593-5A50-4B62-8FB9-BB252695C687"
+        },
+        {
+          "defKey": "delete_time",
+          "defName": "软删除时间",
+          "comment": "",
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "refDict": "",
+          "uiHint": "",
+          "id": "771BC908-B033-4C8B-8FC7-EDB12600343F"
+        }
+      ],
+      "correlations": [],
+      "indexes": []
+    },
+    {
       "id": "33A767A6-7027-47B4-A758-461F6987EF5E",
       "defKey": "product_brand",
       "defName": "商品品牌",
@@ -5703,6 +5907,30 @@
           "attr2": "",
           "attr3": "",
           "id": "7D6475BC-022D-4EC9-A11F-8B4E0287E0F4"
+        },
+        {
+          "defKey": "modal",
+          "defName": "对话框",
+          "sort": "3",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "98E91B7A-5F9C-4B45-8348-F5324CEFAD96"
+        },
+        {
+          "defKey": "page",
+          "defName": "页面",
+          "sort": "4",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "9DDE2FE1-F504-46A6-AD8E-33883F5BE2C4"
         }
       ]
     },

@@ -2,23 +2,27 @@
 
 namespace app\controller\admin;
 
-use app\model\SystemTable as SelfModel;
+use app\model\SystemConfig as SystemConfigModel;
+use app\model\SystemDict as SystemDictModel;
+use app\model\SystemForm as SelfModel;
 
-class SystemTable extends Base
+class SystemForm extends Base
 {
     /**
-     * @api {POST} /table 创建表格
+     * @api {POST} /form 创建表单
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} code 代码
      * @apiParam {string} name 名称
-     * @apiParam {string} props_string 属性字符串
+     * @apiParam {string} schema_string Schema字符串
      */
     public function create()
     {
-        $data = $this->request->post(['name', 'code', 'props_string']);
-        $this->validate($data, 'SystemTable');
+        $data = $this->request->post(['name', 'code', 'schema_string']);
+        $data['delete_time'] = 0;
+
+        $this->validate($data, 'SystemForm');
 
         SelfModel::create($data);
 
@@ -26,23 +30,19 @@ class SystemTable extends Base
     }
 
     /**
-     * @api {PUT} /table/:name 更新表格
+     * @api {PUT} /form/:name 更新表单
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiParam {string} code 代码
      * @apiParam {string} name 名称
-     * @apiParam {string} props_string 属性字符串
+     * @apiParam {string} schema_string Schema字符串
      * @apiParam {number} status 状态(0=禁用,1=正常)
      */
     public function update($name)
     {
-        $data = $this->request->post(['code', 'name', 'props_string', 'status']);
-        $options = $this->request->post('options/a');
-        $cols = $this->request->post('cols/a');
-        foreach ($cols as $index => &$col) {
-            $col['sort'] = $index;
-        }
+        $data = $this->request->post(['code', 'name', 'schema_string', 'status']);
+        $data['delete_time'] = 0;
 
         $model = SelfModel::find($name);
         if (!$model) {
@@ -50,21 +50,18 @@ class SystemTable extends Base
         }
 
         if ($model->code == $data['code']) {
-            $this->validate($data, 'SystemTable.update');
+            $this->validate($data, 'SystemForm.update');
         } else {
-            $this->validate($data, 'SystemTable');
+            $this->validate($data, 'SystemForm');
         }
 
-        $data['options'] = $options;
         $model->save($data);
-        $model->cols()->delete();
-        $model->cols()->saveAll($cols);
 
         return $this->success();
     }
 
     /**
-     * @api {DELETE} /table/:names 删除表格
+     * @api {DELETE} /form/:names 删除表单
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
@@ -77,14 +74,13 @@ class SystemTable extends Base
         }
 
         foreach ($models as $model) {
-            $model->cols()->delete();
             $model->delete();
         }
         return $this->success();
     }
 
     /**
-     * @api {GET} /table 表格列表
+     * @api {GET} /form 表单列表
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
@@ -99,7 +95,7 @@ class SystemTable extends Base
      * @apiSuccess {object[]} data 数据列表
      * @apiSuccess {string} data.code 代码
      * @apiSuccess {string} data.name 名称
-     * @apiSuccess {object} data.props 属性
+     * @apiSuccess {object} data.schema 属性
      * @apiSuccess {number} data.status 状态(0=禁用,1=正常)
      * @apiSuccess {string} data.create_time 创建时间
      */
@@ -113,7 +109,7 @@ class SystemTable extends Base
         $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
 
         $visible = [
-            'code', 'name', 'props', 'status', 'create_time'
+            'code', 'name', 'schema', 'status', 'create_time'
         ];
         return $this->success([
             'total' => $total,
@@ -122,52 +118,32 @@ class SystemTable extends Base
     }
 
     /**
-     * @api {GET} /table/:name 表格信息
+     * @api {GET} /form/:name 表单信息
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
      * @apiSuccess {string} code 代码
      * @apiSuccess {string} name 名称
-     * @apiSuccess {object} props 属性
+     * @apiSuccess {object} schema 属性
      * @apiSuccess {number} status 状态(0=禁用,1=正常)
      * @apiSuccess {string} create_time 创建时间
      */
     public function read($name)
     {
-        $table = SelfModel::with(['cols'])->find($name);
-        if (!$table) {
+        $form = SelfModel::find($name);
+        if (!$form) {
             return $this->error('不存在', 404);
         }
 
-        return $this->success($table->visible([
-            'code', 'name', 'props', 'options', 'status', 'create_time',
-            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip',
-                        'required', 'default_value', 'validator',
-                        'ellipsis', 'copyable', 'filters', 'sorter', 'col_size',
-                        'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions']
+        return $this->success($form->visible([
+            'code', 'name', 'schema', 'status', 'create_time',
         ])->toArray());
     }
 
-    /**
-     * @api {GET} /schema/protable/:name 获取高级表格(ProTable)的schema描述
-     * @apiVersion 1.0.0
-     * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {object} columns 列定义
-     */
-    public function protable($name)
-    {
-        $table = SelfModel::find($name);
-        if (!$table) {
-            return $this->error('数据未找到');
-        }
-
-        return $this->success($table->pro_schema);
-    }
 
 
     /**
-     * @api {GET} /schema/formily/table/:name 获取系统表格(Formily)的schema描述
+     * @api {GET} /schema/formily/form/:name 获取系统表单(Formily)的schema描述
      * @apiVersion 1.0.0
      * @apiGroup ISYS
      * @apiHeader {string} Authorization Token
@@ -176,11 +152,56 @@ class SystemTable extends Base
      */
     public function formily($name)
     {
-        $table = SelfModel::find($name);
-
-        return $this->success([
+        $schema = [
             'type' => 'object',
-            'properties' => $table ? $table->formily_schema : []
-        ]);
+            'properties' => []
+        ];
+
+        switch ($name) {
+            // 系统配置
+            case 'setting':
+                $schema['properties'] = $this->buildSetting();
+                break;
+            default:
+                $form = SelfModel::find($name);
+                $form && $schema = $form->schema;
+                break;
+        }
+
+        return $this->success($schema);
+    }
+
+    // 构建配置
+    private function buildSetting()
+    {
+        $json = [];
+        $dict = SystemDictModel::find('config_tab');
+        $map = $dict ? $dict->items->column('label', 'key_') : [];
+        empty($map) && $map = ['default' => '系统配置'];
+        foreach ($map as $key => $value) {
+            $json[$key] = [
+                'type' => 'void',
+                'x-component' => 'FormTab.TabPane',
+                'x-component-props' => [
+                    'tab' => $value
+                ],
+                'properties' => []
+            ];
+        }
+        $configs = SystemConfigModel::select();
+        foreach ($configs as $config) {
+            $json[$config->tab ?: 'default']['properties'][$config->code] = $config->schema;
+        }
+
+        return [
+            'tabs' => [
+                'type' => 'void',
+                'x-component' => 'FormTab',
+                'x-component-props' => [
+                    'type' => 'card'
+                ],
+                'properties' => $json
+            ]
+        ];
     }
 }

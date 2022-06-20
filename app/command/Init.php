@@ -89,8 +89,10 @@ class Init extends Command
                 ['parent_id' => '1', 'name' => '字典管理', 'path' => '/system/dict'],
                 ['parent_id' => '1', 'name' => '配置项管理', 'path' => '/system/config'],
                 ['parent_id' => '1', 'name' => '管理员管理', 'path' => '/system/admin'],
+                ['parent_id' => '1', 'name' => '管理角色管理', 'path' => '/system/role'],
                 ['parent_id' => '1', 'name' => '菜单管理', 'path' => '/system/menu'],
                 ['parent_id' => '1', 'name' => '表格管理', 'path' => '/system/table'],
+                ['parent_id' => '1', 'name' => '表单管理', 'path' => '/system/form'],
             ]);
             $output->writeln('<info>SystemMenu Created!</info>');
         } else {
@@ -106,7 +108,6 @@ class Init extends Command
         $entity['pks'] = implode(',', array_column(array_filter($entity['fields'], fn($field) => $field['primaryKey']), 'defKey'));
         array_walk($entity['fields'], [$this, 'walkField']);
 
-        View::assign('entity', $entity);
         View::assign('entity', $entity);
         try {
             Db::execute(View::fetch('database/' . config('database.default') . '/ddl_create_table'));
