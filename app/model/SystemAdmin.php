@@ -4,7 +4,7 @@ namespace app\model;
 
 use think\model\concern\SoftDelete;
 use think\facade\Event;
-use app\model\SystemAdminOperation as SystemAdminOperationModel;
+use tauthz\facade\Enforcer;
 
 /**
  * 管理员模型
@@ -44,6 +44,10 @@ class SystemAdmin extends Base
         $value && $query->whereBetweenTime('login_time', $value[0], $value[1]);
     }
 
+    public function getRolesAttr($value, $data)
+    {
+        return array_map(fn($role) => intval(string_remove_prefix($role, 'role_')), Enforcer::getRolesForUser('admin_' . $data['id']));
+    }
     public function getLoginTimeAttr($value, $data)
     {
         return $value ? date('Y-m-d H:i:s', $value) : '';

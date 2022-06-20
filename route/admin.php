@@ -5,6 +5,7 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 use app\middleware\SystemAdminAuth;
+use app\middleware\SystemAdminAuthz;
 
 // 设置全局变量规则
 Route::pattern([
@@ -16,18 +17,42 @@ Route::pattern([
 // 不注册中间件的分组
 Route::group('api/admin', function () {
     // 获取字典
-    Route::get('dict/:name', 'admin.SystemDict/read');
+    Route::get('system_dict/:name', 'admin.SystemDict/read');
 
     // 管理员登录(请求token)
     Route::post('token', 'admin.SystemAdmin/login');
+    // 管理员退出(销毁token)
+    Route::delete('token', 'admin.SystemAdmin/logout');
 });
-// 注册管理员验证中间件的分组
+
+// 只注册管理员认证中间件的分组
 Route::group('api/admin', function () {
+    // 获取字典列表
+    Route::get('system_dict', 'admin.SystemDict/index');
     // 获取高级表格(ProTable)的schema描述
     Route::get('schema/protable/:name', 'admin.SystemTable/protable');
-    // 获取表单(Formily)的schema描述
-    Route::get('schema/formily/:name', 'admin.SystemTable/formily');
+    // 获取系统表格(Formily)的schema描述
+    Route::get('schema/formily/table/:name', 'admin.SystemTable/formily');
+    // 获取系统表单(Formily)的schema描述
+    Route::get('schema/formily/form/:name', 'admin.SystemForm/formily');
 
+    // 创建七牛云直传token
+    Route::post('upload/token/:name', 'admin.SystemUpload/token');
+    // 上传图片
+    Route::post('upload/image/:name', 'admin.SystemUpload/image');
+    // 上传附件
+    Route::post('upload/attachment/:name', 'admin.SystemUpload/attachment');
+
+    // 获取管理员菜单列表
+    Route::get('menus', 'admin.SystemAdmin/menus');
+    // 读取管理员个人信息
+    Route::get('profile', 'admin.SystemAdmin/profile');
+    // 修改管理员个人信息
+    Route::put('profile', 'admin.SystemAdmin/updateProfile');
+})->middleware(SystemAdminAuth::class);
+
+// 注册管理员认证和授权中间件的分组
+Route::group('api/admin', function () {
     // suggest 数据源
     Route::get('suggest/:controller', 'admin.:controller/suggest');
     // CRUD 获取列表
@@ -50,70 +75,76 @@ Route::group('api/admin', function () {
     // REST DELETE操作
     Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
 
-    // 创建七牛云直传token
-    Route::post('upload/token/:name', 'admin.SystemUpload/token');
-    // 上传图片
-    Route::post('upload/image/:name', 'admin.SystemUpload/image');
-    // 上传附件
-    Route::post('upload/attachment/:name', 'admin.SystemUpload/attachment');
-
     // 获取配置项列表
-    Route::get('config', 'admin.SystemConfig/index');
+    Route::get('system_config', 'admin.SystemConfig/index');
     // 获取配置项信息
-    Route::get('config/:id', 'admin.SystemConfig/read');
+    Route::get('system_config/:id', 'admin.SystemConfig/read');
     // 更新配置项信息
-    Route::put('config/:id', 'admin.SystemConfig/update');
+    Route::put('system_config/:id', 'admin.SystemConfig/update');
     // 创建配置项
-    Route::post('config', 'admin.SystemConfig/create');
+    Route::post('system_config', 'admin.SystemConfig/create');
     // 删除配置项
-    Route::delete('config/:ids', 'admin.SystemConfig/delete');
-
-    // 获取字典列表
-    Route::get('dict', 'admin.SystemDict/index');
-    // 更新字典
-    Route::put('dict/:name', 'admin.SystemDict/update');
-    // 创建字典
-    Route::post('dict', 'admin.SystemDict/create');
-    // 删除字典
-    Route::delete('dict/:names', 'admin.SystemDict/delete');
-
+    Route::delete('system_config/:ids', 'admin.SystemConfig/delete');
     // 保存系统配置
-    Route::put('setting', 'admin.SystemConfig/setting');
+    Route::put('system_setting', 'admin.SystemConfig/setting');
 
-    // 管理员退出(销毁token)
-    Route::delete('token', 'admin.SystemAdmin/logout');
-    // 读取管理员个人信息
-    Route::get('profile', 'admin.SystemAdmin/profile');
-    // 修改管理员个人信息
-    Route::put('profile', 'admin.SystemAdmin/updateProfile');
+    // 更新字典
+    Route::put('system_dict/:name', 'admin.SystemDict/update');
+    // 创建字典
+    Route::post('system_dict', 'admin.SystemDict/create');
+    // 删除字典
+    Route::delete('system_dict/:names', 'admin.SystemDict/delete');
+
     // 获取管理员列表
-    Route::get('admin', 'admin.SystemAdmin/index');
+    Route::get('system_admin', 'admin.SystemAdmin/index');
     // 更新管理员
-    Route::put('admin/:id', 'admin.SystemAdmin/update');
+    Route::put('system_admin/:id', 'admin.SystemAdmin/update');
     // 创建管理员
-    Route::post('admin', 'admin.SystemAdmin/create');
+    Route::post('system_admin', 'admin.SystemAdmin/create');
     // 删除管理员
-    Route::delete('admin/:ids', 'admin.SystemAdmin/delete');
+    Route::delete('system_admin/:ids', 'admin.SystemAdmin/delete');
+
+    // 获取系统角色列表
+    Route::get('system_role', 'admin.SystemRole/index');
+    // 获取系统角色
+    Route::get('system_role/:id', 'admin.SystemRole/read');
+    // 更新系统角色
+    Route::put('system_role/:id', 'admin.SystemRole/update');
+    // 创建系统角色
+    Route::post('system_role', 'admin.SystemRole/create');
+    // 删除系统角色
+    Route::delete('system_role/:ids', 'admin.SystemRole/delete');
 
     // 获取菜单列表
-    Route::get('menu', 'admin.SystemMenu/index');
+    Route::get('system_menu', 'admin.SystemMenu/index');
     // 获取菜单信息
-    Route::get('menu/:id', 'admin.SystemMenu/read');
+    Route::get('system_menu/:id', 'admin.SystemMenu/read');
     // 更新菜单
-    Route::put('menu/:id', 'admin.SystemMenu/update');
+    Route::put('system_menu/:id', 'admin.SystemMenu/update');
     // 创建菜单
-    Route::post('menu', 'admin.SystemMenu/create');
+    Route::post('system_menu', 'admin.SystemMenu/create');
     // 删除菜单
-    Route::delete('menu/:ids', 'admin.SystemMenu/delete');
+    Route::delete('system_menu/:ids', 'admin.SystemMenu/delete');
 
     // 获取表格列表
-    Route::get('table', 'admin.SystemTable/index');
+    Route::get('system_table', 'admin.SystemTable/index');
     // 获取表格信息
-    Route::get('table/:name', 'admin.SystemTable/read');
+    Route::get('system_table/:name', 'admin.SystemTable/read');
     // 更新表格
-    Route::put('table/:name', 'admin.SystemTable/update');
+    Route::put('system_table/:name', 'admin.SystemTable/update');
     // 创建表格
-    Route::post('table', 'admin.SystemTable/create');
+    Route::post('system_table', 'admin.SystemTable/create');
     // 删除表格
-    Route::delete('table/:names', 'admin.SystemTable/delete');
-})->middleware(SystemAdminAuth::class);
+    Route::delete('system_table/:names', 'admin.SystemTable/delete');
+
+    // 获取表单列表
+    Route::get('system_form', 'admin.SystemForm/index');
+    // 获取表单信息
+    Route::get('system_form/:name', 'admin.SystemForm/read');
+    // 更新表单
+    Route::put('system_form/:name', 'admin.SystemForm/update');
+    // 创建表单
+    Route::post('system_form', 'admin.SystemForm/create');
+    // 删除表单
+    Route::delete('system_form/:names', 'admin.SystemForm/delete');
+})->middleware(SystemAdminAuth::class)->middleware(SystemAdminAuthz::class);
