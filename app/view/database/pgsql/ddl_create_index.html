@@ -1,0 +1,5 @@
+CREATE {$index.unique ? "UNIQUE" : ""} INDEX IF NOT EXISTS {$prefix}{$entity.defKey|strtolower}_{$index.defKey|strtolower} ON {$prefix}{$entity.defKey|strtolower} (
+{foreach $index.fks as $key=>$fk }
+  "{$fk|strtolower}" {$key < count($index.fks)-1 ? "," : ""}
+{/foreach}
+)
