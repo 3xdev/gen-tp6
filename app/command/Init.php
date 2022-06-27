@@ -62,7 +62,6 @@ class Init extends Command
         // 初始化超级管理员
         $admin = SystemAdmin::findOrEmpty(1);
         if ($admin->isEmpty()) {
-            $admin->id = 1;
             $admin->nickname = 'admin';
             $admin->username = 'admin';
             $admin->password = '123456';
@@ -75,7 +74,6 @@ class Init extends Command
         // 初始化超级管理员角色
         $role = SystemRole::findOrEmpty(1);
         if ($role->isEmpty()) {
-            $role->id = 1;
             $role->name = '超级管理员';
             $role->save();
             $output->writeln('<info>SystemRole(id=1) Created!</info>');
@@ -163,7 +161,7 @@ class Init extends Command
     // 插入字典
     protected function insertDict($dict)
     {
-        $model = SystemDict::find($dict['defKey']);
+        $model = SystemDict::where('key_', $dict['defKey'])->find();
         if ($model) {
             return;
         }

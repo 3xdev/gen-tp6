@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-6-20 16:41:22",
+  "updatedTime": "2022-6-27 17:34:23",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -646,6 +646,23 @@
       ],
       "fields": [
         {
+          "defKey": "id",
+          "defName": "ID",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "DC8D4005-A947-4203-9422-89BC6ABC75AB"
+        },
+        {
           "defKey": "key_",
           "defName": "代码",
           "comment": "",
@@ -653,7 +670,7 @@
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "''",
@@ -808,6 +825,23 @@
       ],
       "fields": [
         {
+          "defKey": "id",
+          "defName": "ID",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "6A7769AF-6ACB-4F83-B54B-9519EA685CDD"
+        },
+        {
           "defKey": "dict_key",
           "defName": "字典代码",
           "comment": "",
@@ -815,7 +849,7 @@
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "''",
@@ -832,7 +866,7 @@
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "''",
@@ -2379,6 +2413,23 @@
           "refDict": "",
           "uiHint": "",
           "id": "4D320809-62DB-496F-89F7-C52739E9AD1A"
+        },
+        {
+          "defKey": "delete_time",
+          "defName": "软删除时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "94E408CD-7FF4-4ECD-92A9-9B59AC0F59BD"
         }
       ],
       "correlations": [],
@@ -2495,6 +2546,23 @@
       ],
       "fields": [
         {
+          "defKey": "id",
+          "defName": "ID",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "A50BBA1B-792E-4DBB-940E-0D0270EFC2CB"
+        },
+        {
           "defKey": "code",
           "defName": "代码",
           "comment": "",
@@ -2502,7 +2570,7 @@
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "''",
@@ -2611,10 +2679,47 @@
           "refDict": "",
           "uiHint": "",
           "id": "78EBC52B-345E-4DD1-BA99-B5892BD8AE2E"
+        },
+        {
+          "defKey": "delete_time",
+          "defName": "软删除时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "31E6A2AA-495E-44D6-9081-880C5805BAF4"
         }
       ],
       "correlations": [],
-      "indexes": []
+      "indexes": [
+        {
+          "defKey": "uni_code",
+          "defName": null,
+          "unique": true,
+          "comment": "",
+          "fields": [
+            {
+              "fieldDefKey": "0193A3DE-EF75-48A7-B45A-92AF678C3E71",
+              "ascOrDesc": "A",
+              "id": "2BCAF037-DE74-42E5-97AB-F3B2F732530D"
+            },
+            {
+              "fieldDefKey": "31E6A2AA-495E-44D6-9081-880C5805BAF4",
+              "ascOrDesc": "A",
+              "id": "D92E09B7-7B1A-4C7A-880E-8A865AFC9BEA"
+            }
+          ],
+          "id": "1CB6E341-82E6-446B-BE45-85D9C0174114"
+        }
+      ]
     },
     {
       "id": "A191487F-FAED-4572-AFCE-5AD76A8E6C40",
@@ -3065,12 +3170,29 @@
           "refDict": "",
           "uiHint": "",
           "id": "4F38E66E-C60A-4684-8DB0-0D5995E276A9"
+        },
+        {
+          "defKey": "delete_time",
+          "defName": "软删除时间",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "0",
+          "hideInGraph": true,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "1BD175FE-6C6B-473C-991E-40A5FB40954D"
         }
       ],
       "correlations": [],
       "indexes": [
         {
-          "defKey": "idx_index",
+          "defKey": "uni_index",
           "defName": null,
           "unique": true,
           "comment": "",
@@ -3084,6 +3206,11 @@
               "fieldDefKey": "1CC151DC-F997-4B7D-BB4F-8E519CFD68D9",
               "ascOrDesc": "A",
               "id": "61978DC4-02C6-4F20-AD98-EA0DF81B4D9E"
+            },
+            {
+              "fieldDefKey": "1BD175FE-6C6B-473C-991E-40A5FB40954D",
+              "ascOrDesc": "A",
+              "id": "4FCFBB2B-BF72-4319-924A-4EA4452D99C4"
             }
           ],
           "id": "274DD094-C45F-4A88-9BD9-C41173419083"
@@ -3171,13 +3298,30 @@
       ],
       "fields": [
         {
+          "defKey": "id",
+          "defName": "ID",
+          "comment": "",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": true,
+          "notNull": true,
+          "autoIncrement": true,
+          "defaultValue": "",
+          "hideInGraph": false,
+          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
+          "refDict": "",
+          "extProps": {},
+          "id": "28BCF8F5-FA58-4EAE-AA02-A0E14899FD79"
+        },
+        {
           "defKey": "code",
           "defName": "代码",
           "comment": "",
           "type": "",
           "len": "",
           "scale": "",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
           "defaultValue": "''",
@@ -3292,7 +3436,27 @@
         }
       ],
       "correlations": [],
-      "indexes": []
+      "indexes": [
+        {
+          "defKey": "uni_code",
+          "defName": null,
+          "unique": true,
+          "comment": "",
+          "fields": [
+            {
+              "fieldDefKey": "627BADE6-8DBB-4552-88BD-4948E5E5D67B",
+              "ascOrDesc": "A",
+              "id": "3D8078F7-6FFA-4C44-B9A4-88F9FED2E457"
+            },
+            {
+              "fieldDefKey": "771BC908-B033-4C8B-8FC7-EDB12600343F",
+              "ascOrDesc": "A",
+              "id": "D87675F7-9AFE-436A-879D-BDD2EE55451D"
+            }
+          ],
+          "id": "1B6DFA75-419A-4A3E-AA7C-C78B19111346"
+        }
+      ]
     },
     {
       "id": "33A767A6-7027-47B4-A758-461F6987EF5E",

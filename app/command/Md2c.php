@@ -139,7 +139,7 @@ class Md2c extends Command
     // 实体转表格
     protected function entity2table($entity)
     {
-        $table = SystemTable::find(strtolower($entity['defKey']));
+        $table = SystemTable::where('code', strtolower($entity['defKey']))->find();
         if ($table || in_array(strtolower($entity['defKey']), self::IGNORE_TABLES)) {
             return;
         }

@@ -2,10 +2,11 @@
 
 namespace app\model;
 
+use think\model\concern\SoftDelete;
+
 class SystemTable extends Base
 {
-    // 设置主键
-    protected $pk = 'code';
+    use SoftDelete;
 
     // 设置json类型字段
     protected $json = ['props', 'options'];
@@ -63,6 +64,6 @@ class SystemTable extends Base
 
     public function cols()
     {
-        return $this->hasMany(SystemCol::class, 'table_code')->order('sort');
+        return $this->hasMany(SystemCol::class, 'table_code', 'code')->order('sort');
     }
 }

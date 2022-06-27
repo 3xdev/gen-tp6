@@ -44,7 +44,7 @@ class SystemForm extends Base
         $data = $this->request->post(['code', 'name', 'schema_string', 'status']);
         $data['delete_time'] = 0;
 
-        $model = SelfModel::find($name);
+        $model = SelfModel::where('code', $name)->find();
         if (!$model) {
             return $this->error('不存在', 404);
         }
@@ -68,7 +68,7 @@ class SystemForm extends Base
      */
     public function delete($names)
     {
-        $models = SelfModel::select(explode(',', $names));
+        $models = SelfModel::whereIn('code', explode(',', $names))->select();
         if (!$models) {
             return $this->error('不存在', 404);
         }
@@ -103,10 +103,11 @@ class SystemForm extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['code', 'name', 'status', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['code', 'name', 'status', 'filter'], 'get');
+        $lsearch = $this->request->only(['code', 'name', 'status', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
-        $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
+        $list = SelfModel::withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();
 
         $visible = [
             'code', 'name', 'schema', 'status', 'create_time'
@@ -130,7 +131,7 @@ class SystemForm extends Base
      */
     public function read($name)
     {
-        $form = SelfModel::find($name);
+        $form = SelfModel::where('code', $name)->find();
         if (!$form) {
             return $this->error('不存在', 404);
         }
@@ -163,7 +164,7 @@ class SystemForm extends Base
                 $schema['properties'] = $this->buildSetting();
                 break;
             default:
-                $form = SelfModel::find($name);
+                $form = SelfModel::where('code', $name)->find();
                 $form && $schema = $form->schema;
                 break;
         }
@@ -175,7 +176,7 @@ class SystemForm extends Base
     private function buildSetting()
     {
         $json = [];
-        $dict = SystemDictModel::find('config_tab');
+        $dict = SystemDictModel::where('key_', 'config_tab')->find();
         $map = $dict ? $dict->items->column('label', 'key_') : [];
         empty($map) && $map = ['default' => '系统配置'];
         foreach ($map as $key => $value) {

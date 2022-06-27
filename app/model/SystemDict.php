@@ -9,11 +9,7 @@ use think\facade\Cache;
  */
 class SystemDict extends Base
 {
-    // 设置主键
-    protected $pk = 'key_';
-
     public const CACHE_PREFIX = 'dict:';
-
 
     public function searchKeyAttr($query, $value, $data)
     {
@@ -41,7 +37,7 @@ class SystemDict extends Base
             return true;
         }
 
-        $model = self::find($key_);
+        $model = self::where('key_', $key_)->find();
         $cache = $model ? $model->items->column('label', 'key_') : [];
         Cache::set(self::CACHE_PREFIX . $key_, $cache);
         return $cache;
@@ -56,6 +52,6 @@ class SystemDict extends Base
     // 条目
     public function items()
     {
-        return $this->hasMany(SystemDictItem::class, 'dict_key')->order('sort_');
+        return $this->hasMany(SystemDictItem::class, 'dict_key', 'key_')->order('sort_');
     }
 }

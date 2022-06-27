@@ -7,7 +7,7 @@ use think\Validate;
 class SystemTable extends Validate
 {
     protected $rule = [
-        'code|代码' => 'require|alphaDash|max:32|unique:\\app\\model\\SystemTable',
+        'code|代码' => 'require|alphaDash|max:32|unique:\\app\\model\\SystemTable,code^delete_time',
         'name|名称' => 'require|max:100',
     ];
 

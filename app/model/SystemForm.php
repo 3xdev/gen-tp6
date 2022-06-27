@@ -11,8 +11,6 @@ class SystemForm extends Base
 {
     use SoftDelete;
 
-    protected $pk = 'code';
-
     // 设置json类型字段
     protected $json = ['schema'];
     // 设置json数据返回数组
