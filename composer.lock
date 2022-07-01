@@ -243,16 +243,16 @@
         },
         {
             "name": "casbin/think-authz",
-            "version": "v1.5.3",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-casbin/think-authz.git",
-                "reference": "9b635f274d9590c219599774722cdab50a0066e3"
+                "reference": "004307688dd946cc20c31d785a58d222a6cea340"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-casbin/think-authz/zipball/9b635f274d9590c219599774722cdab50a0066e3",
-                "reference": "9b635f274d9590c219599774722cdab50a0066e3",
+                "url": "https://api.github.com/repos/php-casbin/think-authz/zipball/004307688dd946cc20c31d785a58d222a6cea340",
+                "reference": "004307688dd946cc20c31d785a58d222a6cea340",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -309,9 +309,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-casbin/think-authz/issues",
-                "source": "https://github.com/php-casbin/think-authz/tree/v1.5.3"
+                "source": "https://github.com/php-casbin/think-authz/tree/v1.5.4"
             },
-            "time": "2022-01-05T15:39:22+00:00"
+            "time": "2022-06-11T15:54:51+00:00"
         },
         {
             "name": "godruoyi/php-snowflake",
@@ -444,16 +444,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.6",
+            "version": "6.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c"
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f092dd734083473658de3ee4bef093ed77d2689c",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/724562fa861e21a4071c652c8a159934e4f05592",
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -545,7 +545,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/6.5.6"
+                "source": "https://github.com/guzzle/guzzle/tree/6.5.7"
             },
             "funding": [
                 {
@@ -561,7 +561,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-25T13:19:12+00:00"
+            "time": "2022-06-09T21:36:50+00:00"
         },
         {
             "name": "guzzlehttp/guzzle-services",
@@ -725,16 +725,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.3",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "1afdd860a2566ed3c2b0b4a3de6e23434a79ec85"
+                "reference": "337e3ad8e5716c15f9657bd214d16cc5e69df268"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/1afdd860a2566ed3c2b0b4a3de6e23434a79ec85",
-                "reference": "1afdd860a2566ed3c2b0b4a3de6e23434a79ec85",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/337e3ad8e5716c15f9657bd214d16cc5e69df268",
+                "reference": "337e3ad8e5716c15f9657bd214d16cc5e69df268",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -821,7 +821,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.3"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.5"
             },
             "funding": [
                 {
@@ -837,7 +837,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-05T13:56:00+00:00"
+            "time": "2022-03-20T21:51:18+00:00"
         },
         {
             "name": "iidestiny/flysystem-oss",
@@ -1412,16 +1412,16 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.6.6",
+            "version": "v3.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "ad7d0a77f58260001bd263605eb2b9fbaf1d61a7"
+                "reference": "b9ba414c9895fd9420887f20eeb4eabde123677f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/ad7d0a77f58260001bd263605eb2b9fbaf1d61a7",
-                "reference": "ad7d0a77f58260001bd263605eb2b9fbaf1d61a7",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/b9ba414c9895fd9420887f20eeb4eabde123677f",
+                "reference": "b9ba414c9895fd9420887f20eeb4eabde123677f",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1480,9 +1480,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/php-generator/issues",
-                "source": "https://github.com/nette/php-generator/tree/v3.6.6"
+                "source": "https://github.com/nette/php-generator/tree/v3.6.7"
             },
-            "time": "2022-02-20T18:06:09+00:00"
+            "time": "2022-03-10T01:51:00+00:00"
         },
         {
             "name": "nette/utils",
@@ -2038,16 +2038,16 @@
         },
         {
             "name": "qiniu/php-sdk",
-            "version": "v7.5.0",
+            "version": "v7.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qiniu/php-sdk.git",
-                "reference": "0cc46e4206002d1a736dbb4abb1424b0b7fc3f22"
+                "reference": "57033fab64c92f8c7ae165222dd958553741e711"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/0cc46e4206002d1a736dbb4abb1424b0b7fc3f22",
-                "reference": "0cc46e4206002d1a736dbb4abb1424b0b7fc3f22",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/57033fab64c92f8c7ae165222dd958553741e711",
+                "reference": "57033fab64c92f8c7ae165222dd958553741e711",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2095,9 +2095,9 @@
             ],
             "support": {
                 "issues": "https://github.com/qiniu/php-sdk/issues",
-                "source": "https://github.com/qiniu/php-sdk/tree/v7.5.0"
+                "source": "https://github.com/qiniu/php-sdk/tree/v7.6.0"
             },
-            "time": "2022-04-18T10:49:54+00:00"
+            "time": "2022-06-08T10:05:47+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -3828,16 +3828,16 @@
     "packages-dev": [
         {
             "name": "captainhook/captainhook",
-            "version": "5.10.9",
+            "version": "5.10.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhookphp/captainhook.git",
-                "reference": "967e5a6ebba2eccc4b1a381e3119cc0c2a6ff9ba"
+                "reference": "7c54bc7633b175a257a7ed2a7fd3fba655c96b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/967e5a6ebba2eccc4b1a381e3119cc0c2a6ff9ba",
-                "reference": "967e5a6ebba2eccc4b1a381e3119cc0c2a6ff9ba",
+                "url": "https://api.github.com/repos/captainhookphp/captainhook/zipball/7c54bc7633b175a257a7ed2a7fd3fba655c96b34",
+                "reference": "7c54bc7633b175a257a7ed2a7fd3fba655c96b34",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3905,7 +3905,7 @@
             ],
             "support": {
                 "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.9"
+                "source": "https://github.com/captainhookphp/captainhook/tree/5.10.10"
             },
             "funding": [
                 {
@@ -3913,7 +3913,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-20T13:30:33+00:00"
+            "time": "2022-06-06T16:48:03+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -5376,16 +5376,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.6.2",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1359e176e9307e906dc3d890bcc9603ff6d90619",
+                "reference": "1359e176e9307e906dc3d890bcc9603ff6d90619",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -5434,7 +5434,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-12-12T21:44:58+00:00"
+            "time": "2022-06-18T07:21:10+00:00"
         },
         {
             "name": "symfony/console",
@@ -6177,5 +6177,5 @@
         "php": ">=7.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

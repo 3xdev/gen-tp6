@@ -136,10 +136,11 @@ class SystemConfig extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['code', 'title', 'value', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['code', 'title', 'value', 'filter'], 'get');
+        $lsearch = $this->request->only(['code', 'title', 'value', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
-        $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
+        $list = SelfModel::withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();
 
         return $this->success([
             'total' => $total,

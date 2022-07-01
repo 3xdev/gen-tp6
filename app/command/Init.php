@@ -26,8 +26,10 @@ class Init extends Command
     protected $domain_map = [];
     // 数据类型映射
     protected $datatype_map = [];
-    // 数据库映射键
-    protected $database_key = [];
+    // 数据库类型映射键
+    protected $database_type_key = [];
+    // 数据库配置
+    protected $config_database = [];
 
     protected function configure()
     {
@@ -43,13 +45,14 @@ class Init extends Command
             $output->writeln('<error>' . self::MODEL_PATH . ' is not exist</error>');
         } else {
             $this->models = json_decode(file_get_contents(self::MODEL_PATH), true);
-            $this->database_key = array_column($this->models['profile']['dataTypeSupports'], 'id', 'defKey')[strtoupper(config('database.default'))];
+            $this->config_database = config('database.connections.' . config('database.default'));
+            $this->database_type_key = array_column($this->models['profile']['dataTypeSupports'], 'id', 'defKey')[$this->config_database['model_data_type']];
             $this->entity_map = array_column($this->models['entities'], 'id');
             $this->dict_map = array_column($this->models['dicts'], 'id');
             $this->domain_map = array_column($this->models['domains'], 'id');
             $this->datatype_map = array_column($this->models['dataTypeMapping']['mappings'], 'id');
 
-            View::assign('prefix', config('database.connections.' . config('database.default') . '.prefix'));
+            View::assign('prefix', $this->config_database['prefix']);
             array_walk($this->models['entities'], [$this, 'createDDL']);
             array_walk($this->models['dicts'], [$this, 'insertDict']);
 
@@ -59,7 +62,6 @@ class Init extends Command
         // 初始化超级管理员
         $admin = SystemAdmin::findOrEmpty(1);
         if ($admin->isEmpty()) {
-            $admin->id = 1;
             $admin->nickname = 'admin';
             $admin->username = 'admin';
             $admin->password = '123456';
@@ -72,7 +74,6 @@ class Init extends Command
         // 初始化超级管理员角色
         $role = SystemRole::findOrEmpty(1);
         if ($role->isEmpty()) {
-            $role->id = 1;
             $role->name = '超级管理员';
             $role->save();
             $output->writeln('<info>SystemRole(id=1) Created!</info>');
@@ -105,12 +106,19 @@ class Init extends Command
     // 创建表
     protected function createDDL($entity)
     {
-        $entity['pks'] = implode(',', array_column(array_filter($entity['fields'], fn($field) => $field['primaryKey']), 'defKey'));
-        array_walk($entity['fields'], [$this, 'walkField']);
-
+        $entity['pks'] = array_column(array_filter($entity['fields'], fn($field) => $field['primaryKey']), 'defKey');
+        $entity['seqs'] = array_column(array_filter($entity['fields'], fn($field) => $field['autoIncrement']), 'defKey');
+        array_walk($entity['fields'], [$this, 'walkField'], $entity);
         View::assign('entity', $entity);
+
         try {
-            Db::execute(View::fetch('database/' . config('database.default') . '/ddl_create_table'));
+            if ($this->config_database['type'] == 'pgsql') {
+                foreach ($entity['seqs'] as $seq) {
+                    View::assign('seq', $seq);
+                    Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_sequence'));
+                }
+            }
+            Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_table'));
         } catch (\Exception $e) {
             //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
         }
@@ -121,10 +129,10 @@ class Init extends Command
             foreach ($index['fields'] as $field) {
                 $indexFields[] = map_array_value($fieldMap, $entity['fields'], $field['fieldDefKey']);
             }
-            $index['fks'] = implode(',', array_column($indexFields, 'defKey'));
+            $index['fks'] = array_column($indexFields, 'defKey');
             View::assign('index', $index);
             try {
-                Db::execute(View::fetch('database/' . config('database.default') . '/ddl_create_index'));
+                Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_index'));
             } catch (\Exception $e) {
                 //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
             }
@@ -132,19 +140,28 @@ class Init extends Command
 
         $this->output->writeln('<info>table ' . $entity['defKey'] . ' ok.</info>');
     }
-    protected function walkField(&$field)
+    protected function walkField(&$field, $fkey, $entity)
     {
         $domain = map_array_value($this->domain_map, $this->models['domains'], $field['domain']);
         $datatype = $domain ? map_array_value($this->datatype_map, $this->models['dataTypeMapping']['mappings'], $domain['applyFor']) : null;
-        empty($field['type']) && $field['type'] = $datatype ? $datatype[$this->database_key] : '';
+        empty($field['type']) && $field['type'] = $datatype ? $datatype[$this->database_type_key] : '';
         empty($field['len']) && $field['len'] = $domain ? $domain['len'] : 0;
         empty($field['scale']) && $field['scale'] = $domain ? $domain['scale'] : 0;
+        $field['type'] == 'TEXT' && $field['len'] = 0 && $field['defaultValue'] = '';
+        switch ($this->config_database['type']) {
+            case 'pgsql':
+                in_array($field['type'], ['VARCHAR', 'NUMERIC']) || $field['len'] = 0;
+                $field['autoIncrement'] && $field['defaultValue'] = "nextval('" . $this->config_database['prefix'] . strtolower($entity['defKey']) . "_" . strtolower($field['defKey']) . "_seq')";
+                break;
+            default:
+                break;
+        }
     }
 
     // 插入字典
     protected function insertDict($dict)
     {
-        $model = SystemDict::find($dict['defKey']);
+        $model = SystemDict::where('key_', $dict['defKey'])->find();
         if ($model) {
             return;
         }

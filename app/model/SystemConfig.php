@@ -42,18 +42,91 @@ class SystemConfig extends Base
     // Schema获取器
     public function getSchemaAttr($value, $data)
     {
-        return [
-            "x-decorator"   => "FormItem",
-            "required"      => true,
-            "type"          => "string",
-            "title"         => $data['title'],
-            "x-component"   => $data['component'],
-            "description"   => $data['description'],
-            "enum"          => $this->dict ? array_map(
-                fn($item) => ['value' => $item['key_'], 'label' => $item['label']],
-                $this->dict->items->visible(['key_', 'label'])->toArray()
-            ) : []
+        $mapType = [
+            'dateRange' => 'string[]',
+            'dateTimeRange' => 'string[]',
+            'timeRange' => 'string[]',
         ];
+        $mapComponent = [
+            'text' => 'Input',
+            'select' => 'Select',
+            'switch' => 'Switch',
+            'digit' => 'NumberPicker',
+            'money' => 'NumberPicker',
+            'password' => 'Password',
+            'treeSelect' => 'Select',
+            'cascader' => 'Cascader',
+            'textarea' => 'Input.TextArea',
+            'code' => 'Input.TextArea',
+            'jsonCode' => 'Input.TextArea',
+            'radio' => 'Radio.Group',
+            'checkbox' => 'Checkbox.Group',
+            'rate' => 'Rate',
+            'percent' => 'Slider',
+            'progress' => 'Slider',
+            'avatar' => 'CustomImageUpload',
+            'image' => 'CustomImageUpload',
+            //'color' => '',
+            'date' => 'DatePicker',
+            'dateTime' => 'DatePicker',
+            'dateWeek' => 'DatePicker',
+            'dateMonth' => 'DatePicker',
+            'dateQuarter' => 'DatePicker',
+            'dateYear' => 'DatePicker',
+            'dateRange' => 'DatePicker.RangePicker',
+            'dateTimeRange' => 'DatePicker.RangePicker',
+            'time' => 'TimePicker',
+            'timeRange' => 'TimePicker.RangePicker',
+            //'second' => '',
+            //'fromNow' => '',
+            'customImages' => 'CustomImageUpload',
+            'customRichText' => 'CustomRichText',
+            //'customRelationPickup' => '',
+        ];
+
+        $schema = [
+            'name' => $data['code'],
+            'type' => $mapType[$data['component']] ?? 'string',
+            'title' => $data['title'],
+            'x-decorator' => 'FormItem',
+            'x-component' => $mapComponent[$data['component']] ?? 'Input',
+        ];
+        // 必填
+        $schema['required'] = true;
+        // 默认值
+        $schema['default'] = system_config($data['code']);
+        // 关联字典
+        if (!empty($data['dict_key'])) {
+            $schema['enum'] = [];
+            $kvs = system_dict($data['dict_key']);
+            foreach ($kvs as $k => $v) {
+                $schema['enum'][] = ['value' => $k, 'label' => $v];
+            }
+        }
+        if ($data['component'] == 'avatar' || $data['component'] == 'image') {
+            $schema['x-component-props'] = [
+                'multiple' => false,
+                'maxCount' => 1,
+            ];
+        }
+        if ($data['component'] == 'avatar' || $data['component'] == 'image') {
+            $schema['x-component-props'] = [
+                'multiple' => false,
+                'maxCount' => 1,
+            ];
+        }
+        if ($data['component'] == 'customImages') {
+            $schema['x-component-props'] = [
+                'multiple' => true,
+                'maxCount' => 5,
+            ];
+        }
+        // x-component处理
+        if ($schema['x-component'] == 'Select') {
+            $schema['x-component-props']['allowClear'] = false;
+        }
+
+        return $schema;
     }
 
     // 获取缓存

@@ -38,7 +38,7 @@ return [
             // 数据库索引号
             'select'     => env('cache.redis_select', 0),
             // 缓存前缀
-            'prefix'     => '',
+            'prefix'     => env('cache.redis_prefix', ''),
             // 缓存有效期 0表示永久缓存
             'expire'     => 0,
             // 缓存标签前缀

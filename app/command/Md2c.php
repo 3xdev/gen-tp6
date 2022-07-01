@@ -5,9 +5,9 @@ namespace app\command;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
-use think\helper\Str;
 use app\model\SystemTable;
-use app\model\SystemCol;
+use app\model\SystemTableCol;
+use app\model\SystemTableOption;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PsrPrinter;
 
@@ -25,7 +25,7 @@ class Md2c extends Command
     protected $uihint_map = [];
 
     // 忽略表格
-    public const IGNORE_TABLES = ['system_policy', 'system_dict_item', 'system_col'];
+    public const IGNORE_TABLES = ['system_policy', 'system_dict_item', 'system_table_col', 'system_table_option'];
 
     protected function configure()
     {
@@ -139,31 +139,25 @@ class Md2c extends Command
     // 实体转表格
     protected function entity2table($entity)
     {
-        $table = SystemTable::find(strtolower($entity['defKey']));
+        $table = SystemTable::where('code', strtolower($entity['defKey']))->find();
         if ($table || in_array(strtolower($entity['defKey']), self::IGNORE_TABLES)) {
             return;
         }
 
-        SystemTable::create([
+        $table = SystemTable::create([
             'code'  => strtolower($entity['defKey']),
             'name'  => $entity['defName'],
             'props' => ['rowKey' => array_search(true, array_column($entity['fields'], 'primaryKey', 'defKey'))],
-            'options' => [
-                'columns' => [
-                    ['type' => 'view', 'key' => 'view', 'title' => '查看'],
-                    ['type' => 'edit', 'key' => 'edit', 'title' => '编辑'],
-                    ['type' => 'delete', 'key' => 'delete', 'title' => '删除', 'confirm' => true],
-                ],
-                'toolbar' => [
-                    ['type' => 'add', 'key' => 'add', 'title' => '新建'],
-                    ['type' => 'export', 'key' => 'export', 'title' => '导出'],
-                ],
-                'batch' => [
-                    ['type' => 'bdelete', 'key' => 'bdelete', 'title' => '批量删除'],
-                ]
-            ],
         ]);
         array_walk($entity['fields'], [$this, 'field2col'], $entity);
+        $table->options()->saveAll([
+            ['group' => 'columns', 'type' => 'view', 'key' => 'view', 'title' => '查看'],
+            ['group' => 'columns', 'type' => 'edit', 'key' => 'edit', 'title' => '编辑'],
+            ['group' => 'columns', 'type' => 'delete', 'key' => 'delete', 'title' => '删除',],
+            ['group' => 'toolbar', 'type' => 'add', 'key' => 'add', 'title' => '新建'],
+            ['group' => 'toolbar', 'type' => 'export', 'key' => 'export', 'title' => '导出'],
+            ['group' => 'batch', 'type' => 'bdelete', 'key' => 'bdelete', 'title' => '批量删除'],
+        ]);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');
     }
@@ -201,6 +195,6 @@ class Md2c extends Command
             }
         }
 
-        SystemCol::create($data);
+        SystemTableCol::create($data);
     }
 }

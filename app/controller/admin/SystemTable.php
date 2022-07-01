@@ -18,6 +18,7 @@ class SystemTable extends Base
     public function create()
     {
         $data = $this->request->post(['name', 'code', 'props_string']);
+        $data['delete_time'] = 0;
         $this->validate($data, 'SystemTable');
 
         SelfModel::create($data);
@@ -38,13 +39,14 @@ class SystemTable extends Base
     public function update($name)
     {
         $data = $this->request->post(['code', 'name', 'props_string', 'status']);
+        $data['delete_time'] = 0;
         $options = $this->request->post('options/a');
         $cols = $this->request->post('cols/a');
         foreach ($cols as $index => &$col) {
             $col['sort'] = $index;
         }
 
-        $model = SelfModel::find($name);
+        $model = SelfModel::where('code', $name)->find();
         if (!$model) {
             return $this->error('不存在', 404);
         }
@@ -57,7 +59,7 @@ class SystemTable extends Base
 
         $data['options'] = $options;
         $model->save($data);
-        $model->cols()->delete();
+        $model->cols->delete();
         $model->cols()->saveAll($cols);
 
         return $this->success();
@@ -71,13 +73,13 @@ class SystemTable extends Base
      */
     public function delete($names)
     {
-        $models = SelfModel::select(explode(',', $names));
+        $models = SelfModel::whereIn('code', explode(',', $names))->select();
         if (!$models) {
             return $this->error('不存在', 404);
         }
 
         foreach ($models as $model) {
-            $model->cols()->delete();
+            $model->cols->delete();
             $model->delete();
         }
         return $this->success();
@@ -107,10 +109,11 @@ class SystemTable extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['code', 'name', 'status', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['code', 'name', 'status', 'filter'], 'get');
+        $lsearch = $this->request->only(['code', 'name', 'status', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
-        $list = SelfModel::withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
+        $list = SelfModel::withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();
 
         $visible = [
             'code', 'name', 'props', 'status', 'create_time'
@@ -134,7 +137,7 @@ class SystemTable extends Base
      */
     public function read($name)
     {
-        $table = SelfModel::with(['cols'])->find($name);
+        $table = SelfModel::with(['cols'])->where('code', $name)->find();
         if (!$table) {
             return $this->error('不存在', 404);
         }
@@ -157,7 +160,7 @@ class SystemTable extends Base
      */
     public function protable($name)
     {
-        $table = SelfModel::find($name);
+        $table = SelfModel::where('code', $name)->find();
         if (!$table) {
             return $this->error('数据未找到');
         }
@@ -176,7 +179,7 @@ class SystemTable extends Base
      */
     public function formily($name)
     {
-        $table = SelfModel::find($name);
+        $table = SelfModel::where('code', $name)->find();
 
         return $this->success([
             'type' => 'object',

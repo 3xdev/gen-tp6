@@ -2,8 +2,12 @@
 
 namespace app\model;
 
-class SystemCol extends Base
+use think\model\concern\SoftDelete;
+
+class SystemTableCol extends Base
 {
+    use SoftDelete;
+
     // 设置json类型字段
     protected $json = ['value_enum_rel'];
     // 设置json数据返回数组
@@ -103,8 +107,8 @@ class SystemCol extends Base
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
             $kvs = system_col_rel_kv($data['value_enum_rel']);
-            foreach ($kvs as $key => $value) {
-                $schema['enum'][] = ['value' => $key, 'label' => $value];
+            foreach ($kvs as $k => $v) {
+                $schema['enum'][] = ['value' => $k, 'label' => $v];
             }
         }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
@@ -135,6 +139,6 @@ class SystemCol extends Base
 
     public function btable()
     {
-        return $this->belongsTo(SystemTable::class, 'table_code');
+        return $this->belongsTo(SystemTable::class, 'table_code', 'code');
     }
 }

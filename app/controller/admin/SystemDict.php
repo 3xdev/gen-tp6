@@ -55,7 +55,7 @@ class SystemDict extends Base
             $item['sort_'] = $index;
         }
 
-        $model = SelfModel::find($name);
+        $model = SelfModel::where('key_', $name)->find();
         if (!$model) {
             return $this->error();
         }
@@ -67,7 +67,7 @@ class SystemDict extends Base
 
         // 更新字典
         $model->save($data);
-        $model->items()->where('dict_key', $model->key_)->delete();
+        $model->items->delete();
         $model->items()->saveAll($items);
         SelfModel::refreshCache($model->key_);
 
@@ -83,10 +83,10 @@ class SystemDict extends Base
     public function delete($names)
     {
         // 删除字典
-        $models = SelfModel::select(explode(',', $names));
+        $models = SelfModel::whereIn('key_', explode(',', $names))->select();
         $models->each(function ($model) {
             SelfModel::removeCache($model->key_);
-            $model->items()->where('dict_key', $model->key_)->delete();
+            $model->items->delete();
             $model->delete();
         });
 
@@ -119,14 +119,15 @@ class SystemDict extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['key_', 'label', 'intro', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['key_', 'label', 'intro', 'filter'], 'get');
+        $lsearch = $this->request->only(['key_', 'label', 'intro', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::with('items')->withSearch(array_keys($search), $search)->count();
-        $list = SelfModel::with('items')->withSearch(array_keys($search), $search)->page($current, $pageSize)->select();
+        $list = SelfModel::with('items')->withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();
 
         return $this->success([
             'total' => $total,
-            'data' => $list->visible(['key_', 'label', 'intro', 'items' => ['key_', 'label', 'intro']])->toArray()
+            'data' => $list->visible(['id', 'key_', 'label', 'intro', 'items' => ['key_', 'label', 'intro']])->toArray()
         ]);
     }
 
@@ -140,7 +141,7 @@ class SystemDict extends Base
      */
     public function read($name)
     {
-        $model = SelfModel::with('items')->find($name);
+        $model = SelfModel::with('items')->where('key_', $name)->find();
         if (!$model) {
             return $this->error();
         }

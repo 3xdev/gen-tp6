@@ -20,6 +20,7 @@ return [
         'mysql' => [
             // 数据库类型
             'type'            => 'mysql',
+            'model_data_type' => 'MYSQL',
             // 服务器地址
             'hostname'        => env('database.hostname', '127.0.0.1'),
             // 数据库名
@@ -54,7 +55,26 @@ return [
             // 开启字段缓存
             'fields_cache'    => false,
         ],
-
-        // 更多的数据库配置信息
+        'pgsql' => [
+            // 数据库类型
+            'type'            => 'pgsql',
+            'model_data_type' => 'PostgreSQL',
+            // 服务器地址
+            'hostname'        => env('database.hostname', '127.0.0.1'),
+            // 数据库名
+            'database'        => env('database.database', ''),
+            // 用户名
+            'username'        => env('database.username', 'root'),
+            // 密码
+            'password'        => env('database.password', ''),
+            // 端口
+            'hostport'        => env('database.hostport', '3306'),
+            // 数据库编码默认采用utf8
+            'charset'         => env('database.charset', 'utf8'),
+            // 数据库表前缀
+            'prefix'          => env('database.prefix', ''),
+            // 监听SQL
+            'trigger_sql'     => env('app_debug', true),
+        ],
     ],
 ];
