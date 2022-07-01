@@ -145,8 +145,8 @@ if (!function_exists('system_table_kv')) {
 if (!function_exists('system_col_rel_kv')) {
     /**
      * 获取系统表格列关联的KeyValue
-     * system_col_rel_kv('dict:gender') => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
-     * system_col_rel_kv('table:product_brand') => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
+     * system_col_rel_kv(['dict', 'gender']) => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
+     * system_col_rel_kv(['table', 'product_brand']) => [1 => '李宁', 2 => '安踏', 3 => '七匹狼']
      * @param  string   $rel   关联代码
      * @return array
      */

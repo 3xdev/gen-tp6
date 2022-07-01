@@ -4,7 +4,7 @@ namespace app\model;
 
 use think\model\concern\SoftDelete;
 
-class SystemCol extends Base
+class SystemTableCol extends Base
 {
     use SoftDelete;
 
@@ -107,8 +107,8 @@ class SystemCol extends Base
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
             $kvs = system_col_rel_kv($data['value_enum_rel']);
-            foreach ($kvs as $key => $value) {
-                $schema['enum'][] = ['value' => $key, 'label' => $value];
+            foreach ($kvs as $k => $v) {
+                $schema['enum'][] = ['value' => $k, 'label' => $v];
             }
         }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {

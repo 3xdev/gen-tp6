@@ -9,7 +9,7 @@ class SystemTable extends Base
     use SoftDelete;
 
     // 设置json类型字段
-    protected $json = ['props', 'options'];
+    protected $json = ['props'];
     // 设置json数据返回数组
     protected $jsonAssoc = true;
 
@@ -51,9 +51,16 @@ class SystemTable extends Base
     public function getProSchemaAttr($value, $data)
     {
         $schema = $data['props'];
-        $schema['options'] = $data['options'];
         $schema['columns'] = $this->cols->column('pro_schema');
-
+        $schema['options'] = [
+            'columns' => [],
+            'toolbar' => [],
+            'batch' => [],
+        ];
+        $options = $this->options->visible(['group', 'type', 'key', 'title', 'method', 'path'])->toArray();
+        foreach ($options as $option) {
+            isset($schema['options'][$option['group']]) && $schema['options'][$option['group']][] = $option;
+        }
         return $schema;
     }
 
@@ -64,6 +71,11 @@ class SystemTable extends Base
 
     public function cols()
     {
-        return $this->hasMany(SystemCol::class, 'table_code', 'code')->order('sort');
+        return $this->hasMany(SystemTableCol::class, 'table_code', 'code')->order('sort');
+    }
+
+    public function options()
+    {
+        return $this->hasMany(SystemTableOption::class, 'table_code', 'code')->order('sort');
     }
 }
