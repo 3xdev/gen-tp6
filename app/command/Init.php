@@ -118,7 +118,7 @@ class Init extends Command
                     Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_sequence'));
                 }
             }
-            Db::execute(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_table'));
+            Db::execute(html_entity_decode(View::fetch('database/' . $this->config_database['type'] . '/ddl_create_table')));
         } catch (\Exception $e) {
             //$this->output->writeln('<warning>' . $e->getMessage() . '</warning>');
         }
