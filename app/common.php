@@ -2,6 +2,18 @@
 
 // 应用公共文件
 
+if (!function_exists('is_sql_reserve_word')) {
+    /**
+     * 是否SQL保留字
+     * @param  string   $string     字符串
+     * @return bool
+     */
+    function is_sql_reserve_word($string)
+    {
+        return in_array($string, file('sql_reserve_word', FILE_USE_INCLUDE_PATH | FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+    }
+}
+
 if (!function_exists('name_class')) {
     /**
      * 类命名(大驼峰法)

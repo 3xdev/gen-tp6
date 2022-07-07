@@ -52,55 +52,55 @@ class Init extends Command
             $this->domain_map = array_column($this->models['domains'], 'id');
             $this->datatype_map = array_column($this->models['dataTypeMapping']['mappings'], 'id');
 
+            // 创建表及字典
             View::assign('prefix', $this->config_database['prefix']);
             array_walk($this->models['entities'], [$this, 'createDDL']);
             array_walk($this->models['dicts'], [$this, 'insertDict']);
-
             $output->writeln('<info>Database Init Succeed</info>');
-        }
 
-        // 初始化超级管理员
-        $admin = SystemAdmin::findOrEmpty(1);
-        if ($admin->isEmpty()) {
-            $admin->nickname = 'admin';
-            $admin->username = 'admin';
-            $admin->password = '123456';
-            $admin->save();
-            $output->writeln('<info>SystemAdmin(id=1) Created!</info>');
-        } else {
-            //$output->writeln('<warning>SystemAdmin(id=1) Already Exists!</warning>');
-        }
+            // 初始化超级管理员
+            $admin = SystemAdmin::findOrEmpty(1);
+            if ($admin->isEmpty()) {
+                $admin->nickname = 'admin';
+                $admin->username = 'admin';
+                $admin->password = '123456';
+                $admin->save();
+                $output->writeln('<info>SystemAdmin(id=1) Created!</info>');
+            } else {
+                //$output->writeln('<warning>SystemAdmin(id=1) Already Exists!</warning>');
+            }
 
-        // 初始化超级管理员角色
-        $role = SystemRole::findOrEmpty(1);
-        if ($role->isEmpty()) {
-            $role->name = '超级管理员';
-            $role->save();
-            $output->writeln('<info>SystemRole(id=1) Created!</info>');
-        } else {
-            //$output->writeln('<warning>SystemRole(id=1) Already Exists!</warning>');
-        }
+            // 初始化超级管理员角色
+            $role = SystemRole::findOrEmpty(1);
+            if ($role->isEmpty()) {
+                $role->name = '超级管理员';
+                $role->save();
+                $output->writeln('<info>SystemRole(id=1) Created!</info>');
+            } else {
+                //$output->writeln('<warning>SystemRole(id=1) Already Exists!</warning>');
+            }
 
-        // 初始化管理菜单
-        $menu = SystemMenu::where('path', '/system/menu')->findOrEmpty();
-        if ($menu->isEmpty()) {
-            $menu->saveAll([
-                ['parent_id' => '0', 'name' => '系统管理', 'path' => '', 'icon' => 'setting'],
-                ['parent_id' => '1', 'name' => '系统配置', 'path' => '/system/setting'],
-                ['parent_id' => '1', 'name' => '字典管理', 'path' => '/system/dict'],
-                ['parent_id' => '1', 'name' => '配置项管理', 'path' => '/system/config'],
-                ['parent_id' => '1', 'name' => '管理员管理', 'path' => '/system/admin'],
-                ['parent_id' => '1', 'name' => '管理角色管理', 'path' => '/system/role'],
-                ['parent_id' => '1', 'name' => '菜单管理', 'path' => '/system/menu'],
-                ['parent_id' => '1', 'name' => '表格管理', 'path' => '/system/table'],
-                ['parent_id' => '1', 'name' => '表单管理', 'path' => '/system/form'],
-            ]);
-            $output->writeln('<info>SystemMenu Created!</info>');
-        } else {
-            //$output->writeln('<warning>SystemMenu Already Exists!</warning>');
-        }
+            // 初始化管理菜单
+            $menu = SystemMenu::where('path', '/system/menu')->findOrEmpty();
+            if ($menu->isEmpty()) {
+                $menu->saveAll([
+                    ['parent_id' => '0', 'name' => '系统管理', 'path' => '', 'icon' => 'setting'],
+                    ['parent_id' => '1', 'name' => '系统配置', 'path' => '/system/setting'],
+                    ['parent_id' => '1', 'name' => '字典管理', 'path' => '/system/dict'],
+                    ['parent_id' => '1', 'name' => '配置项管理', 'path' => '/system/config'],
+                    ['parent_id' => '1', 'name' => '管理员管理', 'path' => '/system/admin'],
+                    ['parent_id' => '1', 'name' => '管理角色管理', 'path' => '/system/role'],
+                    ['parent_id' => '1', 'name' => '菜单管理', 'path' => '/system/menu'],
+                    ['parent_id' => '1', 'name' => '表格管理', 'path' => '/system/table'],
+                    ['parent_id' => '1', 'name' => '表单管理', 'path' => '/system/form'],
+                ]);
+                $output->writeln('<info>SystemMenu Created!</info>');
+            } else {
+                //$output->writeln('<warning>SystemMenu Already Exists!</warning>');
+            }
 
-        $output->writeln('<info>Init System Succeed!</info>');
+            $output->writeln('<info>Init System Succeed!</info>');
+        }
     }
 
     // 创建表
