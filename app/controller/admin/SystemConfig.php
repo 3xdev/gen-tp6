@@ -10,11 +10,10 @@ use app\model\SystemConfig as SelfModel;
 class SystemConfig extends Base
 {
     /**
-     * @api {PUT} /setting 更新系统配置
-     * @apiVersion 1.0.0
+     * @api {put} /setting 更新系统配置
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} :code 系统配置
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} :code 系统配置
      * @apiParamExample {json} Request-Example:
      *   {
      *     "retry_max": 99,
@@ -35,18 +34,17 @@ class SystemConfig extends Base
     }
 
     /**
-     * @api {POST} /configs 创建配置项
-     * @apiVersion 1.0.0
+     * @api {post} /configs 创建配置项
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} tab 分组
-     * @apiParam {string} component 组件
-     * @apiParam {string} code 编码
-     * @apiParam {string} title 标题
-     * @apiParam {string} [description] 描述说明
-     * @apiParam {string} [dict_key] 字典代码
-     * @apiParam {string} [rule] 验证规则
-     * @apiParam {string} [extend] 扩展属性
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} tab 分组
+     * @apiBody {String} component 组件
+     * @apiBody {String} code 编码
+     * @apiBody {String} title 标题
+     * @apiBody {String} [description] 描述说明
+     * @apiBody {String} [dict_key] 字典代码
+     * @apiBody {String} [rule] 验证规则
+     * @apiBody {String} [extend] 扩展属性
      */
     public function create()
     {
@@ -61,18 +59,18 @@ class SystemConfig extends Base
     }
 
     /**
-     * @api {PUT} /configs/:id 更新配置项
-     * @apiVersion 1.0.0
+     * @api {put} /configs/:id 更新配置项
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} tab 分组
-     * @apiParam {string} component 组件
-     * @apiParam {string} code 编码
-     * @apiParam {string} title 标题
-     * @apiParam {string} [description] 描述说明
-     * @apiParam {string} [dict_key] 字典代码
-     * @apiParam {string} [rule] 验证规则
-     * @apiParam {string} [extend] 扩展属性
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiBody {String} tab 分组
+     * @apiBody {String} component 组件
+     * @apiBody {String} code 编码
+     * @apiBody {String} title 标题
+     * @apiBody {String} [description] 描述说明
+     * @apiBody {String} [dict_key] 字典代码
+     * @apiBody {String} [rule] 验证规则
+     * @apiBody {String} [extend] 扩展属性
      */
     public function update($id)
     {
@@ -94,10 +92,10 @@ class SystemConfig extends Base
     }
 
     /**
-     * @api {DELETE} /configs/:ids 删除配置项
-     * @apiVersion 1.0.0
+     * @api {delete} /configs/:ids 删除配置项
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function delete($ids)
     {
@@ -106,31 +104,30 @@ class SystemConfig extends Base
     }
 
     /**
-     * @api {GET} /configs 配置项列表
-     * @apiVersion 1.0.0
+     * @api {get} /configs 配置项列表
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} code 编码
-     * @apiParam {string} title 标题
-     * @apiParam {string} value 配置值
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [code] 编码
+     * @apiQuery {String} [title] 标题
+     * @apiQuery {String} [value] 配置值
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {Object[]} data 数据列表
-     * @apiSuccess {number} data.id 配置项ID
-     * @apiSuccess {string} data.tab 分组
-     * @apiSuccess {string} data.component 组件
-     * @apiSuccess {string} data.code 编码
-     * @apiSuccess {string} data.title 标题
-     * @apiSuccess {string} data.description 描述说明
-     * @apiSuccess {string} data.dict_key 字典代码
-     * @apiSuccess {string} data.rule 验证规则
-     * @apiSuccess {string} data.extend 扩展属性
-     * @apiSuccess {string} data.value 配置值
-     * @apiSuccess {string} data.create_time 创建时间
-     * @apiSuccess {string} data.update_time 更新时间
+     * @apiSuccess {Number} data.id 配置项ID
+     * @apiSuccess {String} data.tab 分组
+     * @apiSuccess {String} data.component 组件
+     * @apiSuccess {String} data.code 编码
+     * @apiSuccess {String} data.title 标题
+     * @apiSuccess {String} data.description 描述说明
+     * @apiSuccess {String} data.dict_key 字典代码
+     * @apiSuccess {String} data.rule 验证规则
+     * @apiSuccess {String} data.extend 扩展属性
+     * @apiSuccess {String} data.value 配置值
+     * @apiSuccess {String} data.create_time 创建时间
+     * @apiSuccess {String} data.update_time 更新时间
      */
     public function index()
     {
@@ -149,22 +146,22 @@ class SystemConfig extends Base
     }
 
     /**
-     * @api {GET} /configs/:id 配置项信息
-     * @apiVersion 1.0.0
+     * @api {get} /configs/:id 配置项信息
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {number} id 配置项ID
-     * @apiSuccess {string} tab 分组
-     * @apiSuccess {string} component 组件
-     * @apiSuccess {string} code 编码
-     * @apiSuccess {string} title 标题
-     * @apiSuccess {string} description 描述说明
-     * @apiSuccess {string} dict_key 字典代码
-     * @apiSuccess {string} rule 验证规则
-     * @apiSuccess {string} extend 扩展属性
-     * @apiSuccess {string} value 配置值
-     * @apiSuccess {string} create_time 创建时间
-     * @apiSuccess {string} update_time 更新时间
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiSuccess {Number} id 配置项ID
+     * @apiSuccess {String} tab 分组
+     * @apiSuccess {String} component 组件
+     * @apiSuccess {String} code 编码
+     * @apiSuccess {String} title 标题
+     * @apiSuccess {String} description 描述说明
+     * @apiSuccess {String} dict_key 字典代码
+     * @apiSuccess {String} rule 验证规则
+     * @apiSuccess {String} extend 扩展属性
+     * @apiSuccess {String} value 配置值
+     * @apiSuccess {String} create_time 创建时间
+     * @apiSuccess {String} update_time 更新时间
      */
     public function read($id)
     {

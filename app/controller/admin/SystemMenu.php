@@ -8,15 +8,14 @@ use tauthz\facade\Enforcer;
 class SystemMenu extends Base
 {
     /**
-     * @api {POST} /menu 创建菜单
-     * @apiVersion 1.0.0
+     * @api {post} /menu 创建菜单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {number} parent_id 父ID
-     * @apiParam {string} name 名称
-     * @apiParam {string} path 访问路由
-     * @apiParam {string} icon 图标
-     * @apiParam {number} sort 排序
+     * @apiHeader {String} Authorization Token
+     * @apiBody {Number} parent_id 父ID
+     * @apiBody {String} name 名称
+     * @apiBody {String} path 访问路由
+     * @apiBody {String} icon 图标
+     * @apiBody {Number} sort 排序
      */
     public function create()
     {
@@ -29,15 +28,15 @@ class SystemMenu extends Base
     }
 
     /**
-     * @api {PUT} /menu/:id 更新菜单
-     * @apiVersion 1.0.0
+     * @api {put} /menu/:id 更新菜单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} name 名称
-     * @apiParam {string} path 访问路由
-     * @apiParam {string} icon 图标
-     * @apiParam {number} sort 排序
-     * @apiParam {number} status 状态(0=禁用,1=正常)
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiBody {String} name 名称
+     * @apiBody {String} path 访问路由
+     * @apiBody {String} icon 图标
+     * @apiBody {Number} sort 排序
+     * @apiBody {Number} status 状态(0=禁用,1=正常)
      */
     public function update($id)
     {
@@ -55,10 +54,10 @@ class SystemMenu extends Base
     }
 
     /**
-     * @api {DELETE} /menu/:ids 删除菜单
-     * @apiVersion 1.0.0
+     * @api {delete} /menu/:ids 删除菜单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function delete($ids)
     {
@@ -74,24 +73,23 @@ class SystemMenu extends Base
     }
 
     /**
-     * @api {GET} /menu 菜单列表
-     * @apiVersion 1.0.0
+     * @api {get} /menu 菜单列表
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} name 名称
-     * @apiParam {string} path 访问路由
-     * @apiParam {number} parent_id 父ID
-     * @apiParam {number} status 状态(0=禁用,1=正常)
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [name] 名称
+     * @apiQuery {String} [path] 访问路由
+     * @apiQuery {Number} [parent_id] 父ID
+     * @apiQuery {Number} [status] 状态(0=禁用,1=正常)
      * @apiSuccess {Object[]} data 菜单列表
-     * @apiSuccess {number} data.id 菜单ID
-     * @apiSuccess {string} data.name 名称
-     * @apiSuccess {number} data.parent_id 父ID
-     * @apiSuccess {string} data.path 访问路由
-     * @apiSuccess {string} data.table_code 关联表格
-     * @apiSuccess {string} data.icon 图标
-     * @apiSuccess {number} data.sort 排序
-     * @apiSuccess {number} data.status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} data.create_time 创建时间
+     * @apiSuccess {Number} data.id 菜单ID
+     * @apiSuccess {String} data.name 名称
+     * @apiSuccess {Number} data.parent_id 父ID
+     * @apiSuccess {String} data.path 访问路由
+     * @apiSuccess {String} data.table_code 关联表格
+     * @apiSuccess {String} data.icon 图标
+     * @apiSuccess {Number} data.sort 排序
+     * @apiSuccess {Number} data.status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} data.create_time 创建时间
      */
     public function index()
     {
@@ -108,18 +106,18 @@ class SystemMenu extends Base
     }
 
     /**
-     * @api {GET} /menu/:id 菜单信息
-     * @apiVersion 1.0.0
+     * @api {get} /menu/:id 菜单信息
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {number} id 菜单ID
-     * @apiSuccess {string} name 名称
-     * @apiSuccess {number} parent_id 父ID
-     * @apiSuccess {string} path 访问路由
-     * @apiSuccess {string} icon 图标
-     * @apiSuccess {number} sort 排序
-     * @apiSuccess {number} status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} create_time 创建时间
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiSuccess {Number} id 菜单ID
+     * @apiSuccess {String} name 名称
+     * @apiSuccess {Number} parent_id 父ID
+     * @apiSuccess {String} path 访问路由
+     * @apiSuccess {String} icon 图标
+     * @apiSuccess {Number} sort 排序
+     * @apiSuccess {Number} status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} create_time 创建时间
      */
     public function read($id)
     {

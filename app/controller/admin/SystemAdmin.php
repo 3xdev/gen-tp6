@@ -7,20 +7,19 @@ use thans\jwt\facade\JWTAuth;
 use tauthz\facade\Enforcer;
 
 /**
- * @apiDefine IADMIN 管理员
+ * @apiDefine ISYSADMIN 系统-角色及管理员
  */
 class SystemAdmin extends Base
 {
     /**
-     * @api {POST} /token 管理员登录(新建token)
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiParam {string} type 登录类型(password:密码,captcha:验证码)
-     * @apiParam {string} [username] 帐号/手机号
-     * @apiParam {string} [password] 密码
-     * @apiParam {string} [mobile] 手机号
-     * @apiParam {string} [captcha] 验证码
-     * @apiSuccess {string} token Token
+     * @api {post} /token 管理员登录(新建token)
+     * @apiGroup ISYSADMIN
+     * @apiBody {String} type 登录类型(password:密码,captcha:验证码)
+     * @apiBody {String} [username] 帐号/手机号
+     * @apiBody {String} [password] 密码
+     * @apiBody {String} [mobile] 手机号
+     * @apiBody {String} [captcha] 验证码
+     * @apiSuccess {String} token Token
      */
     public function login()
     {
@@ -52,10 +51,9 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {DELETE} /token 管理员退出(销毁token)
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
+     * @api {delete} /token 管理员退出(销毁token)
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
      */
     public function logout()
     {
@@ -66,17 +64,16 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {GET} /profile 读取管理员个人信息
-     * @apiVersion 1.0.1
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {number} id 管理员ID
-     * @apiSuccess {string} username 帐号
-     * @apiSuccess {string} nickname 昵称
-     * @apiSuccess {string} avatar 头像
-     * @apiSuccess {string} mobile 手机号
-     * @apiSuccess {string} login_time 最近登录时间
-     * @apiSuccess {string} create_time 创建时间
+     * @api {get} /profile 读取管理员个人信息
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiSuccess {Number} id 管理员ID
+     * @apiSuccess {String} username 帐号
+     * @apiSuccess {String} nickname 昵称
+     * @apiSuccess {String} avatar 头像
+     * @apiSuccess {String} mobile 手机号
+     * @apiSuccess {String} login_time 最近登录时间
+     * @apiSuccess {String} create_time 创建时间
      */
     public function profile()
     {
@@ -86,14 +83,13 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {PUT} /profile 更新管理员个人信息
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} nickname 昵称
-     * @apiParam {string} avatar 头像
-     * @apiParam {string} mobile 手机号
-     * @apiParam {string} password 密码
+     * @api {put} /profile 更新管理员个人信息
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} nickname 昵称
+     * @apiBody {String} avatar 头像
+     * @apiBody {String} mobile 手机号
+     * @apiBody {String} password 密码
      */
     public function updateProfile()
     {
@@ -110,17 +106,16 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {GET} /menus 获取管理员菜单
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
+     * @api {get} /menus 获取管理员菜单
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
      * @apiSuccess {Object[]} data 菜单列表
-     * @apiSuccess {number} data.id 菜单ID
-     * @apiSuccess {string} data.name 名称
-     * @apiSuccess {number} data.parent_id 父ID
-     * @apiSuccess {string} data.path 访问路由
-     * @apiSuccess {string} data.icon 图标
-     * @apiSuccess {number} data.sort 排序
+     * @apiSuccess {Number} data.id 菜单ID
+     * @apiSuccess {String} data.name 名称
+     * @apiSuccess {Number} data.parent_id 父ID
+     * @apiSuccess {String} data.path 访问路由
+     * @apiSuccess {String} data.icon 图标
+     * @apiSuccess {Number} data.sort 排序
      */
     public function menus()
     {
@@ -138,14 +133,13 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {POST} /admins 创建管理员
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} username 帐号
-     * @apiParam {string} mobile 手机号
-     * @apiParam {string} password 密码
-     * @apiParam {string} avatar 头像
+     * @api {post} /admins 创建管理员
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} username 帐号
+     * @apiBody {String} mobile 手机号
+     * @apiBody {String} password 密码
+     * @apiBody {String} avatar 头像
      */
     public function create()
     {
@@ -165,15 +159,15 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {PUT} /admins/:id 更新管理员
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} username 账号
-     * @apiParam {string} mobile 手机号
-     * @apiParam {string} password 密码
-     * @apiParam {string} avatar 头像
-     * @apiParam {number} status 状态(0=禁用,1=正常)
+     * @api {put} /admins/:id 更新管理员
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiBody {String} username 账号
+     * @apiBody {String} mobile 手机号
+     * @apiBody {String} password 密码
+     * @apiBody {String} avatar 头像
+     * @apiBody {Number} status 状态(0=禁用,1=正常)
      */
     public function update($id)
     {
@@ -206,10 +200,10 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {DELETE} /admins/:ids 删除管理员
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
+     * @api {delete} /admins/:ids 删除管理员
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function delete($ids)
     {
@@ -225,25 +219,24 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {GET} /admins 管理员列表
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} username 帐号
-     * @apiParam {string} mobile 手机号
-     * @apiParam {string} nickname 昵称
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @api {get} /admins 管理员列表
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [username] 帐号
+     * @apiQuery {String} [mobile] 手机号
+     * @apiQuery {String} [nickname] 昵称
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {Object[]} data 数据列表
-     * @apiSuccess {number} data.id 管理员ID
-     * @apiSuccess {string} data.username 帐号
-     * @apiSuccess {string} data.mobile 手机号
-     * @apiSuccess {string} data.avatar 头像
-     * @apiSuccess {string} data.login_time 最近登录时间
-     * @apiSuccess {string} data.create_time 创建时间
+     * @apiSuccess {Number} data.id 管理员ID
+     * @apiSuccess {String} data.username 帐号
+     * @apiSuccess {String} data.mobile 手机号
+     * @apiSuccess {String} data.avatar 头像
+     * @apiSuccess {String} data.login_time 最近登录时间
+     * @apiSuccess {String} data.create_time 创建时间
      */
     public function index()
     {
@@ -262,19 +255,19 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {GET} /admins/:id 管理员信息
-     * @apiVersion 1.0.0
-     * @apiGroup IADMIN
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {number} id 管理员ID
-     * @apiSuccess {string} username 帐号
-     * @apiSuccess {string} mobile 手机号
-     * @apiSuccess {string} nickname 昵称
-     * @apiSuccess {string} avatar 头像
-     * @apiSuccess {string} email 邮箱
-     * @apiSuccess {number} status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} login_time 最近登录时间
-     * @apiSuccess {string} create_time 创建时间
+     * @api {get} /admins/:id 管理员信息
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiSuccess {Number} id 管理员ID
+     * @apiSuccess {String} username 帐号
+     * @apiSuccess {String} mobile 手机号
+     * @apiSuccess {String} nickname 昵称
+     * @apiSuccess {String} avatar 头像
+     * @apiSuccess {String} email 邮箱
+     * @apiSuccess {Number} status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} login_time 最近登录时间
+     * @apiSuccess {String} create_time 创建时间
      */
     public function read($id)
     {

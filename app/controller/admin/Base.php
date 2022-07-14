@@ -17,30 +17,40 @@ class Base extends BaseController
     protected $model;
 
     /**
-     * @api {GET} /rest/:table/:option/:ids GET操作
-     * @apiVersion 1.0.0
+     * @api {get} /rest/:table/:option/:ids GET操作
      * @apiGroup IREST
-     * @apiHeader {string} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {String} option 操作
+     * @apiParam {String} ids ID串
+     * @apiHeader {String} Authorization Token
      */
 
     /**
-     * @api {POST} /rest/:table/:option/:ids POST操作
-     * @apiVersion 1.0.0
+     * @api {post} /rest/:table/:option/:ids POST操作
      * @apiGroup IREST
-     * @apiHeader {string} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {String} option 操作
+     * @apiParam {String} ids ID串
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} :kv 键值对
      */
 
     /**
-     * @api {PUT} /rest/:table/:option/:ids PUT操作
-     * @apiVersion 1.0.0
+     * @api {put} /rest/:table/:option/:ids PUT操作
      * @apiGroup IREST
-     * @apiHeader {string} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {String} option 操作
+     * @apiParam {String} ids ID串
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} :kv 键值对
      */
 
     /**
-     * @api {DELETE} /rest/:table/:option/:ids DELETE操作
-     * @apiVersion 1.0.0
+     * @api {delete} /rest/:table/:option/:ids DELETE操作
      * @apiGroup IREST
-     * @apiHeader {string} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {String} option 操作
+     * @apiParam {String} ids ID串
+     * @apiHeader {String} Authorization Token
      */
 }

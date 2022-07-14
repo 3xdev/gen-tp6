@@ -98,7 +98,9 @@ class SystemTableCol extends Base
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
+            'x-reactions' => json_decode($data['reactions']) ?: [],
         ];
+
         // 必填
         $data['required'] && $schema['required'] = true;
         // 默认值
