@@ -3,7 +3,7 @@
 namespace app\controller\admin;
 
 /**
- * @apiDefine IUPLOAD 上传
+ * @apiDefine ISYSUPLOAD 系统-存储及上传
  */
 class SystemUpload extends Base
 {
@@ -11,13 +11,13 @@ class SystemUpload extends Base
     public const FILESYSTEM_HASH_NAME_RULE = 'sha1';
 
     /**
-     * @api {POST} /upload/token/:name 创建七牛云直传token
-     * @apiVersion 1.0.0
-     * @apiGroup IUPLOAD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} [mime] 限定文件类型
-     * @apiSuccess {string} action 上传地址
-     * @apiSuccess {string} token 上传凭证
+     * @api {post} /upload/token/:name 创建七牛云直传token
+     * @apiGroup ISYSUPLOAD
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} name 文件类名
+     * @apiBody {String} [mime] 限定文件类型
+     * @apiSuccess {String} action 上传地址
+     * @apiSuccess {String} token 上传凭证
      */
     public function token($name)
     {
@@ -31,13 +31,13 @@ class SystemUpload extends Base
     }
 
     /**
-     * @api {POST} /upload/image/:name 上传图片
-     * @apiVersion 1.0.0
-     * @apiGroup IUPLOAD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} file 二进制文件
-     * @apiSuccess {string} status 上传状态(done:完成)
-     * @apiSuccess {string} url 图片URL
+     * @api {post} /upload/image/:name 上传图片
+     * @apiGroup ISYSUPLOAD
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} name 文件类名
+     * @apiBody {String} file 二进制文件
+     * @apiSuccess {String} status 上传状态(done:完成)
+     * @apiSuccess {String} url 图片URL
      */
     public function image($name)
     {
@@ -51,13 +51,13 @@ class SystemUpload extends Base
     }
 
     /**
-     * @api {POST} /upload/attachment/:name 上传附件
-     * @apiVersion 1.0.0
-     * @apiGroup IUPLOAD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} file 二进制文件
-     * @apiSuccess {string} status 上传状态(done:完成)
-     * @apiSuccess {string} url 附件URL
+     * @api {post} /upload/attachment/:name 上传附件
+     * @apiGroup ISYSUPLOAD
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} name 文件类名
+     * @apiBody {String} file 二进制文件
+     * @apiSuccess {String} status 上传状态(done:完成)
+     * @apiSuccess {String} url 附件URL
      */
     public function attachment($name)
     {

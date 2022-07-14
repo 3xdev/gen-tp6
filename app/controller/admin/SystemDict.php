@@ -7,16 +7,15 @@ use app\model\SystemDict as SelfModel;
 class SystemDict extends Base
 {
     /**
-     * @api {POST} /dicts 创建字典
-     * @apiVersion 1.0.0
+     * @api {post} /dicts 创建字典
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} key_ 代码
-     * @apiParam {string} label 名称
-     * @apiParam {string} intro 说明
-     * @apiParam {object[]} items 条目
-     * @apiParam {string} items.key_ 条目代码
-     * @apiParam {string} items.label 条目名称
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} key_ 代码
+     * @apiBody {String} label 名称
+     * @apiBody {String} intro 说明
+     * @apiBody {object[]} items 条目
+     * @apiBody {String} items.key_ 条目代码
+     * @apiBody {String} items.label 条目名称
      */
     public function create()
     {
@@ -36,16 +35,16 @@ class SystemDict extends Base
     }
 
     /**
-     * @api {PUT} /dicts/:name 更新字典
-     * @apiVersion 1.0.0
+     * @api {put} /dicts/:name 更新字典
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} key_ 代码
-     * @apiParam {string} label 名称
-     * @apiParam {string} intro 说明
-     * @apiParam {object[]} items 条目
-     * @apiParam {string} items.key_ 条目代码
-     * @apiParam {string} items.label 条目名称
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} name 字典代码
+     * @apiBody {String} key_ 代码
+     * @apiBody {String} label 名称
+     * @apiBody {String} intro 说明
+     * @apiBody {object[]} items 条目
+     * @apiBody {String} items.key_ 条目代码
+     * @apiBody {String} items.label 条目名称
      */
     public function update($name)
     {
@@ -75,10 +74,10 @@ class SystemDict extends Base
     }
 
     /**
-     * @api {DELETE} /dicts/:names 删除字典
-     * @apiVersion 1.0.0
+     * @api {delete} /dicts/:names 删除字典
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} names 字典代码串
      */
     public function delete($names)
     {
@@ -94,26 +93,25 @@ class SystemDict extends Base
     }
 
     /**
-     * @api {GET} /dicts 获取字典列表
-     * @apiVersion 1.0.0
+     * @api {get} /dicts 获取字典列表
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} key_ 代码
-     * @apiParam {string} label 名称
-     * @apiParam {string} intro 说明
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [key_] 代码
+     * @apiQuery {String} [label] 名称
+     * @apiQuery {String} [intro] 说明
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {Object[]} data 数据列表
-     * @apiSuccess {string} data.key_ 代码
-     * @apiSuccess {string} data.label 名称
-     * @apiSuccess {string} data.intro 说明
+     * @apiSuccess {String} data.key_ 代码
+     * @apiSuccess {String} data.label 名称
+     * @apiSuccess {String} data.intro 说明
      * @apiSuccess {object[]} data.items 条目
-     * @apiSuccess {string} data.items.key_ 条目代码
-     * @apiSuccess {string} data.items.label 条目名称
-     * @apiSuccess {string} data.items.intro 条目描述
+     * @apiSuccess {String} data.items.key_ 条目代码
+     * @apiSuccess {String} data.items.label 条目名称
+     * @apiSuccess {String} data.items.intro 条目描述
      */
     public function index()
     {
@@ -132,12 +130,12 @@ class SystemDict extends Base
     }
 
     /**
-     * @api {GET} /dicts/:name 获取字典条目
-     * @apiVersion 1.0.0
+     * @api {get} /dicts/:name 获取字典条目
      * @apiGroup ISYS
+     * @apiParam {String} name 字典代码
      * @apiSuccess {object[]} items 条目
-     * @apiSuccess {string} items.value 条目代码
-     * @apiSuccess {string} items.label 条目名称
+     * @apiSuccess {String} items.value 条目代码
+     * @apiSuccess {String} items.label 条目名称
      */
     public function read($name)
     {

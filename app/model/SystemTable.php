@@ -57,8 +57,9 @@ class SystemTable extends Base
             'toolbar' => [],
             'batch' => [],
         ];
-        $options = $this->options->visible(['group', 'type', 'key', 'title', 'method', 'path'])->toArray();
+        $options = $this->options->visible(['group', 'type', 'key', 'title', 'method', 'path', 'body'])->toArray();
         foreach ($options as $option) {
+            $option['body'] = json_decode($option['body']) ?: [];
             isset($schema['options'][$option['group']]) && $schema['options'][$option['group']][] = $option;
         }
         return $schema;

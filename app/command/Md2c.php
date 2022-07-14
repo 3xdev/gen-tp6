@@ -7,7 +7,6 @@ use think\console\Input;
 use think\console\Output;
 use app\model\SystemTable;
 use app\model\SystemTableCol;
-use app\model\SystemTableOption;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PsrPrinter;
 

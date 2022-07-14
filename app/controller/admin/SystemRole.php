@@ -5,17 +5,13 @@ namespace app\controller\admin;
 use app\model\SystemRole as SelfModel;
 use tauthz\facade\Enforcer;
 
-/**
- * @apiDefine ISYSTEM 系统
- */
 class SystemRole extends Base
 {
     /**
-     * @api {POST} /system_role 创建系统角色
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} name 名称
+     * @api {post} /system_role 创建系统角色
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} name 名称
      */
     public function create()
     {
@@ -29,12 +25,12 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {PUT} /system_role/:id 更新系统角色
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} name 名称
-     * @apiParam {number} status 状态(0=禁用,1=正常)
+     * @api {put} /system_role/:id 更新系统角色
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiBody {String} name 名称
+     * @apiBody {Number} status 状态(0=禁用,1=正常)
      */
     public function update($id)
     {
@@ -52,10 +48,10 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {GET} /system_role/permission/:ids 获取系统角色权限
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
+     * @api {get} /system_role/permission/:ids 获取系统角色权限
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function getPermission($ids)
     {
@@ -70,10 +66,10 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {PUT} /system_role/permission/:ids 更新系统角色权限
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
+     * @api {put} /system_role/permission/:ids 更新系统角色权限
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function putPermission($ids)
     {
@@ -95,10 +91,10 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {DELETE} /system_role/:ids 删除系统角色
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
+     * @api {delete} /system_role/:ids 删除系统角色
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} ids ID串
      */
     public function delete($ids)
     {
@@ -114,21 +110,20 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {GET} /system_role 系统角色列表
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} name 帐号
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @api {get} /system_role 系统角色列表
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [name] 帐号
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {Object[]} data 数据列表
-     * @apiSuccess {number} data.id 系统角色ID
-     * @apiSuccess {string} data.name 名称
-     * @apiSuccess {number} data.status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} data.create_time 创建时间
+     * @apiSuccess {Number} data.id 系统角色ID
+     * @apiSuccess {String} data.name 名称
+     * @apiSuccess {Number} data.status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} data.create_time 创建时间
      */
     public function index()
     {
@@ -147,14 +142,14 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {GET} /system_role/:id 系统角色信息
-     * @apiVersion 1.0.0
-     * @apiGroup ISYSTEM
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {number} id 系统角色ID
-     * @apiSuccess {string} name 名称
-     * @apiSuccess {number} status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} create_time 创建时间
+     * @api {get} /system_role/:id 系统角色信息
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiParam {Number} id ID
+     * @apiSuccess {Number} id 系统角色ID
+     * @apiSuccess {String} name 名称
+     * @apiSuccess {Number} status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} create_time 创建时间
      */
     public function read($id)
     {

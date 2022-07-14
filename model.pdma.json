@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.1",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-6-29 17:54:52",
+  "updatedTime": "2022-7-13 18:33:09",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -2840,7 +2840,7 @@
           "defaultValue": "''",
           "hideInGraph": false,
           "refDict": "",
-          "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
+          "domain": "87968BA6-FD09-4BBA-9E26-A07EFEB9E8A6",
           "id": "1CC151DC-F997-4B7D-BB4F-8E519CFD68D9",
           "isStandard": true
         },
@@ -2929,6 +2929,23 @@
           "refDict": "",
           "domain": "5D04AF36-B0BC-45CC-91B3-E0C31FB3FA72",
           "id": "D173EA3F-35C7-4A93-8FAC-B83E790C3BB8"
+        },
+        {
+          "defKey": "reactions",
+          "defName": "联动逻辑",
+          "comment": "json格式",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "'{}'",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "AB180B5B-CAC4-4C42-B8A2-20847A0F8D39",
+          "id": "ADCA9BAE-F879-4E9E-904F-6615823E427C"
         },
         {
           "defKey": "validator",
@@ -3418,6 +3435,23 @@
           "id": "DF818493-E381-489B-AB42-A5885F222FDA",
           "uiHint": "",
           "isStandard": true
+        },
+        {
+          "defKey": "body",
+          "defName": "请求体",
+          "comment": "json格式",
+          "type": "",
+          "len": "",
+          "scale": "",
+          "primaryKey": false,
+          "notNull": true,
+          "autoIncrement": false,
+          "defaultValue": "'{}'",
+          "hideInGraph": false,
+          "refDict": "",
+          "extProps": {},
+          "domain": "ADBB6C9A-79C2-427A-831B-58F716EF9A75",
+          "id": "ACB3B9AB-E074-4DD6-808B-06D3CEB03365"
         },
         {
           "defKey": "sort",
@@ -6125,9 +6159,21 @@
           "id": "20FD05BB-9F8C-4530-9CF4-4C746FA1E3BA"
         },
         {
+          "defKey": "digitRange",
+          "defName": "数字区间",
+          "sort": "31",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "D4713A19-2D53-4967-9501-F690C8097EA1"
+        },
+        {
           "defKey": "customImages",
           "defName": "自定义多图片",
-          "sort": "31",
+          "sort": "32",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6139,7 +6185,7 @@
         {
           "defKey": "customRichText",
           "defName": "自定义富文本编辑器",
-          "sort": "32",
+          "sort": "33",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6151,7 +6197,7 @@
         {
           "defKey": "customRelationPickup",
           "defName": "自定义模型关联拾取",
-          "sort": "33",
+          "sort": "34",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6273,6 +6319,18 @@
           "attr2": "",
           "attr3": "",
           "id": "9DDE2FE1-F504-46A6-AD8E-33883F5BE2C4"
+        },
+        {
+          "defKey": "request",
+          "defName": "接口请求",
+          "sort": "5",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "7E2658A6-2C3F-4E3C-A4ED-2F6DE19BB148"
         }
       ]
     },
@@ -6330,6 +6388,18 @@
           "attr2": "",
           "attr3": "",
           "id": "C929F6DE-C0C9-4B5E-BE07-0CFE150B6736"
+        },
+        {
+          "defKey": "request",
+          "defName": "接口请求",
+          "sort": "4",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "DBE553CC-D80C-45F6-8E2E-CBAE4CDEC15F"
         }
       ]
     },
@@ -6375,6 +6445,18 @@
           "attr2": "",
           "attr3": "",
           "id": "ABA0D7B1-9312-4185-9BD1-5DEAFFADA053"
+        },
+        {
+          "defKey": "request",
+          "defName": "接口请求",
+          "sort": "3",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "9F11B605-D5A0-468F-925F-6E6F87798845"
         }
       ]
     },

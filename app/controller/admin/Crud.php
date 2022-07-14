@@ -12,12 +12,12 @@ use think\db\exception\ModelNotFoundException;
 class Crud extends Base
 {
     /**
-     * @api {GET} /suggest/:table suggest数据源
-     * @apiVersion 1.0.0
+     * @api {get} /suggest/:table suggest数据源
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} keyword 关键字
-     * @apiParam {number} pageSize 页大小
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiQuery {String} [keyword] 关键字
+     * @apiQuery {Number} [pageSize] 页大小
      * @apiSuccess {Object[]} data 数据列表
      */
     public function suggest()
@@ -40,18 +40,18 @@ class Crud extends Base
     }
 
     /**
-     * @api {GET} /crud/:table 列表
-     * @apiVersion 1.0.0
+     * @api {get} /crud/:table 列表
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} :search 查询值
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiQuery {String} [:search] 查询键值对
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {Object[]} data 数据列表
-     * @apiSuccess {string} data.:field 字段值
+     * @apiSuccess {String} data.:field 字段值
      */
     public function index()
     {
@@ -93,11 +93,11 @@ class Crud extends Base
     }
 
     /**
-     * @api {POST} /crud/:table 创建
-     * @apiVersion 1.0.0
+     * @api {post} /crud/:table 创建
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} :field 字段值
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiBody {String} :field 字段值
      */
     public function create()
     {
@@ -110,11 +110,12 @@ class Crud extends Base
     }
 
     /**
-     * @api {GET} /crud/:table/:id 读取
-     * @apiVersion 1.0.0
+     * @api {get} /crud/:table/:id 读取
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {string} :field 字段值
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {Number} id ID
+     * @apiSuccess {String} :field 字段值
      */
     public function read($id)
     {
@@ -140,11 +141,12 @@ class Crud extends Base
     }
 
     /**
-     * @api {PUT} /crud/:table/:id 更新
-     * @apiVersion 1.0.0
+     * @api {put} /crud/:table/:id 更新
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} :field 字段值
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {Number} id ID
+     * @apiBody {String} :field 字段值
      */
     public function update($id)
     {
@@ -161,10 +163,11 @@ class Crud extends Base
     }
 
     /**
-     * @api {DELETE} /crud/:table/:ids 删除
-     * @apiVersion 1.0.0
+     * @api {delete} /crud/:table/:ids 删除
      * @apiGroup ICRUD
-     * @apiHeader {string} Authorization Token
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiParam {String} ids ID串
      */
     public function delete($ids)
     {

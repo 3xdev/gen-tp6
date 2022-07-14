@@ -9,13 +9,12 @@ use app\model\SystemForm as SelfModel;
 class SystemForm extends Base
 {
     /**
-     * @api {POST} /form 创建表单
-     * @apiVersion 1.0.0
+     * @api {post} /form 创建表单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} code 代码
-     * @apiParam {string} name 名称
-     * @apiParam {string} schema_string Schema字符串
+     * @apiHeader {String} Authorization Token
+     * @apiBody {String} code 代码
+     * @apiBody {String} name 名称
+     * @apiBody {String} schema_string Schema字符串
      */
     public function create()
     {
@@ -30,14 +29,14 @@ class SystemForm extends Base
     }
 
     /**
-     * @api {PUT} /form/:name 更新表单
-     * @apiVersion 1.0.0
+     * @api {put} /form/:name 更新表单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} code 代码
-     * @apiParam {string} name 名称
-     * @apiParam {string} schema_string Schema字符串
-     * @apiParam {number} status 状态(0=禁用,1=正常)
+     * @apiHeader {String} Authorization Token
+     * @apiParam {string} name 表单代码
+     * @apiBody {String} code 代码
+     * @apiBody {String} name 名称
+     * @apiBody {String} schema_string Schema字符串
+     * @apiBody {Number} status 状态(0=禁用,1=正常)
      */
     public function update($name)
     {
@@ -61,10 +60,10 @@ class SystemForm extends Base
     }
 
     /**
-     * @api {DELETE} /form/:names 删除表单
-     * @apiVersion 1.0.0
+     * @api {delete} /form/:names 删除表单
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
+     * @apiHeader {String} Authorization Token
+     * @apiParam {string} names 表单代码串
      */
     public function delete($names)
     {
@@ -80,24 +79,23 @@ class SystemForm extends Base
     }
 
     /**
-     * @api {GET} /form 表单列表
-     * @apiVersion 1.0.0
+     * @api {get} /form 表单列表
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiParam {string} code 代码
-     * @apiParam {string} name 名称
-     * @apiParam {number} status 状态
-     * @apiParam {number} current 当前页
-     * @apiParam {number} pageSize 页大小
-     * @apiParam {string} filter ProTable的filter
-     * @apiParam {string} sorter ProTable的sorter
-     * @apiSuccess {number} total 数据总计
+     * @apiHeader {String} Authorization Token
+     * @apiQuery {String} [code] 代码
+     * @apiQuery {String} [name] 名称
+     * @apiQuery {Number} [status] 状态
+     * @apiQuery {Number} [current] 当前页
+     * @apiQuery {Number} [pageSize] 页大小
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     * @apiSuccess {Number} total 数据总计
      * @apiSuccess {object[]} data 数据列表
-     * @apiSuccess {string} data.code 代码
-     * @apiSuccess {string} data.name 名称
+     * @apiSuccess {String} data.code 代码
+     * @apiSuccess {String} data.name 名称
      * @apiSuccess {object} data.schema 属性
-     * @apiSuccess {number} data.status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} data.create_time 创建时间
+     * @apiSuccess {Number} data.status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} data.create_time 创建时间
      */
     public function index()
     {
@@ -119,15 +117,15 @@ class SystemForm extends Base
     }
 
     /**
-     * @api {GET} /form/:name 表单信息
-     * @apiVersion 1.0.0
+     * @api {get} /form/:name 表单信息
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {string} code 代码
-     * @apiSuccess {string} name 名称
+     * @apiHeader {String} Authorization Token
+     * @apiParam {string} name 表单代码
+     * @apiSuccess {String} code 代码
+     * @apiSuccess {String} name 名称
      * @apiSuccess {object} schema 属性
-     * @apiSuccess {number} status 状态(0=禁用,1=正常)
-     * @apiSuccess {string} create_time 创建时间
+     * @apiSuccess {Number} status 状态(0=禁用,1=正常)
+     * @apiSuccess {String} create_time 创建时间
      */
     public function read($name)
     {
@@ -144,11 +142,11 @@ class SystemForm extends Base
 
 
     /**
-     * @api {GET} /schema/formily/form/:name 获取系统表单(Formily)的schema描述
-     * @apiVersion 1.0.0
+     * @api {get} /schema/formily/form/:name 获取系统表单(Formily)的schema描述
      * @apiGroup ISYS
-     * @apiHeader {string} Authorization Token
-     * @apiSuccess {string} type
+     * @apiHeader {String} Authorization Token
+     * @apiParam {string} name 表单代码
+     * @apiSuccess {String} type
      * @apiSuccess {object} properties
      */
     public function formily($name)
