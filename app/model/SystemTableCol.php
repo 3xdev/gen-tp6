@@ -36,6 +36,9 @@ class SystemTableCol extends Base
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];
         !empty($data['value_enum_rel']) && $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
+        !empty($data['template_text']) && $schema['templateText'] = $data['template_text'];
+        !empty($data['template_link_to']) && $schema['templateLinkTo'] = $data['template_link_to'];
+        $data['width'] > 0 && $schema['width'] = $data['width'];
         $data['col_size'] > 1 && $schema['colSize'] = $data['col_size'];
         $data['filters'] && $schema['filters'] = true;
         $data['sorter'] && $schema['sorter'] = true;
