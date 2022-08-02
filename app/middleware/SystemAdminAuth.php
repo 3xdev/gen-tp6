@@ -25,7 +25,7 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
             try {
                 $token = $this->auth->refresh();
                 $payload = $this->auth->auth(false);
-                $this->setSystemAdmin($payload['id']->getValue(), $request);
+                $this->setSystemAdmin($payload['id'], $request);
                 return $this->setAuthentication($next($request), $token);
             } catch (TokenBlacklistGracePeriodException $e) {
                 // 捕获黑名单宽限期
@@ -36,7 +36,7 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
             $payload = $this->auth->auth(false);
         }
 
-        $this->setSystemAdmin($payload['id']->getValue(), $request);
+        $this->setSystemAdmin($payload['id'], $request);
         return $next($request);
     }
 
