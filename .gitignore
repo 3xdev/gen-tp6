@@ -4,3 +4,4 @@
 /public/doc
 *.log
 .env
+composer.lock
