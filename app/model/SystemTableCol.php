@@ -103,17 +103,24 @@ class SystemTableCol extends Base
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
             'x-reactions' => json_decode($data['reactions']) ?: [],
         ];
+        is_array($schema['x-reactions']) || $schema['x-reactions'] = [$schema['x-reactions']];
 
         // 必填
         $data['required'] && $schema['required'] = true;
         // 默认值
         $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
-        // 关联字典
+        // 关联
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
             $kvs = system_col_rel_kv($data['value_enum_rel']);
             foreach ($kvs as $k => $v) {
                 $schema['enum'][] = ['value' => $k, 'label' => $v];
+            }
+            // 关联搜索
+            if ($data['value_enum_rel'][0] == 'suggest') {
+                $schema['x-component-props']['showSearch'] = true;
+                $schema['x-component-props']['filterOption'] = false;
+                $schema['x-reactions'][] = "{{useSuggestDataSource('" . $schema['name'] . "', '" . $data['value_enum_rel'][1] . "', fetchSuggestData)}}";
             }
         }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
