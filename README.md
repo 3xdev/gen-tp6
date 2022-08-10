@@ -10,7 +10,7 @@ Gen(艮快低代码开发)
 
 * topthink/framework 6.0
 * topthink/think-orm 2.0
-* thans/tp-jwt-auth 1.1
+* yzh52521/tp-jwt-auth 1.3
 * casbin/think-authz 1.5
 * godruoyi/php-snowflake 1.1
 * jaguarjack/think-filesystem-cloud 1.0
@@ -158,8 +158,25 @@ public function searchUserAttr($query, $value, $data)
 }
 ```
 
-
-
+### 表格设计-列下拉框多选
+示例：
+1、表格列类型设为下拉框，修改 编辑扩展 中的 组件属性 为 {"mode":"multiple"}
+2、模型设置表格列为json类型字段（当字段值为数组形式的json数据时）
+```php
+protected $json = ['user_ids'];
+protected $jsonAssoc = true;
+```
+3、模型设置表格列获取器和修改器（当字段值为半角逗号分隔的字符串时）
+```php
+public function getUserIdsAttr($value, $data)
+{
+    return json_decode($value) ?: [];
+}
+public function setUserIdsAttr($value, $data)
+{
+    return is_array($value) ? json_encode($value) : '[]';
+}
+```
 
 ## Git提交规范
 

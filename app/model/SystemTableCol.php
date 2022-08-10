@@ -22,6 +22,23 @@ class SystemTableCol extends Base
         $value && $query->where('data_index', 'like', '%' . $value . '%');
     }
 
+    public function setComponentPropsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setDecoratorPropsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setReactionsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setValidatorAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+
     // 关联模型定义名
     public function getRelationNameAttr($value, $data)
     {
@@ -101,9 +118,13 @@ class SystemTableCol extends Base
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
+            'x-component-props' => json_decode($data['component_props'], true) ?: [],
+            'x-decorator-props' => json_decode($data['decorator_props'], true) ?: [],
             'x-reactions' => json_decode($data['reactions']) ?: [],
+            'x-validator' => json_decode($data['validator']) ?: [],
         ];
         is_array($schema['x-reactions']) || $schema['x-reactions'] = [$schema['x-reactions']];
+        is_array($schema['x-validator']) || $schema['x-validator'] = [$schema['x-validator']];
 
         // 必填
         $data['required'] && $schema['required'] = true;

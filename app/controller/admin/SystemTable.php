@@ -149,8 +149,8 @@ class SystemTable extends Base
 
         $data = $table->visible([
             'code', 'name', 'props', 'status', 'create_time',
-            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip', 'template_text',
-                        'required', 'default_value', 'reactions', 'validator', 'template_link_to',
+            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip', 'template_text', 'template_link_to',
+                        'required', 'default_value', 'component_props', 'decorator_props', 'reactions', 'validator',
                         'ellipsis', 'copyable', 'filters', 'sorter', 'width', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions'],
             'options' => ['group', 'type', 'key', 'title', 'method', 'path', 'body']
