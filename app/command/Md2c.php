@@ -65,9 +65,15 @@ class Md2c extends Command
         $class->setExtends(\app\model\Base::class);
         $fks = array_map('strtolower', array_column($entity['fields'], 'defKey'));
         $pks = array_map('strtolower', array_column(array_filter($entity['fields'], fn($field) => $field['primaryKey']), 'defKey'));
+        $jsons = array_map('strtolower', array_column(array_filter($entity['fields'], fn($field) => in_array($field['defaultValue'], ["'{}'", "'[]'"])), 'defKey'));
         // 主键
         if (count($pks) > 1 || (count($pks) == 1 && $pks[0] != 'id')) {
             $class->addProperty('pk', count($pks) > 1 ? $pks : $pks[0])->setProtected();
+        }
+        // json字段
+        if (count($jsons) > 0) {
+            $class->addProperty('json', $jsons)->setProtected();
+            $class->addProperty('jsonAssoc', true)->setProtected();
         }
         // 软删除
         if (in_array('delete_time', $fks)) {
