@@ -106,6 +106,8 @@ Route::group('api/admin', function () {
 
     // 获取系统角色列表
     Route::get('system_role', 'admin.SystemRole/index');
+    // 获取系统角色关联表格
+    Route::get('system_role/table', 'admin.SystemRole/getTable');
     // 获取系统角色
     Route::get('system_role/:id', 'admin.SystemRole/read');
     // 更新系统角色
@@ -114,6 +116,10 @@ Route::group('api/admin', function () {
     Route::post('system_role', 'admin.SystemRole/create');
     // 删除系统角色
     Route::delete('system_role/:ids', 'admin.SystemRole/delete');
+    // 获取系统角色拥有权限
+    Route::get('system_role/permission/:id', 'admin.SystemRole/getPermission');
+    // 更新系统角色拥有权限
+    Route::put('system_role/permission/:id', 'admin.SystemRole/putPermission');
 
     // 获取菜单列表
     Route::get('system_menu', 'admin.SystemMenu/index');

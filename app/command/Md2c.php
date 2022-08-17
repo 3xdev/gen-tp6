@@ -156,12 +156,12 @@ class Md2c extends Command
         ]);
         array_walk($entity['fields'], [$this, 'field2col'], $entity);
         $table->options()->saveAll([
-            ['group' => 'columns', 'type' => 'view', 'key' => 'view', 'title' => '查看'],
-            ['group' => 'columns', 'type' => 'edit', 'key' => 'edit', 'title' => '编辑'],
+            ['group' => 'columns', 'type' => 'view', 'key' => 'get', 'title' => '查看'],
+            ['group' => 'columns', 'type' => 'edit', 'key' => 'update', 'title' => '编辑'],
             ['group' => 'columns', 'type' => 'delete', 'key' => 'delete', 'title' => '删除',],
-            ['group' => 'toolbar', 'type' => 'add', 'key' => 'add', 'title' => '新建'],
-            ['group' => 'toolbar', 'type' => 'export', 'key' => 'export', 'title' => '导出'],
-            ['group' => 'batch', 'type' => 'bdelete', 'key' => 'bdelete', 'title' => '批量删除'],
+            ['group' => 'toolbar', 'type' => 'add', 'key' => 'create', 'title' => '新建'],
+            ['group' => 'toolbar', 'type' => 'export', 'key' => 'get', 'title' => '导出'],
+            ['group' => 'batch', 'type' => 'bdelete', 'key' => 'delete', 'title' => '批量删除'],
         ]);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');

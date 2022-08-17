@@ -24,7 +24,8 @@ class SystemAdminAuthz
 
         $roles = Enforcer::getRolesForUser($authzIdentifier);
         $obj = \think\helper\Str::snake(string_remove_prefix($request->controller(), 'admin.'));
-        $act = $request->isGet() ? 'r' : 'w';
+        $act = $request->isGet() ? 'get' : $request->action();
+
         if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $obj, $act)) {
             throw new Unauthorized();
         }

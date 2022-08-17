@@ -22,6 +22,35 @@ class SystemTable extends Base
         $value && $query->where('code', 'like', '%' . $value . '%');
     }
 
+    // 角色权限：表格关联操作
+    public function getActionsAttr($value, $data)
+    {
+        $kv = [
+            'get' => '读取'
+        ];
+        foreach ($this->options as $option) {
+            switch ($option['type']) {
+                case 'add':
+                    $kv['create'] = '新建';
+                    break;
+                case 'edit':
+                    $kv['update'] = '编辑';
+                    break;
+                case 'delete':
+                case 'bdelete':
+                    $kv['delete'] = '删除';
+                    break;
+                case 'view':
+                case 'export':
+                    break;
+                default:
+                    $kv[strtolower($option['key'])] = $option['title'];
+            }
+        }
+
+        return kv2data($kv, 'value', 'label');
+    }
+
     public function setPropsStringAttr($value)
     {
         is_object(json_decode($value)) && $this->set('props', json_decode($value, true));
@@ -57,7 +86,7 @@ class SystemTable extends Base
             'toolbar' => [],
             'batch' => [],
         ];
-        $options = $this->options->visible(['group', 'type', 'key', 'title', 'method', 'path', 'body'])->toArray();
+        $options = $this->options->visible(['group', 'type', 'key', 'title', 'path', 'body'])->append(['request'])->toArray();
         foreach ($options as $option) {
             $option['body'] = json_decode($option['body']) ?: [];
             isset($schema['options'][$option['group']]) && $schema['options'][$option['group']][] = $option;

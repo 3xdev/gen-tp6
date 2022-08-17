@@ -122,7 +122,7 @@ class SystemAdmin extends Base
         $list = \app\model\SystemMenu::where('status', 1)->order('sort')->select();
 
         $roles = Enforcer::getRolesForUser('admin_' . $this->request->admin->id);
-        $menus = $list->filter(fn($menu) => empty($menu->table_code) || in_array('role_1', $roles) || Enforcer::enforce('admin_' . $this->request->admin->id, $menu->table_code, 'r'));
+        $menus = $list->filter(fn($menu) => empty($menu->table_code) || in_array('role_1', $roles) || Enforcer::enforce('admin_' . $this->request->admin->id, $menu->table_code, 'get'));
 
         return $this->success([
             'data' => new \BlueM\Tree(

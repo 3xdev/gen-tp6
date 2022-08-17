@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemTable as SelfModel;
+use tauthz\facade\Enforcer;
 
 class SystemTable extends Base
 {
@@ -153,7 +154,7 @@ class SystemTable extends Base
                         'required', 'default_value', 'component_props', 'decorator_props', 'reactions', 'validator',
                         'ellipsis', 'copyable', 'filters', 'sorter', 'width', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions'],
-            'options' => ['group', 'type', 'key', 'title', 'method', 'path', 'body']
+            'options' => ['group', 'type', 'key', 'title', 'path', 'body']
         ])->toArray();
         $options = [
             'columns' => [],
@@ -181,7 +182,37 @@ class SystemTable extends Base
             return $this->error('数据未找到');
         }
 
-        return $this->success($table->pro_schema);
+        $schema = $table->pro_schema;
+
+        $authzIdentifier = $this->request->admin ? 'admin_' . $this->request->admin->id : '';
+        $roles = Enforcer::getRolesForUser($authzIdentifier);
+        foreach ($schema['options'] as $gkey => $gvalue) {
+            $act = 'get';
+            foreach ($gvalue as $key => $value) {
+                switch ($value['type']) {
+                    case 'add':
+                        $act = 'create';
+                        break;
+                    case 'edit':
+                        $act = 'update';
+                        break;
+                    case 'delete':
+                    case 'bdelete':
+                        $act = 'delete';
+                        break;
+                    case 'view':
+                    case 'export':
+                        break;
+                    default:
+                        $act = $value['key'];
+                }
+                if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $name, $act)) {
+                    unset($schema['options'][$gkey][$key]);
+                }
+            }
+        }
+
+        return $this->success($schema);
     }
 
 

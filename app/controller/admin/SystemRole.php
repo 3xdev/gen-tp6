@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemRole as SelfModel;
+use app\model\SystemTable as TableModel;
 use tauthz\facade\Enforcer;
 
 class SystemRole extends Base
@@ -48,15 +49,35 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {get} /system_role/permission/:ids 获取系统角色权限
+     * @api {get} /system_role/table 获取系统角色关联表格
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiSuccess {Object[]} data 数据列表
+     * @apiSuccess {String} data.code 代码
+     * @apiSuccess {String} data.name 名称
+     * @apiSuccess {Object[]} data.action 操作列表
+     * @apiSuccess {String} data.action.value 操作值
+     * @apiSuccess {String} data.action.label 操作名
+     */
+    public function getTable()
+    {
+        $list = TableModel::with(['options'])->where('status', 1)->select();
+
+        return $this->success([
+            'data' => $list->visible(['code', 'name'])->append(['actions'])
+        ]);
+    }
+
+    /**
+     * @api {get} /system_role/permission/:id 获取系统角色权限
      * @apiGroup ISYSADMIN
      * @apiHeader {String} Authorization Token
      * @apiParam {String} ids ID串
      */
-    public function getPermission($ids)
+    public function getPermission($id)
     {
         // 获取角色权限
-        $policy = Enforcer::getPermissionsForUser('role_' . $ids);
+        $policy = Enforcer::getPermissionsForUser('role_' . $id);
 
         $data = [];
         array_walk($policy, function ($val) use (&$data) {
@@ -66,23 +87,23 @@ class SystemRole extends Base
     }
 
     /**
-     * @api {put} /system_role/permission/:ids 更新系统角色权限
+     * @api {put} /system_role/permission/:id 更新系统角色权限
      * @apiGroup ISYSADMIN
      * @apiHeader {String} Authorization Token
      * @apiParam {String} ids ID串
      */
-    public function putPermission($ids)
+    public function putPermission($id)
     {
         $data = $this->request->post();
 
         // 删除角色权限
-        Enforcer::deletePermissionsForUser('role_' . $ids);
+        Enforcer::deletePermissionsForUser('role_' . $id);
 
         // 添加角色权限
         foreach (array_filter($data) as $obj => $acts) {
             if (is_array($acts)) {
                 foreach ($acts as $act) {
-                    Enforcer::AddPermissionForUser('role_' . $ids, $obj, $act);
+                    Enforcer::AddPermissionForUser('role_' . $id, $obj, $act);
                 }
             }
         }

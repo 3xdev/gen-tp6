@@ -3,7 +3,6 @@
 namespace app\controller\admin;
 
 use app\model\SystemMenu as SelfModel;
-use tauthz\facade\Enforcer;
 
 class SystemMenu extends Base
 {

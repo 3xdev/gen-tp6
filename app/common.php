@@ -184,6 +184,25 @@ if (!function_exists('system_col_rel_kv')) {
     }
 }
 
+if (!function_exists('kv2data')) {
+    /**
+     * KeyValue转数据
+     * kv2data(['get' => '读取'], 'value', 'label') => [['value' => 'get', 'label' => '读取']]
+     * @param  array    $kv         KeyValue数组
+     * @param  string   $map_key    key对应参数名
+     * @param  string   $map_value  value对应参数名
+     * @return array
+     */
+    function kv2data($kv, $map_key, $map_value)
+    {
+        $data = [];
+        foreach ($kv as $k => $v) {
+            $data[] = [$map_key => $k, $map_value => $v];
+        }
+        return $data;
+    }
+}
+
 if (!function_exists('pt_search4col')) {
     /**
      * ProTable中search参数处理(取自列名数组)
