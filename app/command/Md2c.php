@@ -156,12 +156,12 @@ class Md2c extends Command
         ]);
         array_walk($entity['fields'], [$this, 'field2col'], $entity);
         $table->options()->saveAll([
-            ['group' => 'columns', 'type' => 'view', 'key' => 'get', 'title' => '查看'],
-            ['group' => 'columns', 'type' => 'edit', 'key' => 'update', 'title' => '编辑'],
-            ['group' => 'columns', 'type' => 'delete', 'key' => 'delete', 'title' => '删除',],
-            ['group' => 'toolbar', 'type' => 'add', 'key' => 'create', 'title' => '新建'],
-            ['group' => 'toolbar', 'type' => 'export', 'key' => 'get', 'title' => '导出'],
-            ['group' => 'batch', 'type' => 'bdelete', 'key' => 'delete', 'title' => '批量删除'],
+            ['group' => 'columns', 'type' => 'view', 'action' => 'get', 'title' => '查看'],
+            ['group' => 'columns', 'type' => 'edit', 'action' => 'update', 'title' => '编辑'],
+            ['group' => 'columns', 'type' => 'delete', 'action' => 'delete', 'title' => '删除',],
+            ['group' => 'toolbar', 'type' => 'add', 'action' => 'create', 'title' => '新建'],
+            ['group' => 'toolbar', 'type' => 'export', 'action' => 'get', 'title' => '导出'],
+            ['group' => 'batch', 'type' => 'bdelete', 'action' => 'delete', 'title' => '批量删除'],
         ]);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');

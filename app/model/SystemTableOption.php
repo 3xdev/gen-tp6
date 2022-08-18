@@ -8,6 +8,25 @@ class SystemTableOption extends Base
 {
     use SoftDelete;
 
+    public function setActionAttr($value, $data)
+    {
+        switch ($data['type']) {
+            case 'add':
+                $value = 'create';
+                break;
+            case 'edit':
+                $value = 'update';
+                break;
+            case 'delete':
+            case 'bdelete':
+                $value = 'delete';
+                break;
+            default:
+                break;
+        }
+        return $value;
+    }
+
     public function getRequestAttr($value, $data)
     {
         if (!in_array($data['type'], ['modal', 'request'])) {
@@ -20,12 +39,12 @@ class SystemTableOption extends Base
             'update' => ['method' => 'put', 'url' => $path_crud . '/{{ids}}'],
             'delete' => ['method' => 'delete', 'url' => $path_crud . '/{{ids}}'],
         ];
-        if (isset($map_crud[$data['key']])) {
-            return $map_crud[$data['key']];
+        if (isset($map_crud[$data['action']])) {
+            return $map_crud[$data['action']];
         }
 
         $path_rest = '/api/admin/rest/' . $this->btable->code;
-        return preg_match('/^(post|put|delete)(\w+)$/', $data['key'], $matches) ? [
+        return preg_match('/^(post|put|delete)(\w+)$/', $data['action'], $matches) ? [
             'method' => $matches[1],
             'url' => $path_rest . '/' . strtolower($matches[2]) . '/{{ids}}'
         ] : [];

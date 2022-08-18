@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.4",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-8-16 15:14:01",
+  "updatedTime": "2022-8-18 14:39:28",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -3453,7 +3453,7 @@
           "isStandard": true
         },
         {
-          "defKey": "key",
+          "defKey": "action",
           "defName": "操作名",
           "comment": "",
           "type": "",
@@ -3487,8 +3487,8 @@
           "id": "9616117A-9EC3-49B0-9825-5399E714D053"
         },
         {
-          "defKey": "path",
-          "defName": "接口或路径",
+          "defKey": "target",
+          "defName": "表单或页面",
           "comment": "",
           "type": "",
           "len": "",

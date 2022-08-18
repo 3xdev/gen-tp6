@@ -70,11 +70,6 @@ class SystemTableCol extends Base
     }
     public function getFormilySchemaAttr($value, $data)
     {
-        $mapType = [
-            'dateRange' => 'string[]',
-            'dateTimeRange' => 'string[]',
-            'timeRange' => 'string[]',
-        ];
         $mapComponent = [
             'text' => 'Input',
             'select' => 'Select',
@@ -114,7 +109,6 @@ class SystemTableCol extends Base
 
         $schema = [
             'name' => $data['data_index'],
-            'type' => $mapType[$data['value_type']] ?? 'string',
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
@@ -129,7 +123,7 @@ class SystemTableCol extends Base
         // 必填
         $data['required'] && $schema['required'] = true;
         // 默认值
-        $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
+        ($data['default_value'] != '' && $data['default_value'] != '[]' && $data['default_value'] != '{}') && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
         // 关联
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
