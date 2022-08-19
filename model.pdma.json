@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.1.4",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-8-18 14:39:28",
+  "updatedTime": "2022-8-19 17:15:58",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -6251,9 +6251,21 @@
           "id": "2381B69B-F86F-41E3-A28E-A7A3D0F487AD"
         },
         {
+          "defKey": "customAttachments",
+          "defName": "自定义多附件",
+          "sort": "33",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "FF7EAD5C-044A-4D16-AA39-F7AD1ECF4304"
+        },
+        {
           "defKey": "customRichText",
           "defName": "自定义富文本编辑器",
-          "sort": "33",
+          "sort": "34",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6265,7 +6277,7 @@
         {
           "defKey": "customRelationPickup",
           "defName": "自定义模型关联拾取",
-          "sort": "34",
+          "sort": "35",
           "parentKey": "",
           "intro": "",
           "enabled": true,

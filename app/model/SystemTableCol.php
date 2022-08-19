@@ -52,9 +52,17 @@ class SystemTableCol extends Base
         ];
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];
-        !empty($data['value_enum_rel']) && $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
         !empty($data['template_text']) && $schema['templateText'] = $data['template_text'];
         !empty($data['template_link_to']) && $schema['templateLinkTo'] = $data['template_link_to'];
+        if (!empty($data['value_enum_rel'])) {
+            if ($data['value_enum_rel'][0] == 'suggest') {
+                $schema['requestTable'] = $data['value_enum_rel'][1];
+                $schema['fieldProps']['debounceTime'] = 800;
+                $schema['fieldProps']['showSearch'] = true;
+            } else {
+                $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
+            }
+        }
         $data['width'] > 0 && $schema['width'] = $data['width'];
         $data['col_size'] > 1 && $schema['colSize'] = $data['col_size'];
         $data['filters'] && $schema['filters'] = true;
@@ -65,7 +73,8 @@ class SystemTableCol extends Base
         $data['hide_in_table'] && $schema['hideInTable'] = true;
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
-
+        // 合并组件属性
+        !empty(json_decode($data['component_props'], true)) && $schema['fieldProps'] = array_merge($schema['fieldProps'] ?? [], json_decode($data['component_props'], true));
         return $schema;
     }
     public function getFormilySchemaAttr($value, $data)
@@ -103,6 +112,7 @@ class SystemTableCol extends Base
             //'second' => '',
             //'fromNow' => '',
             'customImages' => 'CustomImageUpload',
+            'customAttachments' => 'CustomAttachmentUpload',
             'customRichText' => 'CustomRichText',
             //'customRelationPickup' => '',
         ];
@@ -112,8 +122,6 @@ class SystemTableCol extends Base
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
-            'x-component-props' => json_decode($data['component_props'], true) ?: [],
-            'x-decorator-props' => json_decode($data['decorator_props'], true) ?: [],
             'x-reactions' => json_decode($data['reactions']) ?: [],
             'x-validator' => json_decode($data['validator']) ?: [],
         ];
@@ -144,13 +152,7 @@ class SystemTableCol extends Base
                 'maxCount' => 1,
             ];
         }
-        if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
-            $schema['x-component-props'] = [
-                'multiple' => false,
-                'maxCount' => 1,
-            ];
-        }
-        if ($data['value_type'] == 'customImages') {
+        if ($data['value_type'] == 'customImages' || $data['value_type'] == 'customAttachments') {
             $schema['x-component-props'] = [
                 'multiple' => true,
                 'maxCount' => 5,
@@ -160,7 +162,10 @@ class SystemTableCol extends Base
         if ($schema['x-component'] == 'Select') {
             $schema['x-component-props']['allowClear'] = $data['required'] ? false : true;
         }
-
+        // 合并组件属性
+        !empty(json_decode($data['component_props'], true)) && $schema['x-component-props'] = array_merge($schema['x-component-props'] ?? [], json_decode($data['component_props'], true));
+        // 合并容器属性
+        !empty(json_decode($data['decorator_props'], true)) && $schema['x-decorator-props'] = array_merge($schema['x-decorator-props'] ?? [], json_decode($data['decorator_props'], true));
         return $schema;
     }
 
