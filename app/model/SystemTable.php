@@ -43,7 +43,7 @@ class SystemTable extends Base
     public function getCrudIndexColsAttr($value, $data)
     {
         $result = [];
-        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || !in_array($col->value_type, ['customRichText', 'textarea', 'code', 'jsonCode']))->map(fn($col) => string_dot_array($col->data_index))->toArray();
         foreach ($cols as $col) {
             $result = array_merge_recursive($result, $col);
         }
@@ -53,7 +53,7 @@ class SystemTable extends Base
     public function getCrudReadColsAttr($value, $data)
     {
         $result = [];
-        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_form) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        $cols = $this->cols->map(fn($col) => string_dot_array($col->data_index))->toArray();
         foreach ($cols as $col) {
             $result = array_merge_recursive($result, $col);
         }

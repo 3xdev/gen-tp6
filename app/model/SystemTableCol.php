@@ -57,7 +57,7 @@ class SystemTableCol extends Base
         if (!empty($data['value_enum_rel'])) {
             if ($data['value_enum_rel'][0] == 'suggest') {
                 $schema['requestTable'] = $data['value_enum_rel'][1];
-                $schema['fieldProps']['debounceTime'] = 800;
+                //$schema['fieldProps']['debounceTime'] = 800;
                 $schema['fieldProps']['showSearch'] = true;
             } else {
                 $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
