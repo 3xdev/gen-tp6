@@ -25,11 +25,15 @@ class SystemTable extends Base
     // 角色权限：表格关联操作
     public function getActionsAttr($value, $data)
     {
-        $kv = [];
+        $kv = [
+            'get' => '读取'
+        ];
         foreach ($this->options as $option) {
-            $kv[strtolower($option['action'])] = $option['title'];
+            if (in_array($option['type'], ['view', 'export'])) {
+                continue;
+            }
+            $kv[$option['action']] = isset($kv[$option['action']]) ? $kv[$option['action']] . '/' . $option['title'] : $option['title'];
         }
-        $kv['get'] = '读取';
 
         return kv2data($kv, 'value', 'label');
     }

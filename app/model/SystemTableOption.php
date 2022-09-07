@@ -10,6 +10,9 @@ class SystemTableOption extends Base
 
     public function setActionAttr($value, $data)
     {
+        if (!empty($value)) {
+            return $value;
+        }
         switch ($data['type']) {
             case 'add':
                 $value = 'create';

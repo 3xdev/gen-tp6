@@ -188,7 +188,8 @@ class SystemTable extends Base
         $roles = Enforcer::getRolesForUser($authzIdentifier);
         foreach ($schema['options'] as $gkey => $gvalue) {
             foreach ($gvalue as $key => $value) {
-                if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $name, $value['action'])) {
+                $act = in_array($value['type'], ['view', 'export']) ? 'get' : $value['action'];
+                if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $name, $act)) {
                     unset($schema['options'][$gkey][$key]);
                 }
             }
