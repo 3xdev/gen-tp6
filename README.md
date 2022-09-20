@@ -139,18 +139,50 @@ public function searchPriceAttr($query, $value, $data)
 }
 ```
 
-### 模型搜索器-关联搜索
+### 模型搜索器-直接关联搜索
 示例：
 1、表格设计新增列名 user.nickname , user.mobile
-2、模型添加搜索器搜索关联用户信息
+2、模型添加搜索器搜索关联用户信息(大表查小表用in子查询，小表查大表用exists子查询)
 ```php
 // 关联用户搜索器
 public function searchUserAttr($query, $value, $data)
 {
     $map = array_filter(json_decode($value , true));
-    empty($map) || $query->whereIn('user_id', function ($sq) use ($map) {
+    empty($map) || $query->whereIn('user_id', function (&$sq) use ($map) {
         $sq = (new User())->db();
-        $sq->field($sq->getPk());
+        $sq->field('id');
+        foreach ($map as $k => $v) {
+            $sq->whereLike($k, "%{$v}%");
+        }
+    });
+}
+
+// 关联用户搜索器
+public function searchUserAttr($query, $value, $data)
+{
+    $map = array_filter(json_decode($value , true));
+    empty($map) || $query->whereExists(function (&$sq) use ($map, $query) {
+        $sq = (new User())->db();
+        $sq->whereExp('id', '=' . $query->getTable() . '.user_id');
+        foreach ($map as $k => $v) {
+            $sq->whereLike($k, "%{$v}%");
+        }
+    });
+}
+```
+
+### 模型搜索器-间接关联搜索
+示例：
+1、表格设计新增列名 product.no , product.title
+2、模型添加搜索器搜索关联商品信息(大表查小表用in子查询，小表查大表用exists子查询)
+```php
+// 关联用户搜索器
+public function searchProductAttr($query, $value, $data)
+{
+    $map = array_filter(json_decode($value , true));
+    empty($map) || $query->whereExists(function ($sq) use ($map) {
+        $sq->view('OrderProduct')->view('Product', ['id' => 'pid'], 'Product.id=OrderProduct.product_id and Product.delete_time=0');
+        $sq->whereExp('OrderProduct.order_id', '=' . $this->db()->getTable() . '.id');
         foreach ($map as $k => $v) {
             $sq->whereLike($k, "%{$v}%");
         }
