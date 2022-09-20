@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemTable as SelfModel;
+use tauthz\facade\Enforcer;
 
 class SystemTable extends Base
 {
@@ -149,11 +150,11 @@ class SystemTable extends Base
 
         $data = $table->visible([
             'code', 'name', 'props', 'status', 'create_time',
-            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip', 'template_text',
-                        'required', 'default_value', 'reactions', 'validator', 'template_link_to',
+            'cols' => ['data_index', 'value_type', 'value_enum_rel', 'title', 'tip', 'template_text', 'template_link_to',
+                        'required', 'default_value', 'component_props', 'decorator_props', 'reactions', 'validator',
                         'ellipsis', 'copyable', 'filters', 'sorter', 'width', 'col_size',
                         'hide_in_search', 'hide_in_table', 'hide_in_form', 'hide_in_descriptions'],
-            'options' => ['group', 'type', 'key', 'title', 'method', 'path', 'body']
+            'options' => ['group', 'type', 'action', 'title', 'target', 'body']
         ])->toArray();
         $options = [
             'columns' => [],
@@ -181,7 +182,20 @@ class SystemTable extends Base
             return $this->error('数据未找到');
         }
 
-        return $this->success($table->pro_schema);
+        $schema = $table->pro_schema;
+
+        $authzIdentifier = $this->request->admin ? 'admin_' . $this->request->admin->id : '';
+        $roles = Enforcer::getRolesForUser($authzIdentifier);
+        foreach ($schema['options'] as $gkey => $gvalue) {
+            foreach ($gvalue as $key => $value) {
+                $act = in_array($value['type'], ['view', 'export']) ? 'get' : $value['action'];
+                if (!in_array('role_1', $roles) && !Enforcer::enforce($authzIdentifier, $name, $act)) {
+                    unset($schema['options'][$gkey][$key]);
+                }
+            }
+        }
+
+        return $this->success($schema);
     }
 
 

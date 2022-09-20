@@ -10,7 +10,7 @@ Gen(艮快低代码开发)
 
 * topthink/framework 6.0
 * topthink/think-orm 2.0
-* thans/tp-jwt-auth 1.1
+* yzh52521/tp-jwt-auth 1.3
 * casbin/think-authz 1.5
 * godruoyi/php-snowflake 1.1
 * jaguarjack/think-filesystem-cloud 1.0
@@ -139,18 +139,31 @@ public function searchPriceAttr($query, $value, $data)
 }
 ```
 
-### 模型搜索器-关联搜索
+### 模型搜索器-直接关联搜索
 示例：
 1、表格设计新增列名 user.nickname , user.mobile
-2、模型添加搜索器搜索关联用户信息
+2、模型添加搜索器搜索关联用户信息(大表查小表用in子查询，小表查大表用exists子查询)
 ```php
 // 关联用户搜索器
 public function searchUserAttr($query, $value, $data)
 {
     $map = array_filter(json_decode($value , true));
-    empty($map) || $query->whereIn('user_id', function ($sq) use ($map) {
+    empty($map) || $query->whereIn('user_id', function (&$sq) use ($map) {
         $sq = (new User())->db();
-        $sq->field($sq->getPk());
+        $sq->field('id');
+        foreach ($map as $k => $v) {
+            $sq->whereLike($k, "%{$v}%");
+        }
+    });
+}
+
+// 关联用户搜索器
+public function searchUserAttr($query, $value, $data)
+{
+    $map = array_filter(json_decode($value , true));
+    empty($map) || $query->whereExists(function (&$sq) use ($map, $query) {
+        $sq = (new User())->db();
+        $sq->whereExp('id', '=' . $query->getTable() . '.user_id');
         foreach ($map as $k => $v) {
             $sq->whereLike($k, "%{$v}%");
         }
@@ -158,8 +171,44 @@ public function searchUserAttr($query, $value, $data)
 }
 ```
 
+### 模型搜索器-间接关联搜索
+示例：
+1、表格设计新增列名 product.no , product.title
+2、模型添加搜索器搜索关联商品信息(大表查小表用in子查询，小表查大表用exists子查询)
+```php
+// 关联用户搜索器
+public function searchProductAttr($query, $value, $data)
+{
+    $map = array_filter(json_decode($value , true));
+    empty($map) || $query->whereExists(function ($sq) use ($map) {
+        $sq->view('OrderProduct')->view('Product', ['id' => 'pid'], 'Product.id=OrderProduct.product_id and Product.delete_time=0');
+        $sq->whereExp('OrderProduct.order_id', '=' . $this->db()->getTable() . '.id');
+        foreach ($map as $k => $v) {
+            $sq->whereLike($k, "%{$v}%");
+        }
+    });
+}
+```
 
-
+### 表格设计-列下拉框多选
+示例：
+1、表格列类型设为下拉框，修改 编辑扩展 中的 组件属性 为 {"mode":"multiple"}
+2、模型设置表格列为json类型字段（当字段值为数组形式的json数据时）
+```php
+protected $json = ['user_ids'];
+protected $jsonAssoc = true;
+```
+3、模型设置表格列获取器和修改器（当字段值为半角逗号分隔的字符串时）
+```php
+public function getUserIdsAttr($value, $data)
+{
+    return json_decode($value) ?: [];
+}
+public function setUserIdsAttr($value, $data)
+{
+    return is_array($value) ? json_encode($value) : '[]';
+}
+```
 
 ## Git提交规范
 

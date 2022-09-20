@@ -22,6 +22,23 @@ class SystemTableCol extends Base
         $value && $query->where('data_index', 'like', '%' . $value . '%');
     }
 
+    public function setComponentPropsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setDecoratorPropsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setReactionsAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+    public function setValidatorAttr($value, $data)
+    {
+        return json_decode($value) ? json_encode(json_decode($value)) : '{}';
+    }
+
     // 关联模型定义名
     public function getRelationNameAttr($value, $data)
     {
@@ -35,9 +52,17 @@ class SystemTableCol extends Base
         ];
         !empty($data['tip']) && $schema['tooltip'] = $data['tip'];
         !empty($data['value_type']) && $schema['valueType'] = $data['value_type'];
-        !empty($data['value_enum_rel']) && $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
         !empty($data['template_text']) && $schema['templateText'] = $data['template_text'];
         !empty($data['template_link_to']) && $schema['templateLinkTo'] = $data['template_link_to'];
+        if (!empty($data['value_enum_rel'])) {
+            if ($data['value_enum_rel'][0] == 'suggest') {
+                $schema['requestTable'] = $data['value_enum_rel'][1];
+                //$schema['fieldProps']['debounceTime'] = 800;
+                $schema['fieldProps']['showSearch'] = true;
+            } else {
+                $schema['valueEnum'] = system_col_rel_kv($data['value_enum_rel']);
+            }
+        }
         $data['width'] > 0 && $schema['width'] = $data['width'];
         $data['col_size'] > 1 && $schema['colSize'] = $data['col_size'];
         $data['filters'] && $schema['filters'] = true;
@@ -48,16 +73,12 @@ class SystemTableCol extends Base
         $data['hide_in_table'] && $schema['hideInTable'] = true;
         $data['hide_in_search'] && $schema['hideInSearch'] = true;
         $data['hide_in_descriptions'] && $schema['hideInDescriptions'] = true;
-
+        // 合并组件属性
+        !empty(json_decode($data['component_props'], true)) && $schema['fieldProps'] = array_merge($schema['fieldProps'] ?? [], json_decode($data['component_props'], true));
         return $schema;
     }
     public function getFormilySchemaAttr($value, $data)
     {
-        $mapType = [
-            'dateRange' => 'string[]',
-            'dateTimeRange' => 'string[]',
-            'timeRange' => 'string[]',
-        ];
         $mapComponent = [
             'text' => 'Input',
             'select' => 'Select',
@@ -91,24 +112,26 @@ class SystemTableCol extends Base
             //'second' => '',
             //'fromNow' => '',
             'customImages' => 'CustomImageUpload',
+            'customAttachments' => 'CustomAttachmentUpload',
             'customRichText' => 'CustomRichText',
             //'customRelationPickup' => '',
         ];
 
         $schema = [
             'name' => $data['data_index'],
-            'type' => $mapType[$data['value_type']] ?? 'string',
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
             'x-reactions' => json_decode($data['reactions']) ?: [],
+            'x-validator' => json_decode($data['validator']) ?: [],
         ];
         is_array($schema['x-reactions']) || $schema['x-reactions'] = [$schema['x-reactions']];
+        is_array($schema['x-validator']) || $schema['x-validator'] = [$schema['x-validator']];
 
         // 必填
         $data['required'] && $schema['required'] = true;
         // 默认值
-        $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
+        ($data['default_value'] != '' && $data['default_value'] != '[]' && $data['default_value'] != '{}') && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
         // 关联
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
@@ -129,13 +152,7 @@ class SystemTableCol extends Base
                 'maxCount' => 1,
             ];
         }
-        if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
-            $schema['x-component-props'] = [
-                'multiple' => false,
-                'maxCount' => 1,
-            ];
-        }
-        if ($data['value_type'] == 'customImages') {
+        if ($data['value_type'] == 'customImages' || $data['value_type'] == 'customAttachments') {
             $schema['x-component-props'] = [
                 'multiple' => true,
                 'maxCount' => 5,
@@ -145,7 +162,10 @@ class SystemTableCol extends Base
         if ($schema['x-component'] == 'Select') {
             $schema['x-component-props']['allowClear'] = $data['required'] ? false : true;
         }
-
+        // 合并组件属性
+        !empty(json_decode($data['component_props'], true)) && $schema['x-component-props'] = array_merge($schema['x-component-props'] ?? [], json_decode($data['component_props'], true));
+        // 合并容器属性
+        !empty(json_decode($data['decorator_props'], true)) && $schema['x-decorator-props'] = array_merge($schema['x-decorator-props'] ?? [], json_decode($data['decorator_props'], true));
         return $schema;
     }
 

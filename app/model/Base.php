@@ -19,7 +19,9 @@ class Base extends Model
     {
         if (!empty($value)) {
             if (is_numeric($value)) {
-                $query->whereOr(implode('|', $this->keyword_fields), 'like', '%' . $value . '%')->whereOr($this->keyword_pk, $value);
+                $query->where(function ($sq) use ($value) {
+                    $sq->whereOr([[implode('|', $this->keyword_fields), 'like', '%' . $value . '%'], [$this->keyword_pk, '=', $value]]);
+                });
             } else {
                 $query->where(implode('|', $this->keyword_fields), 'like', '%' . $value . '%');
             }

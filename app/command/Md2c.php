@@ -65,9 +65,15 @@ class Md2c extends Command
         $class->setExtends(\app\model\Base::class);
         $fks = array_map('strtolower', array_column($entity['fields'], 'defKey'));
         $pks = array_map('strtolower', array_column(array_filter($entity['fields'], fn($field) => $field['primaryKey']), 'defKey'));
+        $jsons = array_map('strtolower', array_column(array_filter($entity['fields'], fn($field) => in_array($field['defaultValue'], ["'{}'", "'[]'"])), 'defKey'));
         // 主键
         if (count($pks) > 1 || (count($pks) == 1 && $pks[0] != 'id')) {
             $class->addProperty('pk', count($pks) > 1 ? $pks : $pks[0])->setProtected();
+        }
+        // json字段
+        if (count($jsons) > 0) {
+            $class->addProperty('json', $jsons)->setProtected();
+            $class->addProperty('jsonAssoc', true)->setProtected();
         }
         // 软删除
         if (in_array('delete_time', $fks)) {
@@ -150,12 +156,12 @@ class Md2c extends Command
         ]);
         array_walk($entity['fields'], [$this, 'field2col'], $entity);
         $table->options()->saveAll([
-            ['group' => 'columns', 'type' => 'view', 'key' => 'view', 'title' => '查看'],
-            ['group' => 'columns', 'type' => 'edit', 'key' => 'edit', 'title' => '编辑'],
-            ['group' => 'columns', 'type' => 'delete', 'key' => 'delete', 'title' => '删除',],
-            ['group' => 'toolbar', 'type' => 'add', 'key' => 'add', 'title' => '新建'],
-            ['group' => 'toolbar', 'type' => 'export', 'key' => 'export', 'title' => '导出'],
-            ['group' => 'batch', 'type' => 'bdelete', 'key' => 'bdelete', 'title' => '批量删除'],
+            ['group' => 'columns', 'type' => 'view', 'action' => 'get', 'title' => '查看'],
+            ['group' => 'columns', 'type' => 'edit', 'action' => 'update', 'title' => '编辑'],
+            ['group' => 'columns', 'type' => 'delete', 'action' => 'delete', 'title' => '删除',],
+            ['group' => 'toolbar', 'type' => 'add', 'action' => 'create', 'title' => '新建'],
+            ['group' => 'toolbar', 'type' => 'export', 'action' => 'get', 'title' => '导出'],
+            ['group' => 'batch', 'type' => 'bdelete', 'action' => 'delete', 'title' => '批量删除'],
         ]);
 
         $this->output->writeln('<info>' . $entity['defKey'] . ' ok.</info>');

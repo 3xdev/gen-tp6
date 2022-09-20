@@ -22,6 +22,22 @@ class SystemTable extends Base
         $value && $query->where('code', 'like', '%' . $value . '%');
     }
 
+    // 角色权限：表格关联操作
+    public function getActionsAttr($value, $data)
+    {
+        $kv = [
+            'get' => '读取'
+        ];
+        foreach ($this->options as $option) {
+            if (in_array($option['type'], ['view', 'export'])) {
+                continue;
+            }
+            $kv[$option['action']] = isset($kv[$option['action']]) ? $kv[$option['action']] . '/' . $option['title'] : $option['title'];
+        }
+
+        return kv2data($kv, 'value', 'label');
+    }
+
     public function setPropsStringAttr($value)
     {
         is_object(json_decode($value)) && $this->set('props', json_decode($value, true));
@@ -31,7 +47,7 @@ class SystemTable extends Base
     public function getCrudIndexColsAttr($value, $data)
     {
         $result = [];
-        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || !in_array($col->value_type, ['customRichText', 'textarea', 'code', 'jsonCode']))->map(fn($col) => string_dot_array($col->data_index))->toArray();
         foreach ($cols as $col) {
             $result = array_merge_recursive($result, $col);
         }
@@ -41,7 +57,7 @@ class SystemTable extends Base
     public function getCrudReadColsAttr($value, $data)
     {
         $result = [];
-        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || empty($col->hide_in_form) || empty($col->hide_in_descriptions))->map(fn($col) => string_dot_array($col->data_index))->toArray();
+        $cols = $this->cols->map(fn($col) => string_dot_array($col->data_index))->toArray();
         foreach ($cols as $col) {
             $result = array_merge_recursive($result, $col);
         }
@@ -57,7 +73,7 @@ class SystemTable extends Base
             'toolbar' => [],
             'batch' => [],
         ];
-        $options = $this->options->visible(['group', 'type', 'key', 'title', 'method', 'path', 'body'])->toArray();
+        $options = $this->options->visible(['group', 'type', 'action', 'title', 'target', 'body'])->append(['request'])->toArray();
         foreach ($options as $option) {
             $option['body'] = json_decode($option['body']) ?: [];
             isset($schema['options'][$option['group']]) && $schema['options'][$option['group']][] = $option;
