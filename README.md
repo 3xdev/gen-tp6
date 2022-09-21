@@ -176,7 +176,7 @@ public function searchUserAttr($query, $value, $data)
 1、表格设计新增列名 product.no , product.title
 2、模型添加搜索器搜索关联商品信息(大表查小表用in子查询，小表查大表用exists子查询)
 ```php
-// 关联用户搜索器
+// 关联商品搜索器
 public function searchProductAttr($query, $value, $data)
 {
     $map = array_filter(json_decode($value , true));

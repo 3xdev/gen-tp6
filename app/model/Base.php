@@ -56,7 +56,7 @@ class Base extends Model
     public function searchCreateTimeAttr($query, $value, $data)
     {
         if (!empty($value)) {
-            $query->whereBetweenTime('create_time', $value[0], $value[1]);
+            $query->whereBetweenTime('create_time', $value[0], $value[1] . ' 23:59:59');
         }
     }
 
