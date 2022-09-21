@@ -25,7 +25,7 @@ class Crud extends Base
         $pageSize = $this->request->get('pageSize/d', 100);
         $search = $this->request->only(['keyword'], 'get');
 
-        $objs = $this->model->withSearch(array_keys($search), $search)->limit($pageSize)->select();
+        $objs = $this->model->scope($this->model_scope)->withSearch(array_keys($search), $search)->limit($pageSize)->select();
         $data = [];
         foreach ($objs as $obj) {
             $data[] = [
@@ -67,8 +67,8 @@ class Crud extends Base
             ['filter', 'sorter']
         ), 'get');
 
-        $total = $this->model->withSearch(array_keys($search), $search)->count();
-        $objs = $this->model->withSearch(array_keys($lsearch), $lsearch)->with(
+        $total = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($search), $search)->count();
+        $objs = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($lsearch), $lsearch)->with(
             $table->cols->filter(fn($col) => empty($col->hide_in_table) && !empty($col->relation_name))->column('relation_name') ?: []
         )->page($current, $pageSize)->select();
         $data = [];
@@ -80,6 +80,15 @@ class Crud extends Base
             'total' => $total,
             'data'  => $data
         ]);
+    }
+    /**
+     * 列表的条件限制
+     * @access public
+     * @return array
+     */
+    public function whereIndex()
+    {
+        return [];
     }
     /**
      * 列表的合并数据(扩展列表返回)
@@ -103,10 +112,18 @@ class Crud extends Base
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
         $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
-
-        $this->model->create($data);
+        $this->model->create(array_merge($data, $this->mergeCreate()));
 
         return $this->success();
+    }
+    /**
+     * 创建的合并数据(扩展创建)
+     * @access public
+     * @return array
+     */
+    public function mergeCreate()
+    {
+        return [];
     }
 
     /**
@@ -120,7 +137,7 @@ class Crud extends Base
     public function read($id)
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $obj = $this->model->find($id);
+        $obj = $this->model->scope($this->model_scope)->find($id);
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
@@ -153,7 +170,7 @@ class Crud extends Base
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
         $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
 
-        $obj = $this->model->find($id);
+        $obj = $this->model->scope($this->model_scope)->find($id);
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
@@ -171,7 +188,7 @@ class Crud extends Base
      */
     public function delete($ids)
     {
-        $objs = $this->model->where($this->model->getPk(), 'in', explode(',', $ids))->select();
+        $objs = $this->model->scope($this->model_scope)->where($this->model->getPk(), 'in', explode(',', $ids))->select();
         if ($objs->isEmpty()) {
             throw new ModelNotFoundException('数据不存在');
         }

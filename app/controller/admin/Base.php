@@ -15,6 +15,7 @@ class Base extends BaseController
      * @var \app\model\Base
      */
     protected $model;
+    protected $model_scope = [];
 
     /**
      * @api {get} /rest/:table/:option/:ids GET操作
