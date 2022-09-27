@@ -79,6 +79,11 @@ class SystemTableCol extends Base
     }
     public function getFormilySchemaAttr($value, $data)
     {
+        $mapType = [
+            'dateRange' => 'string[]',
+            'dateTimeRange' => 'string[]',
+            'timeRange' => 'string[]',
+        ];
         $mapComponent = [
             'text' => 'Input',
             'select' => 'Select',
@@ -119,6 +124,7 @@ class SystemTableCol extends Base
 
         $schema = [
             'name' => $data['data_index'],
+            'type' => $mapType[$data['value_type']] ?? 'string',
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',

@@ -62,18 +62,31 @@ class Crud extends Base
             pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
             ['filter']
         ), 'get');
+        $ignore = function ($val) {
+            if ($val === '') {
+                return false;
+            } else {
+                return true;
+            }
+        };
+        $search = array_filter($search, $ignore);
         $lsearch = $this->request->only(array_merge(
             pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
             ['filter', 'sorter']
         ), 'get');
-
+        $lsearch = array_filter($lsearch, $ignore);
         $total = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($search), $search)->count();
         $objs = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($lsearch), $lsearch)->with(
             $table->cols->filter(fn($col) => empty($col->hide_in_table) && !empty($col->relation_name))->column('relation_name') ?: []
         )->page($current, $pageSize)->select();
         $data = [];
+        $visible = array_filter($table->crud_index_cols, fn($col) => $this->model->isTableField($col));
+        $append = array_diff($table->crud_index_cols, $visible);
         foreach ($objs as $obj) {
-            $data[] = array_merge_recursive($obj->visible(array_merge([$this->model->getPk()], $table->crud_index_cols))->toArray(), $this->mergeIndex($obj));
+            $data[] = array_merge_recursive(
+                $obj->visible(array_merge([$this->model->getPk()], $visible))->append($append)->toArray(),
+                $this->mergeIndex($obj)
+            );
         }
 
         return $this->success([

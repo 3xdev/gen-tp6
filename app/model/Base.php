@@ -61,6 +61,27 @@ class Base extends Model
     }
 
     /**
+     * 是否表字段(支持查关联模型表字段)
+     * @access  public
+     * @param   array|string    $field  表字段名，支持数组形式的关联模型表字段('user.profile.email' 或 ['user', 'profile', 'email'])
+     * @return  array
+     */
+    public function isTableField($field)
+    {
+        if (empty($field)) {
+            return false;
+        }
+
+        $arr = is_array($field) ? $field : explode('.', $field);
+        if (count($arr) === 1) {
+            return in_array($arr[0], $this->db()->getTableFields());
+        }
+
+        $relation = $this->isRelationAttr(array_shift($arr));
+        return $relation ? $this->$relation()->getModel()->isTableField($arr) : false;
+    }
+
+    /**
      * 获取记录键值对
      * @access  public
      * @return  array

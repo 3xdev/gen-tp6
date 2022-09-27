@@ -46,22 +46,12 @@ class SystemTable extends Base
     // CRUD 列表展示字段
     public function getCrudIndexColsAttr($value, $data)
     {
-        $result = [];
-        $cols = $this->cols->filter(fn($col) => empty($col->hide_in_table) || !in_array($col->value_type, ['customRichText', 'textarea', 'code', 'jsonCode']))->map(fn($col) => string_dot_array($col->data_index))->toArray();
-        foreach ($cols as $col) {
-            $result = array_merge_recursive($result, $col);
-        }
-        return $result;
+        return $this->cols->filter(fn($col) => empty($col->hide_in_table) || !in_array($col->value_type, ['customRichText', 'textarea', 'code', 'jsonCode']))->column('data_index');
     }
     // CRUD 读取展示字段
     public function getCrudReadColsAttr($value, $data)
     {
-        $result = [];
-        $cols = $this->cols->map(fn($col) => string_dot_array($col->data_index))->toArray();
-        foreach ($cols as $col) {
-            $result = array_merge_recursive($result, $col);
-        }
-        return $result;
+        return $this->cols->column('data_index');
     }
 
     public function getProSchemaAttr($value, $data)
