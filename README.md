@@ -110,6 +110,14 @@ composer lint
 composer lint-fix
 ```
 
+## 开发流程
+1、设计 pdmaner 模型，索引，关联
+2、php think run md2c 生成表格、代码
+3、后端管理表格设计（列、操作）
+4、后端管理表格设计操作 引用表单 (有其他表单业务)
+5、后单管理 添加表单 (有其他表单业务) 
+6、具体控制器和模型编码
+
 ## 开发常用方法
 
 ### 公共函数及方法
@@ -147,45 +155,50 @@ public function searchPriceAttr($query, $value, $data)
 // 关联用户搜索器
 public function searchUserAttr($query, $value, $data)
 {
-    $map = array_filter(json_decode($value , true));
+    $map = $this->parseSearch('user', json_decode($value, true));
     empty($map) || $query->whereIn('user_id', function (&$sq) use ($map) {
         $sq = (new User())->db();
-        $sq->field('id');
-        foreach ($map as $k => $v) {
-            $sq->whereLike($k, "%{$v}%");
-        }
+        $sq->field('id')->where($map);
     });
 }
 
 // 关联用户搜索器
 public function searchUserAttr($query, $value, $data)
 {
-    $map = array_filter(json_decode($value , true));
+    $map = $this->parseSearch('user', json_decode($value, true));
     empty($map) || $query->whereExists(function (&$sq) use ($map, $query) {
         $sq = (new User())->db();
-        $sq->whereExp('id', '=' . $query->getTable() . '.user_id');
-        foreach ($map as $k => $v) {
-            $sq->whereLike($k, "%{$v}%");
-        }
+        $sq->whereExp('id', '=' . $query->getTable() . '.user_id')->where($map);
     });
 }
 ```
 
-### 模型搜索器-间接关联搜索
+### 模型搜索器-间接/多表关联搜索
 示例：
-1、表格设计新增列名 product.no , product.title
+1、表格设计新增列名 order.no , order.sellerUser.mobile
 2、模型添加搜索器搜索关联商品信息(大表查小表用in子查询，小表查大表用exists子查询)
 ```php
-// 关联商品搜索器
-public function searchProductAttr($query, $value, $data)
+// 关联定单搜索器(自动别名)
+public function searchOrderAttr($query, $value, $data)
 {
-    $map = array_filter(json_decode($value , true));
-    empty($map) || $query->whereExists(function ($sq) use ($map) {
-        $sq->view('OrderProduct')->view('Product', ['id' => 'pid'], 'Product.id=OrderProduct.product_id and Product.delete_time=0');
-        $sq->whereExp('OrderProduct.order_id', '=' . $this->db()->getTable() . '.id');
-        foreach ($map as $k => $v) {
-            $sq->whereLike($k, "%{$v}%");
-        }
+    $value = json_decode($value, true);
+    $map = $this->parseSearch('order', $value);
+    empty($map) || $query->whereExists(function (&$sq) use ($value, $map) {
+        $sq = (new Order())->db()->alias('order');
+        empty($value['sellerUser']) || $sq->join('user sellerUser', 'order.seller_user_id=sellerUser.id');
+        $sq->whereExp('order.id', '=' . $this->db()->getTable() . '.order_id')->where($map);
+    });
+}
+
+// 关联定单搜索器(定义别名)
+public function searchOrderAttr($query, $value, $data)
+{
+    $value = json_decode($value, true);
+    $map = $this->parseSearch('order', $value, ['order' => 'o', 'order.sellerUser' => 'u']);
+    empty($map) || $query->whereExists(function (&$sq) use ($value, $map) {
+        $sq = (new Order())->db()->alias('o');
+        empty($value['sellerUser']) || $sq->join('user u', 'o.seller_user_id=u.id');
+        $sq->whereExp('o.id', '=' . $this->db()->getTable() . '.order_id')->where($map);
     });
 }
 ```

@@ -79,6 +79,44 @@ if (!function_exists('string_remove_prefix')) {
     }
 }
 
+if (!function_exists('string_remove_suffix')) {
+    /**
+     * 字符串移除后缀
+     * @param  string   $string     字符串
+     * @param  string   $suffix     后缀
+     * @return string
+     */
+    function string_remove_suffix($string, $suffix)
+    {
+        if (empty($suffix)) {
+            return $string;
+        }
+
+        return substr($string, 0, strripos($string, $suffix) === (strlen($string) - strlen($suffix)) ? strlen($string) - strlen($suffix) : strlen($string));
+    }
+}
+
+if (!function_exists('format_datetime_range')) {
+    /**
+     * 格式化日期时间区间
+     * @param  string|array     $range      日期时间区间
+     * @return array
+     */
+    function format_datetime_range($range)
+    {
+        if (empty($range)) {
+            return [];
+        }
+
+        is_array($range) || $range = [$range, $range];
+        count($range) === 1 && $range[] = $range[0];
+        list($start, $end) = $range;
+
+        is_string($end) && \DateTime::createFromFormat('Y-m-d', $end) && $end .= ' 23:59:59';
+        return [$start, $end];
+    }
+}
+
 if (!function_exists('array2map')) {
     /**
      * 数组转映射

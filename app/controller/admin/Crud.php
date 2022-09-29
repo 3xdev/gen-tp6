@@ -56,6 +56,7 @@ class Crud extends Base
     public function index()
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
+        $this->model->systemTable = $table;
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
         $search = $this->request->only(array_merge(
@@ -83,7 +84,7 @@ class Crud extends Base
         $visible = array_filter($table->crud_index_cols, fn($col) => $this->model->isTableField($col));
         $append = array_diff($table->crud_index_cols, $visible);
         foreach ($objs as $obj) {
-            $data[] = array_merge_recursive(
+            $data[] = array_replace_recursive(
                 $obj->visible(array_merge([$this->model->getPk()], $visible))->append($append)->toArray(),
                 $this->mergeIndex($obj)
             );

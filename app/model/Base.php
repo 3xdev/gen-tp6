@@ -7,8 +7,30 @@ use think\Model;
 
 class Base extends Model
 {
+    // 系统表格列操作符类型映射
+    public const TABLE_COL_OP_IN = 'in';
+    public const TABLE_COL_OP_LIKE = 'like';
+    public const TABLE_COL_OP_BETWEEN = 'between';
+    public const TABLE_COL_OP_BETWEEN_TIME = 'between time';
+    public const TABLE_COL_OP_MAP = [
+        'radio' => self::TABLE_COL_OP_IN,
+        'select' => self::TABLE_COL_OP_IN,
+        'checkbox' => self::TABLE_COL_OP_IN,
+        'text' => self::TABLE_COL_OP_LIKE,
+        'textarea' => self::TABLE_COL_OP_LIKE,
+        'code' => self::TABLE_COL_OP_LIKE,
+        'jsonCode' => self::TABLE_COL_OP_LIKE,
+        'customRichText' => self::TABLE_COL_OP_LIKE,
+        'digitRange' => self::TABLE_COL_OP_BETWEEN,
+        'dateRange' => self::TABLE_COL_OP_BETWEEN_TIME,
+        'dateTimeRange' => self::TABLE_COL_OP_BETWEEN_TIME
+    ];
+
     // 软删除字段的默认值设为0
     protected $defaultSoftDelete = 0;
+
+    // 关联系统表格
+    public $systemTable = null;
 
     // 关键字搜索主键字段
     public $keyword_fields = ['name'];
@@ -79,6 +101,54 @@ class Base extends Model
 
         $relation = $this->isRelationAttr(array_shift($arr));
         return $relation ? $this->$relation()->getModel()->isTableField($arr) : false;
+    }
+
+    /**
+     * 解析查询字段(支持关联模型)
+     * @access  public
+     * @param   string          $field      查询字段名
+     * @param   array|string    $value      查询值('哥' 或 ['no' => 'ET101', 'title' => 'XXX'])
+     * @return  array
+     */
+    public function parseSearch($field, $value, $aliasMap = [])
+    {
+        if (is_array($value) && !empty(array_diff_key($value, array_values($value)))) {
+            // 关联查询
+            $map = [];
+            foreach ($value as $key => $val) {
+                $map = array_merge($map, $this->parseSearch($field . '.' . $key, $val, $aliasMap));
+            }
+            return $map;
+        } else {
+            return $this->parseSearchItem($field, $value, $aliasMap);
+        }
+    }
+    public function parseSearchItem($key, $value, $aliasMap)
+    {
+        if (empty($value) && !($value === 0 || $value === '0')) {
+            return [];
+        }
+
+        $op = '=';
+        if ($this->systemTable) {
+            $col = $this->systemTable->cols->where('data_index', $key)->shift();
+            if ($col) {
+                $op = self::TABLE_COL_OP_MAP[$col->value_type] ?? '=';
+            }
+        }
+
+        $keyArray = explode('.', $key);
+        $field = array_pop($keyArray);
+        empty($keyArray) || $field = ($aliasMap[implode('.', $keyArray)] ?? array_pop($keyArray)) . '.' . $field;
+        is_array($value) && $field = string_remove_suffix($field, '[]');
+        $condition = $value;
+        $op === self::TABLE_COL_OP_IN && $condition = is_array($value) ? $value : [$value];
+        $op === self::TABLE_COL_OP_LIKE && $condition = '%' . $value . '%';
+        $op === self::TABLE_COL_OP_BETWEEN_TIME && $condition = format_datetime_range($value);
+
+        return [
+            [$field, $op, $condition]
+        ];
     }
 
     /**
