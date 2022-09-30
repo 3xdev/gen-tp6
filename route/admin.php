@@ -43,8 +43,10 @@ Route::group('api/admin', function () {
     // 上传附件
     Route::post('upload/attachment/:name', 'admin.SystemUpload/attachment');
 
-    // 获取管理员菜单列表
+    // 获取管理员可访问菜单
     Route::get('menus', 'admin.SystemAdmin/menus');
+    // 获取管理员可访问表格
+    Route::get('tables', 'admin.SystemAdmin/tables');
     // 读取管理员个人信息
     Route::get('profile', 'admin.SystemAdmin/profile');
     // 修改管理员个人信息
