@@ -211,6 +211,23 @@ public function searchOrderAttr($query, $value, $data)
 }
 ```
 
+### 验证-表记录唯一检查
+
+示例：
+1、验证 添加 验证规则
+
+```php
+// 情景1：必选，单一字段验证唯一表记录
+protected $rule = [
+    'goods_id|商品' => 'require|checkModelUnique:\\app\\model\\H5Goods',
+];
+
+// 情景2：条件必选，多个字段验证唯一表记录
+protected $rule = [
+    'goods_id|商品' => 'requireIf:type,goods|checkModelUnique:\\app\\model\\H5Carousel,goods_id^company_id',
+];
+```
+
 ### 表格设计-列下拉框多选
 
 示例：
