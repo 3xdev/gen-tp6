@@ -23,13 +23,13 @@ class Crud extends Base
     public function suggest()
     {
         $pageSize = $this->request->get('pageSize/d', 100);
-        $search = $this->request->only(['keyword'], 'get');
+        $search = $this->request->except(['pageSize'], 'get');
 
         $objs = $this->model->scope($this->model_scope)->withSearch(array_keys($search), $search)->limit($pageSize)->select();
         $data = [];
         foreach ($objs as $obj) {
             $data[] = [
-                'label' => $obj[$this->model->keyword_fields[0]],
+                'label' => implode('|', array_filter($obj->visible($this->model->keyword_fields)->toArray())),
                 'value' => $obj[$this->model->keyword_pk]
             ];
         }
