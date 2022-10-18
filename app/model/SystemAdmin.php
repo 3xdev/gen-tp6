@@ -39,6 +39,16 @@ class SystemAdmin extends Base
     {
         $value && $query->where('email', 'like', '%' . $value . '%');
     }
+    public function searchRolesAttr($query, $value, $data)
+    {
+        if ($value && !empty($value)) {
+            $users = [];
+            foreach ($value as $val) {
+                $users = array_merge($users, Enforcer::getUsersForRole('role_' . $val));
+            }
+            $query->whereIn('id', array_map(fn($user) => string_remove_prefix($user, 'admin_'), array_unique($users)));
+        }
+    }
     public function searchLoginTimeAttr($query, $value, $data)
     {
         $value && $query->whereBetweenTime('login_time', $value[0], $value[1]);

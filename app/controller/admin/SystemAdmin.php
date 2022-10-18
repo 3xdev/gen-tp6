@@ -270,8 +270,8 @@ class SystemAdmin extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['username', 'mobile', 'nickname', 'filter'], 'get');
-        $lsearch = $this->request->only(['username', 'mobile', 'nickname', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['username', 'nickname', 'mobile', 'roles', 'filter'], 'get');
+        $lsearch = $this->request->only(['username', 'nickname', 'mobile', 'roles', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
         $list = SelfModel::withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();
