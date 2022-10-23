@@ -23,13 +23,13 @@ class Crud extends Base
     public function suggest()
     {
         $pageSize = $this->request->get('pageSize/d', 100);
-        $search = $this->request->only(['keyword'], 'get');
+        $search = $this->request->except(['pageSize'], 'get');
 
-        $objs = $this->model->withSearch(array_keys($search), $search)->limit($pageSize)->select();
+        $objs = $this->model->scope($this->model_scope)->withSearch(array_keys($search), $search)->limit($pageSize)->select();
         $data = [];
         foreach ($objs as $obj) {
             $data[] = [
-                'label' => $obj[$this->model->keyword_fields[0]],
+                'label' => implode('|', array_filter($obj->visible($this->model->keyword_fields)->toArray())),
                 'value' => $obj[$this->model->keyword_pk]
             ];
         }
@@ -56,30 +56,53 @@ class Crud extends Base
     public function index()
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
+        $this->model->systemTable = $table;
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
         $search = $this->request->only(array_merge(
             pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
             ['filter']
         ), 'get');
+        $ignore = function ($val) {
+            if ($val === '') {
+                return false;
+            } else {
+                return true;
+            }
+        };
+        $search = array_filter($search, $ignore);
         $lsearch = $this->request->only(array_merge(
             pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
             ['filter', 'sorter']
         ), 'get');
-
-        $total = $this->model->withSearch(array_keys($search), $search)->count();
-        $objs = $this->model->withSearch(array_keys($lsearch), $lsearch)->with(
+        $lsearch = array_filter($lsearch, $ignore);
+        $total = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($search), $search)->count();
+        $objs = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($lsearch), $lsearch)->with(
             $table->cols->filter(fn($col) => empty($col->hide_in_table) && !empty($col->relation_name))->column('relation_name') ?: []
         )->page($current, $pageSize)->select();
         $data = [];
+        $visible = array_filter($table->crud_index_cols, fn($col) => $this->model->isTableField($col));
+        $append = array_diff($table->crud_index_cols, $visible);
         foreach ($objs as $obj) {
-            $data[] = array_merge_recursive($obj->visible(array_merge([$this->model->getPk()], $table->crud_index_cols))->toArray(), $this->mergeIndex($obj));
+            $data[] = array_replace_recursive(
+                $obj->visible(array_merge([$this->model->getPk()], $visible))->append($append)->toArray(),
+                $this->mergeIndex($obj)
+            );
         }
 
         return $this->success([
             'total' => $total,
             'data'  => $data
         ]);
+    }
+    /**
+     * 列表的条件限制
+     * @access public
+     * @return array
+     */
+    public function whereIndex()
+    {
+        return [];
     }
     /**
      * 列表的合并数据(扩展列表返回)
@@ -102,11 +125,20 @@ class Crud extends Base
     public function create()
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
-
+        $data = array_merge($this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index')), $this->mergeCreate());
+        $this->validate($data, parse_name(string_remove_prefix($this->request->controller(), 'admin.')));
         $this->model->create($data);
 
         return $this->success();
+    }
+    /**
+     * 创建的合并数据(扩展创建)
+     * @access public
+     * @return array
+     */
+    public function mergeCreate()
+    {
+        return [];
     }
 
     /**
@@ -120,7 +152,7 @@ class Crud extends Base
     public function read($id)
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $obj = $this->model->find($id);
+        $obj = $this->model->scope($this->model_scope)->find($id);
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
@@ -151,12 +183,19 @@ class Crud extends Base
     public function update($id)
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
-
-        $obj = $this->model->find($id);
+        $obj = $this->model->scope($this->model_scope)->find($id);
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
+        $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
+        $this->validate(
+            array_merge($obj->visible(array_merge($this->validate_field_append, [$obj->getPk()]))->toArray(), $data),
+            parse_name(string_remove_prefix($this->request->controller(), 'admin.'))
+        );
+
+        $original_data = $obj->toArray();
+        $original_data  = json_encode($original_data);
+        $this->request->original_data = $original_data;
 
         $obj->save($data);
         return $this->success();
@@ -171,7 +210,7 @@ class Crud extends Base
      */
     public function delete($ids)
     {
-        $objs = $this->model->where($this->model->getPk(), 'in', explode(',', $ids))->select();
+        $objs = $this->model->scope($this->model_scope)->where($this->model->getPk(), 'in', explode(',', $ids))->select();
         if ($objs->isEmpty()) {
             throw new ModelNotFoundException('数据不存在');
         }

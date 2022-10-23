@@ -79,6 +79,11 @@ class SystemTableCol extends Base
     }
     public function getFormilySchemaAttr($value, $data)
     {
+        $mapType = [
+            'dateRange' => 'string[]',
+            'dateTimeRange' => 'string[]',
+            'timeRange' => 'string[]',
+        ];
         $mapComponent = [
             'text' => 'Input',
             'select' => 'Select',
@@ -117,8 +122,11 @@ class SystemTableCol extends Base
             //'customRelationPickup' => '',
         ];
 
+        $componentProps = json_decode($data['component_props'], true);
+        $decoratorProps = json_decode($data['decorator_props'], true);
         $schema = [
             'name' => $data['data_index'],
+            'type' => $mapType[$data['value_type']] ?? 'string',
             'title' => $data['title'],
             'x-decorator' => 'FormItem',
             'x-component' => $mapComponent[$data['value_type']] ?? 'Input',
@@ -131,6 +139,7 @@ class SystemTableCol extends Base
         // 必填
         $data['required'] && $schema['required'] = true;
         // 默认值
+        in_array($data['value_type'], ['textarea', 'code', 'jsonCode', 'customRichText']) && $schema['default'] = '';
         ($data['default_value'] != '' && $data['default_value'] != '[]' && $data['default_value'] != '{}') && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
         // 关联
         if (!empty($data['value_enum_rel'])) {
@@ -143,7 +152,8 @@ class SystemTableCol extends Base
             if ($data['value_enum_rel'][0] == 'suggest') {
                 $schema['x-component-props']['showSearch'] = true;
                 $schema['x-component-props']['filterOption'] = false;
-                $schema['x-reactions'][] = "{{useSuggestDataSource('" . $schema['name'] . "', '" . $data['value_enum_rel'][1] . "', fetchSuggestData)}}";
+                $suggestQuery = isset($componentProps['customQuery']) ? json_encode($componentProps['customQuery'], JSON_FORCE_OBJECT) : "{}";
+                $schema['x-reactions'][] = "{{useSuggestDataSource('" . $schema['name'] . "', '" . $data['value_enum_rel'][1] . "', " . $suggestQuery . ", fetchSuggestData)}}";
             }
         }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
@@ -163,9 +173,9 @@ class SystemTableCol extends Base
             $schema['x-component-props']['allowClear'] = $data['required'] ? false : true;
         }
         // 合并组件属性
-        !empty(json_decode($data['component_props'], true)) && $schema['x-component-props'] = array_merge($schema['x-component-props'] ?? [], json_decode($data['component_props'], true));
+        empty($componentProps) || $schema['x-component-props'] = array_merge($schema['x-component-props'] ?? [], $componentProps);
         // 合并容器属性
-        !empty(json_decode($data['decorator_props'], true)) && $schema['x-decorator-props'] = array_merge($schema['x-decorator-props'] ?? [], json_decode($data['decorator_props'], true));
+        empty($decoratorProps) || $schema['x-decorator-props'] = array_merge($schema['x-decorator-props'] ?? [], $decoratorProps);
         return $schema;
     }
 

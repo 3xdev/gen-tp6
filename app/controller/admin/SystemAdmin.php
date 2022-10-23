@@ -106,7 +106,7 @@ class SystemAdmin extends Base
     }
 
     /**
-     * @api {get} /menus 获取管理员菜单
+     * @api {get} /menus 获取管理员可访问菜单
      * @apiGroup ISYSADMIN
      * @apiHeader {String} Authorization Token
      * @apiSuccess {Object[]} data 菜单列表
@@ -123,12 +123,40 @@ class SystemAdmin extends Base
 
         $roles = Enforcer::getRolesForUser('admin_' . $this->request->admin->id);
         $menus = $list->filter(fn($menu) => empty($menu->table_code) || in_array('role_1', $roles) || Enforcer::enforce('admin_' . $this->request->admin->id, $menu->table_code, 'get'));
-
         return $this->success([
             'data' => new \BlueM\Tree(
-                $menus->visible(['id', 'name', 'parent_id', 'path', 'icon', 'sort'])->toArray(),
+                $menus->filter([$this, 'menusFilter'])->visible(['id', 'name', 'parent_id', 'path', 'icon', 'sort'])->toArray(),
                 ['parent' => 'parent_id', 'jsonSerializer' => new \BlueM\Tree\Serializer\HierarchicalTreeJsonSerializer()]
             ),
+        ]);
+    }
+    public function menusFilter($menu)
+    {
+        // 特殊处理
+        if ($menu->table_code == 'XXXXXX') {
+            // 符合条件 不展示
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    /**
+     * @api {get} /menus 获取管理员可访问表格
+     * @apiGroup ISYSADMIN
+     * @apiHeader {String} Authorization Token
+     * @apiSuccess {string[]} data 表格列表
+     */
+    public function tables()
+    {
+        $list = \app\model\SystemTable::where('status', 1)->select();
+
+        $roles = Enforcer::getRolesForUser('admin_' . $this->request->admin->id);
+        $tables = $list->filter(fn($table) => in_array('role_1', $roles) || Enforcer::enforce('admin_' . $this->request->admin->id, $table->code, 'get'));
+        return $this->success([
+            'data' => $tables->column('code'),
         ]);
     }
 
@@ -242,8 +270,8 @@ class SystemAdmin extends Base
     {
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
-        $search = $this->request->only(['username', 'mobile', 'nickname', 'filter'], 'get');
-        $lsearch = $this->request->only(['username', 'mobile', 'nickname', 'filter', 'sorter'], 'get');
+        $search = $this->request->only(['username', 'nickname', 'mobile', 'roles', 'filter'], 'get');
+        $lsearch = $this->request->only(['username', 'nickname', 'mobile', 'roles', 'filter', 'sorter'], 'get');
 
         $total = SelfModel::withSearch(array_keys($search), $search)->count();
         $list = SelfModel::withSearch(array_keys($lsearch), $lsearch)->page($current, $pageSize)->select();

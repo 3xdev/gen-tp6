@@ -15,6 +15,10 @@ class Base extends BaseController
      * @var \app\model\Base
      */
     protected $model;
+    // 模型查询范围
+    protected $model_scope = [];
+    // 验证需要附加字段
+    protected $validate_field_append = [];
 
     /**
      * @api {get} /rest/:table/:option/:ids GET操作
