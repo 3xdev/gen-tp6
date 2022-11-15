@@ -15,6 +15,7 @@
 - casbin/think-authz 1.5
 - godruoyi/php-snowflake 1.1
 - jaguarjack/think-filesystem-cloud 1.0
+- openspout/openspout 3.7
 
 ## 开发依赖包
 

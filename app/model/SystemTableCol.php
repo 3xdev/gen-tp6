@@ -44,6 +44,14 @@ class SystemTableCol extends Base
     {
         return strrpos($data['data_index'], '.') ? substr($data['data_index'], 0, strrpos($data['data_index'], '.')) : '';
     }
+    // 值枚举
+    public function getValueEnumAttr($value, $data)
+    {
+        if (empty($data['value_enum_rel'])) {
+            return [];
+        }
+        return system_col_rel_kv($data['value_enum_rel']);
+    }
     public function getProSchemaAttr($value, $data)
     {
         $schema = [
@@ -119,7 +127,7 @@ class SystemTableCol extends Base
             'customImages' => 'CustomImageUpload',
             'customAttachments' => 'CustomAttachmentUpload',
             'customRichText' => 'CustomRichText',
-            //'customRelationPickup' => '',
+            'customRelationPickup' => 'CustomRelationPickup',
         ];
 
         $componentProps = json_decode($data['component_props'], true);
@@ -133,6 +141,7 @@ class SystemTableCol extends Base
             'x-reactions' => json_decode($data['reactions']) ?: [],
             'x-validator' => json_decode($data['validator']) ?: [],
         ];
+        empty($data['tip']) || $schema['description'] = $data['tip'];
         is_array($schema['x-reactions']) || $schema['x-reactions'] = [$schema['x-reactions']];
         is_array($schema['x-validator']) || $schema['x-validator'] = [$schema['x-validator']];
 
@@ -140,7 +149,7 @@ class SystemTableCol extends Base
         $data['required'] && $schema['required'] = true;
         // 默认值
         in_array($data['value_type'], ['textarea', 'code', 'jsonCode', 'customRichText']) && $schema['default'] = '';
-        ($data['default_value'] != '' && $data['default_value'] != '[]' && $data['default_value'] != '{}') && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
+        $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
         // 关联
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
@@ -149,11 +158,14 @@ class SystemTableCol extends Base
                 $schema['enum'][] = ['value' => $k, 'label' => $v];
             }
             // 关联搜索
-            if ($data['value_enum_rel'][0] == 'suggest') {
+            if ($data['value_type'] == 'select' && $data['value_enum_rel'][0] == 'suggest') {
                 $schema['x-component-props']['showSearch'] = true;
                 $schema['x-component-props']['filterOption'] = false;
-                $suggestQuery = isset($componentProps['customQuery']) ? json_encode($componentProps['customQuery'], JSON_FORCE_OBJECT) : "{}";
-                $schema['x-reactions'][] = "{{useSuggestDataSource('" . $schema['name'] . "', '" . $data['value_enum_rel'][1] . "', " . $suggestQuery . ", fetchSuggestData)}}";
+                $query = isset($componentProps['query']) ? json_encode($componentProps['query'], JSON_FORCE_OBJECT) : "{}";
+                $schema['x-reactions'][] = "{{useSuggestDataSource('" . $schema['name'] . "', '" . $data['value_enum_rel'][1] . "', " . $query . ", fetchSuggestData)}}";
+            }
+            if ($data['value_type'] == 'customRelationPickup' && $data['value_enum_rel'][0] == 'suggest') {
+                $schema['x-component-props']['table'] = $data['value_enum_rel'][1];
             }
         }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {

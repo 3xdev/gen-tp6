@@ -57,6 +57,10 @@ Route::group('api/admin', function () {
 Route::group('api/admin', function () {
     // suggest 数据源
     Route::get('suggest/:controller', 'admin.:controller/suggest');
+    // enum 数据源
+    Route::get('enum/:controller', 'admin.:controller/enum');
+    // export 导出列表
+    Route::get('export/:controller', 'admin.:controller/export');
     // CRUD 获取列表
     Route::get('crud/:controller', 'admin.:controller/index');
     // CRUD 创建
