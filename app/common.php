@@ -241,6 +241,32 @@ if (!function_exists('kv2data')) {
     }
 }
 
+if (!function_exists('value2string')) {
+    /**
+     * 值转可读字符串
+     * value2string(['角色一', '角色二']) => '角色一,角色二'
+     * value2string('get', ['get' => '读取', 'post' => '新建']) => '读取'
+     * value2string(['get', 'post'], ['get' => '读取', 'post' => '新建']) => '读取,新建'
+     * @param  mixed    $value      value值
+     * @param  array    $enum       枚举数组
+     * @return string
+     */
+    function value2string($value, $enum = [])
+    {
+        if ($value === '') {
+            return '';
+        }
+        if (!is_array($value)) {
+            return $enum[$value] ?? $value;
+        }
+
+        foreach ($value as $val) {
+            $array[] = $enum[$val] ?? $val;
+        }
+        return implode(',', array_unique($array));
+    }
+}
+
 if (!function_exists('pt_search4col')) {
     /**
      * ProTable中search参数处理(取自列名数组)

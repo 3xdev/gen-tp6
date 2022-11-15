@@ -3,6 +3,7 @@
 namespace app\controller\admin;
 
 use app\model\SystemTable as SystemTableModel;
+use OpenSpout\Writer\Common\Creator\WriterEntityFactory;
 use think\db\exception\ModelNotFoundException;
 
 /**
@@ -40,7 +41,35 @@ class Crud extends Base
     }
 
     /**
-     * @api {get} /crud/:table 列表
+     * @api {get} /enum/:table enum数据源
+     * @apiGroup ICRUD
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiQuery {String} [values] 值串
+     * @apiQuery {String} [labelCol] 标签字段
+     * @apiQuery {String} [valueCol] 值字段
+     * @apiSuccess {Object[]} data 数据列表
+     */
+    public function enum()
+    {
+        $values = $this->request->get('values', '0');
+        $valueCol = $this->request->get('valueCol', $this->model->getPk());
+        $labelCol = $this->request->get('labelCol', $this->model->getPk());
+        $objs = $this->model->scope($this->model_scope)->where($valueCol, 'in', explode(',', $values))->select();
+        foreach ($objs as $obj) {
+            $data[] = [
+                'label' => $obj[$labelCol],
+                'value' => $obj[$valueCol]
+            ];
+        }
+
+        return $this->success([
+            'data'  => $data
+        ]);
+    }
+
+    /**
+     * @api {get} /crud/:table 获取列表
      * @apiGroup ICRUD
      * @apiHeader {String} Authorization Token
      * @apiParam {String} table 表格代码
@@ -94,6 +123,66 @@ class Crud extends Base
             'total' => $total,
             'data'  => $data
         ]);
+    }
+    /**
+     * @api {get} /export/:table 导出列表
+     * @apiGroup ICRUD
+     * @apiHeader {String} Authorization Token
+     * @apiParam {String} table 表格代码
+     * @apiQuery {String} [:search] 查询键值对
+     * @apiQuery {String} [filter] ProTable的filter
+     * @apiQuery {String} [sorter] ProTable的sorter
+     */
+    public function export()
+    {
+        $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
+        $this->model->systemTable = $table;
+        $search = $this->request->only(array_merge(
+            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            ['filter']
+        ), 'get');
+        $ignore = function ($val) {
+            if ($val === '') {
+                return false;
+            } else {
+                return true;
+            }
+        };
+        $search = array_filter($search, $ignore);
+        $lsearch = $this->request->only(array_merge(
+            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            ['filter', 'sorter']
+        ), 'get');
+        $lsearch = array_filter($lsearch, $ignore);
+        $objs = $this->model->scope($this->model_scope)->where($this->whereIndex())->withSearch(array_keys($lsearch), $lsearch)->with(
+            $table->cols->filter(fn($col) => empty($col->hide_in_table) && !empty($col->relation_name))->column('relation_name') ?: []
+        )->select();
+        $data = [];
+        $visible = array_filter($table->crud_index_cols, fn($col) => $this->model->isTableField($col));
+        $append = array_diff($table->crud_index_cols, $visible);
+        foreach ($objs as $obj) {
+            $data[] = array_replace_recursive(
+                $obj->visible(array_merge([$this->model->getPk()], $visible))->append($append)->toArray(),
+                $this->mergeIndex($obj)
+            );
+        }
+
+        $cols = $table->cols->filter(fn($col) => empty($col->hide_in_table));
+        $dataRows = [];
+        foreach ($data as $d) {
+            $array = [];
+            foreach ($cols as $col) {
+                $array[] = value2string($d[$col->data_index] ?? \think\helper\Arr::get($d, $col->data_index, ''), $col->value_enum);
+            }
+            $dataRows[] = WriterEntityFactory::createRowFromArray($array);
+        }
+
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToBrowser('export.xlsx')
+               ->addRow(WriterEntityFactory::createRowFromArray($cols->column('title')))
+               ->addRows($dataRows)
+               ->close();
+        exit();
     }
     /**
      * 列表的条件限制
