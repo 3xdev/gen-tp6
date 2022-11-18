@@ -19,6 +19,7 @@
     "require": {
         "php": ">=7.4",
         "topthink/framework": "^6.0",
+        "topthink/think-filesystem": "^1.0",
         "topthink/think-orm": "^2.0",
         "jaguarjack/think-filesystem-cloud": "^1.0",
         "godruoyi/php-snowflake": "^1.1",
