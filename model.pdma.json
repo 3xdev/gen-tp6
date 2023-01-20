@@ -2,9 +2,9 @@
   "name": "gen",
   "describe": "艮快低代码开发",
   "avatar": "",
-  "version": "4.1.4",
+  "version": "4.3.0",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2022-8-19 17:15:58",
+  "updatedTime": "2023-1-20 19:52:29",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -3962,14 +3962,14 @@
         {
           "defKey": "logo",
           "defName": "LOGO",
-          "comment": "json数组",
+          "comment": "",
           "type": "",
           "len": "",
           "scale": "",
           "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
-          "defaultValue": "'[]'",
+          "defaultValue": "''",
           "hideInGraph": false,
           "refDict": "",
           "domain": "ADBB6C9A-79C2-427A-831B-58F716EF9A75",

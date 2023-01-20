@@ -150,6 +150,7 @@ class SystemTableCol extends Base
         // 默认值
         in_array($data['value_type'], ['textarea', 'code', 'jsonCode', 'customRichText']) && $schema['default'] = '';
         $data['default_value'] != '' && $schema['default'] = is_numeric($data['default_value']) ? $data['default_value'] + 0 : $data['default_value'];
+        $data['default_value'] == '[]' && $schema['default'] = [];
         // 关联
         if (!empty($data['value_enum_rel'])) {
             $schema['enum'] = [];
