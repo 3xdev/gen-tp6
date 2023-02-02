@@ -2,12 +2,8 @@
 
 namespace app\model;
 
-use think\model\concern\SoftDelete;
-
 class SystemTableCol extends Base
 {
-    use SoftDelete;
-
     // 设置json类型字段
     protected $json = ['value_enum_rel'];
     // 设置json数据返回数组

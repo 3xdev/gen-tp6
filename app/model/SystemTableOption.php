@@ -2,12 +2,8 @@
 
 namespace app\model;
 
-use think\model\concern\SoftDelete;
-
 class SystemTableOption extends Base
 {
-    use SoftDelete;
-
     public function setActionAttr($value, $data)
     {
         if (!empty($value)) {
