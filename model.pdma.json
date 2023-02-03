@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.3.0",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2023-1-20 19:52:29",
+  "updatedTime": "2023-2-2 11:45:17",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -2872,7 +2872,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoIncrement": false,
-          "defaultValue": "''",
+          "defaultValue": "'[]'",
           "hideInGraph": false,
           "refDict": "",
           "domain": "9F38491B-AE55-4A40-963E-3695CBC16C22",
@@ -3256,23 +3256,6 @@
           "refDict": "",
           "uiHint": "",
           "id": "4F38E66E-C60A-4684-8DB0-0D5995E276A9"
-        },
-        {
-          "defKey": "delete_time",
-          "defName": "软删除时间",
-          "comment": "",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": true,
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "refDict": "",
-          "extProps": {},
-          "id": "1BD175FE-6C6B-473C-991E-40A5FB40954D"
         }
       ],
       "correlations": [],
@@ -3292,11 +3275,6 @@
               "fieldDefKey": "1CC151DC-F997-4B7D-BB4F-8E519CFD68D9",
               "ascOrDesc": "A",
               "id": "61978DC4-02C6-4F20-AD98-EA0DF81B4D9E"
-            },
-            {
-              "fieldDefKey": "1BD175FE-6C6B-473C-991E-40A5FB40954D",
-              "ascOrDesc": "A",
-              "id": "4FCFBB2B-BF72-4319-924A-4EA4452D99C4"
             }
           ],
           "id": "274DD094-C45F-4A88-9BD9-C41173419083"
@@ -3571,23 +3549,6 @@
           "refDict": "",
           "uiHint": "",
           "id": "86CE2D2D-260A-4529-B30B-512F5CE8EA2D"
-        },
-        {
-          "defKey": "delete_time",
-          "defName": "软删除时间",
-          "comment": "",
-          "domain": "D2B37D60-65AF-4D1F-A2D7-57B42CBE6E47",
-          "type": "",
-          "len": "",
-          "scale": "",
-          "primaryKey": false,
-          "notNull": true,
-          "autoIncrement": false,
-          "defaultValue": "0",
-          "hideInGraph": true,
-          "refDict": "",
-          "uiHint": "",
-          "id": "8304786C-5D82-4218-A9FB-CCC5F55AA7C1"
         }
       ],
       "correlations": [],
