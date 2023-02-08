@@ -134,6 +134,35 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
+### 模型搜索器-模糊搜索
+
+示例 1：
+1、模型添加搜索器模糊搜索
+
+```php
+// 城市名模糊搜索
+public function searchCitynameAttr($query, $value, $data)
+{
+    if (!empty($value)) {
+        $query->whereLike('cityname', '%' . $value . '%');
+    }
+}
+```
+
+示例 2：
+1、表格设计新增列名 bind_info
+2、模型添加搜索器多字段模糊搜索
+
+```php
+// 绑定信息模糊搜索
+public function searchBindInfoAttr($query, $value, $data)
+{
+    if (!empty($value)) {
+        $query->where('bind_name|bind_mobile', 'like', '%' . $value . '%');
+    }
+}
+```
+
 ### 模型搜索器-区间搜索
 
 示例 1：
