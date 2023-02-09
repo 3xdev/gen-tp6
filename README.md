@@ -134,6 +134,26 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
+### 模型获取器
+
+示例 1：
+1、表格设计新增列名 user_count
+2、模型添加关联用户和用户数获取器
+
+```php
+// 用户数
+public function getUserCountAttr($value, $data)
+{
+    return $this->users()->count();
+}
+
+// 关联用户
+public function users()
+{
+    return $this->hasMany(User::class, 'group_id');
+}
+```
+
 ### 模型搜索器-模糊搜索
 
 示例 1：
