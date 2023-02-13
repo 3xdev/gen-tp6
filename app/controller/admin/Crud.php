@@ -89,7 +89,7 @@ class Crud extends Base
         $current = $this->request->get('current/d', 1);
         $pageSize = $this->request->get('pageSize/d', 10);
         $search = $this->request->only(array_merge(
-            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            pt_search4col($table->cols->column('data_index')),
             ['filter']
         ), 'get');
         $ignore = function ($val) {
@@ -101,7 +101,7 @@ class Crud extends Base
         };
         $search = array_filter($search, $ignore);
         $lsearch = $this->request->only(array_merge(
-            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            pt_search4col($table->cols->column('data_index')),
             ['filter', 'sorter']
         ), 'get');
         $lsearch = array_filter($lsearch, $ignore);
@@ -138,7 +138,7 @@ class Crud extends Base
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
         $this->model->systemTable = $table;
         $search = $this->request->only(array_merge(
-            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            pt_search4col($table->cols->column('data_index')),
             ['filter']
         ), 'get');
         $ignore = function ($val) {
@@ -150,7 +150,7 @@ class Crud extends Base
         };
         $search = array_filter($search, $ignore);
         $lsearch = $this->request->only(array_merge(
-            pt_search4col($table->cols->filter(fn($col) => empty($col->hide_in_search))->column('data_index')),
+            pt_search4col($table->cols->column('data_index')),
             ['filter', 'sorter']
         ), 'get');
         $lsearch = array_filter($lsearch, $ignore);

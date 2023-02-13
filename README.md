@@ -134,6 +134,55 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
+### 模型获取器
+
+示例 1：
+1、表格设计新增列名 user_count
+2、模型添加关联用户和用户数获取器
+
+```php
+// 用户数
+public function getUserCountAttr($value, $data)
+{
+    return $this->users()->count();
+}
+
+// 关联用户
+public function users()
+{
+    return $this->hasMany(User::class, 'group_id');
+}
+```
+
+### 模型搜索器-模糊搜索
+
+示例 1：
+1、模型添加搜索器模糊搜索
+
+```php
+// 城市名模糊搜索
+public function searchCitynameAttr($query, $value, $data)
+{
+    if (!empty($value)) {
+        $query->whereLike('cityname', '%' . $value . '%');
+    }
+}
+```
+
+示例 2：
+1、表格设计新增列名 bind_info
+2、模型添加搜索器多字段模糊搜索
+
+```php
+// 绑定信息模糊搜索
+public function searchBindInfoAttr($query, $value, $data)
+{
+    if (!empty($value)) {
+        $query->where('bind_name|bind_mobile', 'like', '%' . $value . '%');
+    }
+}
+```
+
 ### 模型搜索器-区间搜索
 
 示例 1：
