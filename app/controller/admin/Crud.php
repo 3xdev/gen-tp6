@@ -214,7 +214,7 @@ class Crud extends Base
     public function create()
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $data = array_merge($this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index')), $this->mergeCreate());
+        $data = array_merge($this->request->post($table->cols->column('data_index')), $this->mergeCreate());
         $this->validate($data, parse_name(string_remove_prefix($this->request->controller(), 'admin.')));
         $this->model->create($data);
 
@@ -276,7 +276,7 @@ class Crud extends Base
         if (!$obj) {
             throw new ModelNotFoundException('数据不存在');
         }
-        $data = $this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index'));
+        $data = $this->request->post($table->cols->column('data_index'));
         $this->validate(
             array_merge($obj->visible(array_merge($this->validate_field_append, [$obj->getPk()]))->toArray(), $data),
             parse_name(string_remove_prefix($this->request->controller(), 'admin.'))
