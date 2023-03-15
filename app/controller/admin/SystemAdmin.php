@@ -171,15 +171,16 @@ class SystemAdmin extends Base
      */
     public function create()
     {
-        $data = $this->request->post(['username', 'roles', 'mobile', 'password', 'nickname']);
-        $data['delete_time'] = 0;
+        $data = $this->request->post(['username', 'mobile', 'password', 'nickname']);
+        $roles = $this->request->post('roles/a');
+        $data['deletetime'] = 0;
         $this->validate($data, 'SystemAdmin');
 
         // 创建管理员
         $model = SelfModel::create($data);
 
         // 新增管理员角色
-        foreach ($data['roles'] as $role) {
+        foreach ($roles as $role) {
             Enforcer::addRoleForUser('admin_' . $model->id, 'role_' . $role);
         }
 
@@ -200,7 +201,8 @@ class SystemAdmin extends Base
     public function update($id)
     {
         $data = $this->request->post(['username', 'roles', 'mobile', 'password', 'nickname', 'avatar', 'status']);
-        $data['delete_time'] = 0;
+        $roles = $this->request->post('roles/a');
+        $data['deletetime'] = 0;
 
         $model = SelfModel::find($id);
         if (!$model) {
@@ -220,7 +222,7 @@ class SystemAdmin extends Base
 
         // 更新管理员角色
         Enforcer::deleteRolesForUser('admin_' . $model->id);
-        foreach ($data['roles'] as $role) {
+        foreach ($roles as $role) {
             Enforcer::addRoleForUser('admin_' . $model->id, 'role_' . $role);
         }
 
