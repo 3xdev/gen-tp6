@@ -165,6 +165,31 @@ class SystemTableCol extends Base
                 $schema['x-component-props']['table'] = $data['value_enum_rel'][1];
             }
         }
+        if ($data['value_type'] == 'dateTime') {
+            $schema['x-component-props'] = [
+                'showTime' => true
+            ];
+        }
+        if ($data['value_type'] == 'dateWeek') {
+            $schema['x-component-props'] = [
+                'picker' => 'week'
+            ];
+        }
+        if ($data['value_type'] == 'dateMonth') {
+            $schema['x-component-props'] = [
+                'picker' => 'month'
+            ];
+        }
+        if ($data['value_type'] == 'dateQuarter') {
+            $schema['x-component-props'] = [
+                'picker' => 'quarter'
+            ];
+        }
+        if ($data['value_type'] == 'dateYear') {
+            $schema['x-component-props'] = [
+                'picker' => 'year'
+            ];
+        }
         if ($data['value_type'] == 'avatar' || $data['value_type'] == 'image') {
             $schema['x-component-props'] = [
                 'multiple' => false,

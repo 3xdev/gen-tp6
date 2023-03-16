@@ -103,10 +103,29 @@ class SystemConfig extends Base
                 $schema['enum'][] = ['value' => $k, 'label' => $v];
             }
         }
-        if ($data['component'] == 'avatar' || $data['component'] == 'image') {
+        if ($data['component'] == 'dateTime') {
             $schema['x-component-props'] = [
-                'multiple' => false,
-                'maxCount' => 1,
+                'showTime' => true
+            ];
+        }
+        if ($data['component'] == 'dateWeek') {
+            $schema['x-component-props'] = [
+                'picker' => 'week'
+            ];
+        }
+        if ($data['component'] == 'dateMonth') {
+            $schema['x-component-props'] = [
+                'picker' => 'month'
+            ];
+        }
+        if ($data['component'] == 'dateQuarter') {
+            $schema['x-component-props'] = [
+                'picker' => 'quarter'
+            ];
+        }
+        if ($data['component'] == 'dateYear') {
+            $schema['x-component-props'] = [
+                'picker' => 'year'
             ];
         }
         if ($data['component'] == 'avatar' || $data['component'] == 'image') {
