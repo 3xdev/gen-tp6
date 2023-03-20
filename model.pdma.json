@@ -4,7 +4,7 @@
   "avatar": "",
   "version": "4.3.0",
   "createdTime": "2021-11-12 11:51:42",
-  "updatedTime": "2023-3-18 20:23:48",
+  "updatedTime": "2023-3-20 22:11:49",
   "profile": {
     "default": {
       "db": "3F030617-371B-4494-B851-29EABDE090F7",
@@ -6408,9 +6408,21 @@
           "id": "98E91B7A-5F9C-4B45-8348-F5324CEFAD96"
         },
         {
+          "defKey": "table",
+          "defName": "表格弹窗",
+          "sort": "4",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "8CB5EBBA-02F7-432E-8A32-81384E4BFD0E"
+        },
+        {
           "defKey": "page",
           "defName": "跳转页面",
-          "sort": "4",
+          "sort": "5",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6422,7 +6434,7 @@
         {
           "defKey": "request",
           "defName": "接口请求",
-          "sort": "5",
+          "sort": "6",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6477,9 +6489,21 @@
           "id": "92CAAB66-EC17-4100-A14D-742356200B36"
         },
         {
+          "defKey": "table",
+          "defName": "表格弹窗",
+          "sort": "3",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "278639F6-B3A7-4D5D-A5E0-F757C455AD29"
+        },
+        {
           "defKey": "page",
           "defName": "跳转页面",
-          "sort": "3",
+          "sort": "4",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6491,7 +6515,7 @@
         {
           "defKey": "request",
           "defName": "接口请求",
-          "sort": "4",
+          "sort": "5",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6534,9 +6558,21 @@
           "id": "714D3F1A-05F0-4B85-811D-0F0D39323F2F"
         },
         {
+          "defKey": "table",
+          "defName": "表格弹窗",
+          "sort": "2",
+          "parentKey": "",
+          "intro": "",
+          "enabled": true,
+          "attr1": "",
+          "attr2": "",
+          "attr3": "",
+          "id": "7634A1A6-2FBC-477B-A44D-B790F5200E36"
+        },
+        {
           "defKey": "page",
           "defName": "跳转页面",
-          "sort": "2",
+          "sort": "3",
           "parentKey": "",
           "intro": "",
           "enabled": true,
@@ -6548,7 +6584,7 @@
         {
           "defKey": "request",
           "defName": "接口请求",
-          "sort": "3",
+          "sort": "4",
           "parentKey": "",
           "intro": "",
           "enabled": true,
