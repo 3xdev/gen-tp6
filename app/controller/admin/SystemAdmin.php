@@ -173,7 +173,7 @@ class SystemAdmin extends Base
     {
         $data = $this->request->post(['username', 'mobile', 'password', 'nickname']);
         $roles = $this->request->post('roles/a');
-        $data['deletetime'] = 0;
+        $data['delete_time'] = 0;
         $this->validate($data, 'SystemAdmin');
 
         // 创建管理员
@@ -202,7 +202,7 @@ class SystemAdmin extends Base
     {
         $data = $this->request->post(['username', 'roles', 'mobile', 'password', 'nickname', 'avatar', 'status']);
         $roles = $this->request->post('roles/a');
-        $data['deletetime'] = 0;
+        $data['delete_time'] = 0;
 
         $model = SelfModel::find($id);
         if (!$model) {

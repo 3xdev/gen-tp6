@@ -74,8 +74,10 @@ Route::group('api/admin', function () {
 
     // REST GET操作
     Route::get('rest/:controller/:action/:ids', 'admin.:controller/get:action');
+    Route::get('rest/:controller/:action', 'admin.:controller/get:action');
     // REST POST操作
     Route::post('rest/:controller/:action/:ids', 'admin.:controller/post:action');
+    Route::post('rest/:controller/:action', 'admin.:controller/post:action');
     // REST PUT操作
     Route::put('rest/:controller/:action/:ids', 'admin.:controller/put:action');
     // REST DELETE操作

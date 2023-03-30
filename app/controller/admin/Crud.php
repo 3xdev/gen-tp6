@@ -56,6 +56,7 @@ class Crud extends Base
         $valueCol = $this->request->get('valueCol', $this->model->getPk());
         $labelCol = $this->request->get('labelCol', $this->model->getPk());
         $objs = $this->model->scope($this->model_scope)->where($valueCol, 'in', explode(',', $values))->select();
+        $data = [];
         foreach ($objs as $obj) {
             $data[] = [
                 'label' => $obj[$labelCol],

@@ -182,7 +182,7 @@ class SystemTable extends Base
             return $this->error('数据未找到');
         }
 
-        $schema = $table->pro_schema;
+        $schema = $table->pro_components_schema;
 
         $authzIdentifier = $this->request->admin ? 'admin_' . $this->request->admin->id : '';
         $roles = Enforcer::getRolesForUser($authzIdentifier);

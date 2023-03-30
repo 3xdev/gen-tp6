@@ -54,10 +54,10 @@ class SystemTable extends Base
         return $this->cols->column('data_index');
     }
 
-    public function getProSchemaAttr($value, $data)
+    public function getProComponentsSchemaAttr($value, $data)
     {
         $schema = $data['props'];
-        $schema['columns'] = $this->cols->column('pro_schema');
+        $schema['columns'] = $this->cols->column('pro_components_schema');
         $schema['options'] = [
             'columns' => [],
             'toolbar' => [],

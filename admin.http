@@ -1,15 +1,15 @@
-@baseUrl = http://127.0.0.1:800/api/admin
+@baseUrl = http://10yun.host/
+#@baseUrl = http://sy-api.jinkuo.cn
+
 @token = {{login.response.body.token}}
 
 # 系统 - 管理员登陆
 # @name login
-POST {{baseUrl}}/token
-content-type: application/json
+POST {{baseUrl}}/finance_zt/business/dingtalk?signature=63de0084d76ba90df1b9c4fbfd82e77190bd1901&msg_signature=63de0084d76ba90df1b9c4fbfd82e77190bd1901&timestamp=1679388919944&nonce=pq2pe8Xb
+Content-Type: application/json
 
 {
-    "type": "password",
-    "username": "admin",
-    "password": "123456"
+    "encrypt": "k9ntM1mp3nzAr+lai6MgK2l8vOhNOQi0IvMbZ2Rn+/4s205wvuhgy0JlHj+UUCl5/fgWzaI+cDK1zCvsX1P5w/TUjm8eWPkWJrkOwhmcxSCK4ttHRIQ5p5DjJ/VJ7Ugw"
 }
 
 

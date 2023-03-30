@@ -134,14 +134,14 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
-### 模型获取器
+### 模型获取器及修改器
 
 示例 1：
 1、表格设计新增列名 user_count
 2、模型添加关联用户和用户数获取器
 
 ```php
-// 用户数
+// 关联用户总数
 public function getUserCountAttr($value, $data)
 {
     return $this->users()->count();
@@ -151,6 +151,35 @@ public function getUserCountAttr($value, $data)
 public function users()
 {
     return $this->hasMany(User::class, 'group_id');
+}
+```
+
+示例 2：
+
+```php
+// ,分隔转数组
+public function getUserIdsAttr($value, $data)
+{
+    return $value ? array_map(fn($value) => intval($value), explode(',', $value)) : [];
+}
+// 数组存,分隔字符串
+public function setUserIdsAttr($value, $data)
+{
+    return is_array($value) ? implode(',', $value) : $value;
+}
+```
+
+示例 3：
+
+```php
+// 时间格式化
+protected function getStarttimeAttr($value)
+{
+    return $value ? date('Y-m-d H:i:s', $value) : '';
+}
+protected function setStarttimeAttr($value)
+{
+    return is_numeric($value) ? $value : strtotime($value);
 }
 ```
 
@@ -171,7 +200,7 @@ public function searchCitynameAttr($query, $value, $data)
 
 示例 2：
 1、表格设计新增列名 bind_info
-2、模型添加搜索器多字段模糊搜索
+2、模型添加搜索器模糊搜索
 
 ```php
 // 绑定信息模糊搜索
