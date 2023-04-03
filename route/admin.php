@@ -82,6 +82,7 @@ Route::group('api/admin', function () {
     Route::put('rest/:controller/:action/:ids', 'admin.:controller/put:action');
     // REST DELETE操作
     Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
+    Route::delete('rest/:controller/:action/', 'admin.:controller/delete:action');
 
     // 获取配置项列表
     Route::get('system_config', 'admin.SystemConfig/index');

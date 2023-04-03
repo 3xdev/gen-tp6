@@ -1,0 +1,18 @@
+@baseUrl = http://127.0.0.1:800/api/open
+@token = {{login.response.body.token}}
+
+# 系统 - 用户登陆
+# @name login
+POST {{baseUrl}}/token
+content-type: application/json
+
+{
+    "type": "password",
+    "username": "13788874063",
+    "password": "123456"
+}
+
+###
+#系统 - 创建云存储直传token
+POST {{baseUrl}}/upload/token/logo
+Authorization: Bearer {{token}}

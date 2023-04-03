@@ -7,9 +7,9 @@ use think\facade\Event;
 use tauthz\facade\Enforcer;
 
 /**
- * 管理员模型
+ * 用户模型
  */
-class SystemAdmin extends Base
+class User extends Base
 {
     use SoftDelete;
 
@@ -39,25 +39,11 @@ class SystemAdmin extends Base
     {
         $value && $query->where('email', 'like', '%' . $value . '%');
     }
-    public function searchRolesAttr($query, $value, $data)
-    {
-        if ($value && !empty($value)) {
-            $users = [];
-            foreach ($value as $val) {
-                $users = array_merge($users, Enforcer::getUsersForRole('role_' . $val));
-            }
-            $query->whereIn('id', array_map(fn($user) => string_remove_prefix($user, 'admin_'), array_unique($users)));
-        }
-    }
     public function searchLoginTimeAttr($query, $value, $data)
     {
         $value && $query->whereBetweenTime('login_time', $value[0], $value[1]);
     }
 
-    public function getRolesAttr($value, $data)
-    {
-        return array_map(fn($role) => intval(string_remove_prefix($role, 'role_')), Enforcer::getRolesForUser('admin_' . $data['id']));
-    }
     public function getLoginTimeAttr($value, $data)
     {
         return $value ? date('Y-m-d H:i:s', $value) : '';
@@ -68,22 +54,12 @@ class SystemAdmin extends Base
         return $value ? password_hash($value, PASSWORD_DEFAULT) : '';
     }
 
-    // 模型事件
-    public static function onBeforeDelete($admin)
-    {
-        if ($admin->id == 1) {
-            return false;
-        }
-    }
-
-
     /**
      * 密码登录
-     * @return SystemAdmin
      */
-    public static function loginByPassword($username, $password, $ip = '')
+    public static function loginByPassword($username, $password)
     {
-        $admin = self::where('status', 1)->where(function ($query) use ($username) {
+        $user = self::where('status', 1)->where(function ($query) use ($username) {
             $query->whereOr([
                 [
                     ['username', '=', $username],
@@ -94,30 +70,29 @@ class SystemAdmin extends Base
                 ],
             ]);
         })->find();
-        if (!$admin) {
-            // 管理员不存在
+        if (!$user) {
+            // 用户不存在
             self::setErrorMsg('帐号或密码错误');
             return null;
         }
 
         // 密码比对
-        if (!password_verify($password, $admin->password)) {
+        if (!password_verify($password, $user->password)) {
             self::setErrorMsg('帐号或密码错误');
             return null;
         }
 
-        return $admin->doLogin($ip);
+        return $user->doLogin();
     }
 
     /**
      * 验证码登录
-     * @return SystemAdmin
      */
-    public static function loginByCaptcha($mobile, $captcha, $ip = '')
+    public static function loginByCaptcha($mobile, $captcha)
     {
-        $admin = self::where('mobile', $mobile)->find();
-        if (!$admin) {
-            // 管理员不存在
+        $user = self::where(['mobile' => $mobile])->find();
+        if (!$user) {
+            // 用户不存在
             self::setErrorMsg('手机号或验证码错误');
             return null;
         }
@@ -128,27 +103,25 @@ class SystemAdmin extends Base
             return null;
         }
 
-        return $admin->doLogin($ip);
+        return $user->doLogin();
     }
 
     /**
      * 执行登录
-     * @return SystemAdmin
      */
-    protected function doLogin($ip = '')
+    protected function doLogin()
     {
         if ($this->getAttr('status') == 0) {
-            // 管理员已禁用
+            // 用户已禁用
             self::setErrorMsg('用户已被禁用');
             return null;
         }
 
-        // 更新管理员信息
-        $this->setAttr('login_ip', $ip);
+        // 更新用户信息
         $this->setAttr('login_time', time());
         $this->save();
-        // 触发管理员登录成功事件
-        Event::trigger('SystemAdminLogin', $this);
+        // 触发用户登录成功事件
+        Event::trigger('UserLogin', $this);
         return $this;
     }
 }

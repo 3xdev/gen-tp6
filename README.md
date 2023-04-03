@@ -134,6 +134,34 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
+
+### 数据库查询
+
+```php
+// 相同条件的OR查询
+User::where('username|mobile', 'xxxxx')->select();
+User::where('username|mobile', 'like', 'test%')->select();
+
+// 不同条件的OR查询
+User::where('status', 1)->where(function ($query) use($username, $mobile) {
+    $query->whereOr([['username', '=', $username], ['mobile', '=', $mobile]]);
+})->select();
+
+// 不同组条件的OR查询
+User::where('status', 1)->where(function ($query) use($username, $mobile) {
+    $query->whereOr([
+        [
+            ['username', '=', $username],
+        ],
+        [
+            ['mobile', '<>', ''],
+            ['mobile', '=', $mobile],
+        ],
+    ]);
+})->select();
+// SELECT * FROM `gen_user` WHERE (  `status` = 1  AND (  ( `username` = 'liux' )  OR ( `mobile` <> '' AND `mobile` = '13012345678' ) ) ) AND `gen_user`.`delete_time` = '0'
+```
+
 ### 模型获取器及修改器
 
 示例 1：
