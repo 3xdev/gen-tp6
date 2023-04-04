@@ -17,18 +17,17 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "topthink/framework": "^6.0",
-        "topthink/think-filesystem": "^1.0",
-        "topthink/think-orm": "2.0.56",
-        "jaguarjack/think-filesystem-cloud": "^1.0",
-        "godruoyi/php-snowflake": "^1.1",
-        "bluem/tree": "^3.2",
-        "topthink/think-view": "^1.0",
-        "nette/php-generator": "^3.6",
+        "php": ">=8.0",
+        "topthink/framework": "^6.1",
+        "topthink/think-orm": "^3.0",
+        "topthink/think-view": "^2.0",
         "casbin/think-authz": "^1.5",
-        "yzh52521/tp-jwt-auth": "^1.0",
-        "openspout/openspout": "^3.7"
+        "yzh52521/tp-jwt-auth": "^2.0",
+        "yzh52521/think-filesystem": "^3.0",
+        "godruoyi/php-snowflake": "^2.2",
+        "bluem/tree": "^3.2",
+        "nette/php-generator": "^3.6",
+        "openspout/openspout": "^4.13"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
