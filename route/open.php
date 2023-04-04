@@ -28,14 +28,11 @@ Route::group('api/open', function () {
     Route::post('upload/token/:name', 'open.Upload/token');
 
     // REST GET操作
-    Route::get('rest/:controller/:action/:ids', 'open.:controller/get:action');
-    Route::get('rest/:controller/:action', 'open.:controller/get:action');
+    Route::get('rest/:controller/:action/[:ids]', 'open.:controller/get:action');
     // REST POST操作
-    Route::post('rest/:controller/:action/:ids', 'open.:controller/post:action');
-    Route::post('rest/:controller/:action', 'open.:controller/post:action');
+    Route::post('rest/:controller/:action/[:ids]', 'open.:controller/post:action');
     // REST PUT操作
-    Route::put('rest/:controller/:action/:ids', 'open.:controller/put:action');
+    Route::put('rest/:controller/:action/[:ids]', 'open.:controller/put:action');
     // REST DELETE操作
-    Route::delete('rest/:controller/:action/:ids', 'open.:controller/delete:action');
-    Route::delete('rest/:controller/:action', 'open.:controller/delete:action');
+    Route::delete('rest/:controller/:action/[:ids]', 'open.:controller/delete:action');
 })->middleware(UserAuth::class);

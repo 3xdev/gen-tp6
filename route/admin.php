@@ -73,16 +73,13 @@ Route::group('api/admin', function () {
     Route::delete('crud/:controller/:ids', 'admin.:controller/delete');
 
     // REST GET操作
-    Route::get('rest/:controller/:action/:ids', 'admin.:controller/get:action');
-    Route::get('rest/:controller/:action', 'admin.:controller/get:action');
+    Route::get('rest/:controller/:action/[:ids]', 'admin.:controller/get:action');
     // REST POST操作
-    Route::post('rest/:controller/:action/:ids', 'admin.:controller/post:action');
-    Route::post('rest/:controller/:action', 'admin.:controller/post:action');
+    Route::post('rest/:controller/:action/[:ids]', 'admin.:controller/post:action');
     // REST PUT操作
-    Route::put('rest/:controller/:action/:ids', 'admin.:controller/put:action');
+    Route::put('rest/:controller/:action/[:ids]', 'admin.:controller/put:action');
     // REST DELETE操作
-    Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
-    Route::delete('rest/:controller/:action/', 'admin.:controller/delete:action');
+    Route::delete('rest/:controller/:action/[:ids]', 'admin.:controller/delete:action');
 
     // 获取配置项列表
     Route::get('system_config', 'admin.SystemConfig/index');
