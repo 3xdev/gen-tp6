@@ -122,6 +122,9 @@ class Formily
             $schema['x-component-props']['maxCount'] = 5;
         }
 
+        // 如果有设默认值且为数组，字段类型强制转为数组
+        isset($schema['default']) && is_array($schema['default']) && $schema['type'] = 'array';
+
         // Array类组件处理
         if (in_array($component, ['ArrayItems', 'ArrayTable'])) {
             if (isset($componentProps['items'])) {
