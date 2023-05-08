@@ -194,6 +194,9 @@ class SystemTable extends Base
                 }
             }
         }
+        $schema['options']['columns'] = array_values($schema['options']['columns']);
+        $schema['options']['toolbar'] = array_values($schema['options']['toolbar']);
+        $schema['options']['batch'] = array_values($schema['options']['batch']);
 
         return $this->success($schema);
     }
