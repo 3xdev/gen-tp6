@@ -26,7 +26,7 @@
         "yzh52521/think-filesystem": "^3.0",
         "godruoyi/php-snowflake": "^2.2",
         "bluem/tree": "^3.2",
-        "nette/php-generator": "^3.6",
+        "nette/php-generator": "^4.0",
         "openspout/openspout": "^4.13"
     },
     "require-dev": {
