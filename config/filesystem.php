@@ -22,8 +22,8 @@ return [
         // 七牛云存储
         'qiniu'  => [
             'type'          => 'qiniu',
-            'access_key'    => env('filesystem.qiniu_access_key'),
-            'secret_key'    => env('filesystem.qiniu_secret_key'),
+            'accessKey'    => env('filesystem.qiniu_access_key'),
+            'secretKey'    => env('filesystem.qiniu_secret_key'),
             'bucket'        => env('filesystem.qiniu_bucket'),
             'domain'       => env('filesystem.qiniu_domain'),
         ],
