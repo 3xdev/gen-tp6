@@ -2,7 +2,7 @@
 
 ## 特性
 
-> 运行环境要求 PHP7.4+，兼容 PHP8.0。
+> 运行环境要求 PHP8.0+
 > 快速低代码开发
 > 领域驱动设计
 > 模型设计自动转化源码
@@ -17,6 +17,9 @@
 - yzh52521/think-filesystem 3.0
 - godruoyi/php-snowflake 2.2
 - openspout/openspout 4.13
+- bluem/tree 3.2
+- nette/php-generator 4.0
+- nette/utils 4.0
 
 ## 开发依赖包
 
