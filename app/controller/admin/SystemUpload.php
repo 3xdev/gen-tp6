@@ -46,7 +46,7 @@ class SystemUpload extends Base
         $savename = $this->app->filesystem->putFile($name, $this->request->file('file'), self::FILESYSTEM_HASH_NAME_RULE);
         return $this->success([
             'status'    => 'done',
-            'url'       => $this->app->filesystem->getAdapter()->getUrl($savename)
+            'url'       => $this->app->filesystem->getAdapter()->url($savename)
         ]);
     }
 
@@ -66,7 +66,7 @@ class SystemUpload extends Base
         $savename = $this->app->filesystem->putFile($name, $this->request->file('file'), self::FILESYSTEM_HASH_NAME_RULE);
         return $this->success([
             'status'    => 'done',
-            'url'       => $this->app->filesystem->getAdapter()->getUrl($savename)
+            'url'       => $this->app->filesystem->getAdapter()->url($savename)
         ]);
     }
 }
