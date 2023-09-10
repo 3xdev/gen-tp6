@@ -12,6 +12,4 @@ return [
     'token_mode'    => ['header', 'param'],
     // 黑名单宽限期(秒)
     'blacklist_grace_period' => env('BLACKLIST_GRACE_PERIOD', 10),
-    // 黑名单存储
-    'blacklist_storage' => thans\jwt\provider\storage\Tp6::class,
 ];

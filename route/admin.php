@@ -36,6 +36,11 @@ Route::group('api/admin', function () {
     // 获取系统表单(Formily)的schema描述
     Route::get('schema/formily/form/:name', 'admin.SystemForm/formily');
 
+    // enum 数据源
+    Route::get('enum/:controller', 'admin.:controller/enum');
+    // suggest 数据源
+    Route::get('suggest/:controller', 'admin.:controller/suggest');
+
     // 创建七牛云直传token
     Route::post('upload/token/:name', 'admin.SystemUpload/token');
     // 上传图片
@@ -55,10 +60,6 @@ Route::group('api/admin', function () {
 
 // 注册管理员认证和授权中间件的分组
 Route::group('api/admin', function () {
-    // suggest 数据源
-    Route::get('suggest/:controller', 'admin.:controller/suggest');
-    // enum 数据源
-    Route::get('enum/:controller', 'admin.:controller/enum');
     // export 导出列表
     Route::get('export/:controller', 'admin.:controller/export');
     // CRUD 获取列表
@@ -73,13 +74,13 @@ Route::group('api/admin', function () {
     Route::delete('crud/:controller/:ids', 'admin.:controller/delete');
 
     // REST GET操作
-    Route::get('rest/:controller/:action/:ids', 'admin.:controller/get:action');
+    Route::get('rest/:controller/:action/[:ids]', 'admin.:controller/get:action');
     // REST POST操作
-    Route::post('rest/:controller/:action/:ids', 'admin.:controller/post:action');
+    Route::post('rest/:controller/:action/[:ids]', 'admin.:controller/post:action');
     // REST PUT操作
-    Route::put('rest/:controller/:action/:ids', 'admin.:controller/put:action');
+    Route::put('rest/:controller/:action/[:ids]', 'admin.:controller/put:action');
     // REST DELETE操作
-    Route::delete('rest/:controller/:action/:ids', 'admin.:controller/delete:action');
+    Route::delete('rest/:controller/:action/[:ids]', 'admin.:controller/delete:action');
 
     // 获取配置项列表
     Route::get('system_config', 'admin.SystemConfig/index');

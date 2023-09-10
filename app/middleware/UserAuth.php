@@ -6,9 +6,9 @@ use thans\jwt\exception\TokenExpiredException;
 use thans\jwt\exception\TokenBlacklistGracePeriodException;
 
 /**
- * 管理员认证
+ * 用户认证
  */
-class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
+class UserAuth extends \thans\jwt\middleware\BaseMiddleware
 {
     public function handle($request, \Closure $next)
     {
@@ -25,7 +25,7 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
             try {
                 $token = $this->auth->refresh();
                 $payload = $this->auth->auth(false);
-                $this->setSystemAdmin($payload->get('id'), $request);
+                $this->setUser($payload->get('user_id'), $request);
                 return $this->setAuthentication($next($request), $token);
             } catch (TokenBlacklistGracePeriodException $e) {
                 // 捕获黑名单宽限期
@@ -36,18 +36,20 @@ class SystemAdminAuth extends \thans\jwt\middleware\BaseMiddleware
             $payload = $this->auth->auth(false);
         }
 
-        $this->setSystemAdmin($payload->get('id'), $request);
+        $this->setUser($payload->get('user_id'), $request);
         return $next($request);
     }
 
-    // 设置管理员
-    protected function setSystemAdmin($id, $request)
+    // 设置用员
+    protected function setUser($id, $request)
     {
-        $admin = \app\model\SystemAdmin::find($id);
-        if (!$admin) {
-        // 管理员不存在
-            abort(401, '管理员不存在或己删除');
+        // 用户信息
+        $user = \app\model\User::find($id);
+        if (!$user) {
+            // 不存在
+            abort(401, '用户不存在或己删除');
         }
-        $request->admin = $admin;
+
+        $request->user = $user;
     }
 }

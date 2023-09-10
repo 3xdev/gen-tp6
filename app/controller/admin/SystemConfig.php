@@ -41,14 +41,11 @@ class SystemConfig extends Base
      * @apiBody {String} component 组件
      * @apiBody {String} code 编码
      * @apiBody {String} title 标题
-     * @apiBody {String} [description] 描述说明
-     * @apiBody {String} [dict_key] 字典代码
-     * @apiBody {String} [rule] 验证规则
-     * @apiBody {String} [extend] 扩展属性
+     * @apiBody {String} [tip] 提示
      */
     public function create()
     {
-        $data = $this->request->post(['tab', 'component', 'code', 'title', 'description', 'dict_key', 'rule', 'extend']);
+        $data = $this->request->post(['tab', 'component', 'code', 'title', 'tip', 'value_enum_rel', 'reactions', 'component_props', 'decorator_props', 'validator']);
         $data['delete_time'] = 0;
         $this->validate($data, 'SystemConfig');
 
@@ -67,14 +64,11 @@ class SystemConfig extends Base
      * @apiBody {String} component 组件
      * @apiBody {String} code 编码
      * @apiBody {String} title 标题
-     * @apiBody {String} [description] 描述说明
-     * @apiBody {String} [dict_key] 字典代码
-     * @apiBody {String} [rule] 验证规则
-     * @apiBody {String} [extend] 扩展属性
+     * @apiBody {String} [tip] 提示
      */
     public function update($id)
     {
-        $data = $this->request->post(['tab', 'component', 'code', 'title', 'description', 'dict_key', 'rule', 'extend']);
+        $data = $this->request->post(['tab', 'component', 'code', 'title', 'tip', 'value_enum_rel', 'reactions', 'component_props', 'decorator_props', 'validator']);
         $data['delete_time'] = 0;
 
         $model = SelfModel::find($id);
@@ -121,10 +115,7 @@ class SystemConfig extends Base
      * @apiSuccess {String} data.component 组件
      * @apiSuccess {String} data.code 编码
      * @apiSuccess {String} data.title 标题
-     * @apiSuccess {String} data.description 描述说明
-     * @apiSuccess {String} data.dict_key 字典代码
-     * @apiSuccess {String} data.rule 验证规则
-     * @apiSuccess {String} data.extend 扩展属性
+     * @apiSuccess {String} data.tip 提示
      * @apiSuccess {String} data.value 配置值
      * @apiSuccess {String} data.create_time 创建时间
      * @apiSuccess {String} data.update_time 更新时间
@@ -141,7 +132,7 @@ class SystemConfig extends Base
 
         return $this->success([
             'total' => $total,
-            'data' => $list->visible(['id', 'tab', 'component', 'code', 'title', 'description', 'dict_key', 'rule', 'extend', 'value', 'create_time', 'update_time'])->toArray()
+            'data' => $list->visible(['id', 'tab', 'component', 'code', 'title', 'tip', 'value_enum_rel', 'reactions', 'component_props', 'decorator_props', 'validator', 'value', 'create_time', 'update_time'])->toArray()
         ]);
     }
 
@@ -155,10 +146,7 @@ class SystemConfig extends Base
      * @apiSuccess {String} component 组件
      * @apiSuccess {String} code 编码
      * @apiSuccess {String} title 标题
-     * @apiSuccess {String} description 描述说明
-     * @apiSuccess {String} dict_key 字典代码
-     * @apiSuccess {String} rule 验证规则
-     * @apiSuccess {String} extend 扩展属性
+     * @apiSuccess {String} tip 提示
      * @apiSuccess {String} value 配置值
      * @apiSuccess {String} create_time 创建时间
      * @apiSuccess {String} update_time 更新时间
@@ -171,7 +159,7 @@ class SystemConfig extends Base
         }
 
         return $this->success($model->visible([
-            'id', 'tab', 'component', 'code', 'title', 'description', 'dict_key', 'rule', 'extend', 'value', 'create_time', 'update_time'
+            'id', 'tab', 'component', 'code', 'title', 'tip', 'value_enum_rel', 'reactions', 'component_props', 'decorator_props', 'validator', 'value', 'create_time', 'update_time'
         ])->toArray());
     }
 }

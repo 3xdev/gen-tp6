@@ -2,20 +2,24 @@
 
 ## 特性
 
-> 运行环境要求 PHP7.4+，兼容 PHP8.0。
+> 运行环境要求 PHP8.0+
 > 快速低代码开发
 > 领域驱动设计
 > 模型设计自动转化源码
 
 ## 依赖包
 
-- topthink/framework 6.0
-- topthink/think-orm 2.0
-- yzh52521/tp-jwt-auth 1.0
+- topthink/framework 6.1
+- topthink/think-orm 3.0
+- topthink/think-view 2.0
 - casbin/think-authz 1.5
-- godruoyi/php-snowflake 1.1
-- jaguarjack/think-filesystem-cloud 1.0
-- openspout/openspout 3.7
+- yzh52521/tp-jwt-auth 2.0
+- yzh52521/think-filesystem 3.0
+- godruoyi/php-snowflake 2.2
+- openspout/openspout 4.13
+- bluem/tree 3.2
+- nette/php-generator 4.0
+- nette/utils 4.0
 
 ## 开发依赖包
 
@@ -134,14 +138,42 @@ system_dict('config_tab');
 \app\model\SystemDict::fetchCache('config_tab');
 ```
 
-### 模型获取器
+
+### 数据库查询
+
+```php
+// 相同条件的OR查询
+User::where('username|mobile', 'xxxxx')->select();
+User::where('username|mobile', 'like', 'test%')->select();
+
+// 不同条件的OR查询
+User::where('status', 1)->where(function ($query) use($username, $mobile) {
+    $query->whereOr([['username', '=', $username], ['mobile', '=', $mobile]]);
+})->select();
+
+// 不同组条件的OR查询
+User::where('status', 1)->where(function ($query) use($username, $mobile) {
+    $query->whereOr([
+        [
+            ['username', '=', $username],
+        ],
+        [
+            ['mobile', '<>', ''],
+            ['mobile', '=', $mobile],
+        ],
+    ]);
+})->select();
+// SELECT * FROM `gen_user` WHERE (  `status` = 1  AND (  ( `username` = 'liux' )  OR ( `mobile` <> '' AND `mobile` = '13012345678' ) ) ) AND `gen_user`.`delete_time` = '0'
+```
+
+### 模型获取器及修改器
 
 示例 1：
 1、表格设计新增列名 user_count
 2、模型添加关联用户和用户数获取器
 
 ```php
-// 用户数
+// 关联用户总数
 public function getUserCountAttr($value, $data)
 {
     return $this->users()->count();
@@ -151,6 +183,35 @@ public function getUserCountAttr($value, $data)
 public function users()
 {
     return $this->hasMany(User::class, 'group_id');
+}
+```
+
+示例 2：
+
+```php
+// ,分隔转数组
+public function getUserIdsAttr($value, $data)
+{
+    return $value ? array_map(fn($value) => intval($value), explode(',', $value)) : [];
+}
+// 数组存,分隔字符串
+public function setUserIdsAttr($value, $data)
+{
+    return is_array($value) ? implode(',', $value) : $value;
+}
+```
+
+示例 3：
+
+```php
+// 时间格式化
+protected function getStarttimeAttr($value)
+{
+    return $value ? date('Y-m-d H:i:s', $value) : '';
+}
+protected function setStarttimeAttr($value)
+{
+    return is_numeric($value) ? $value : strtotime($value);
 }
 ```
 
@@ -171,7 +232,7 @@ public function searchCitynameAttr($query, $value, $data)
 
 示例 2：
 1、表格设计新增列名 bind_info
-2、模型添加搜索器多字段模糊搜索
+2、模型添加搜索器模糊搜索
 
 ```php
 // 绑定信息模糊搜索

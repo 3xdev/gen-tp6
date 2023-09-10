@@ -182,7 +182,7 @@ class SystemTable extends Base
             return $this->error('数据未找到');
         }
 
-        $schema = $table->pro_schema;
+        $schema = $table->pro_components_schema;
 
         $authzIdentifier = $this->request->admin ? 'admin_' . $this->request->admin->id : '';
         $roles = Enforcer::getRolesForUser($authzIdentifier);
@@ -194,6 +194,9 @@ class SystemTable extends Base
                 }
             }
         }
+        $schema['options']['columns'] = array_values($schema['options']['columns']);
+        $schema['options']['toolbar'] = array_values($schema['options']['toolbar']);
+        $schema['options']['batch'] = array_values($schema['options']['batch']);
 
         return $this->success($schema);
     }

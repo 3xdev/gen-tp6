@@ -21,11 +21,20 @@ return [
         ],
         // 七牛云存储
         'qiniu'  => [
-            'type'          => 'qiniu',
-            'access_key'    => env('filesystem.qiniu_access_key'),
-            'secret_key'    => env('filesystem.qiniu_secret_key'),
-            'bucket'        => env('filesystem.qiniu_bucket'),
-            'domain'       => env('filesystem.qiniu_domain'),
+            'type'      => 'qiniu',
+            'accessKey' => env('qiniu.access_key'),
+            'secretKey' => env('qiniu.secret_key'),
+            'bucket'    => env('qiniu.bucket'),
+            'domain'    => env('qiniu.domain'),
+        ],
+        // 阿里云OSS
+        'aliyun'  => [
+            'type'          => 'aliyun',
+            'access_id'     => env('aliyun.access_key_id'),
+            'access_secret' => env('aliyun.access_key_secret'),
+            'endpoint'      => env('aliyun.oss_endpoint'),
+            'bucket'        => env('aliyun.oss_bucket'),
+            'isCName'       => false,
         ],
         // 更多的磁盘配置信息
     ],

@@ -65,6 +65,6 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/dicts/field_component
 
 ###
-#系统 - 创建七牛云直传token
+#系统 - 创建云存储直传token
 POST {{baseUrl}}/upload/token/logo
 Authorization: Bearer {{token}}

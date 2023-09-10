@@ -56,6 +56,7 @@ class Crud extends Base
         $valueCol = $this->request->get('valueCol', $this->model->getPk());
         $labelCol = $this->request->get('labelCol', $this->model->getPk());
         $objs = $this->model->scope($this->model_scope)->where($valueCol, 'in', explode(',', $values))->select();
+        $data = [];
         foreach ($objs as $obj) {
             $data[] = [
                 'label' => $obj[$labelCol],
@@ -214,7 +215,7 @@ class Crud extends Base
     public function create()
     {
         $table = SystemTableModel::where('code', parse_name(string_remove_prefix($this->request->controller(), 'admin.'), 0))->find();
-        $data = array_merge($this->request->post($table->cols->filter(fn($col) => empty($col->hide_in_form))->column('data_index')), $this->mergeCreate());
+        $data = array_merge($this->request->post($table->cols->column('data_index')), $this->mergeCreate());
         $this->validate($data, parse_name(string_remove_prefix($this->request->controller(), 'admin.')));
         $this->model->create($data);
 
